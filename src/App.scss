@@ -1,0 +1,23 @@
+$assetPath: "./background-images";
+
+.top-landing-bg {
+  background: url(#{$assetPath}/header-bg.png);
+  min-height: 700px;
+  background-size: cover;
+  background-repeat: none;
+  height: 100%;
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 30px;
+}
+
+.top-landing-content {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 3em;
+}
+
+.middle-landing-bg {
+}

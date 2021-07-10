@@ -1,10 +1,17 @@
 import React from "react";
-import "./App.css";
+import "./App.scss";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import LandingPage from "./pages/LandingPage";
 
 const custom_theme = createTheme({
   palette: {
+    primary: {
+      main: "#111B47",
+    },
+    secondary: {
+      main: "#0044ff",
+    },
     primary: {
       main: "#111B47",
     },
@@ -17,15 +24,11 @@ const custom_theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={custom_theme}>
-      <div className="App">
-        <h1>Hello</h1>
+      <div>
+        <LandingPage />
       </div>
     </ThemeProvider>
   );
-}
-
-function topHeader() {
-  return <div className="headerBackground"></div>;
 }
 
 export default App;
