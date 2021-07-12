@@ -27,12 +27,12 @@ function LandingTop() {
             conubia nostra, per inceptos himenaeos.
           </p>
           <div className="buttonList">
-            <Link to="/login-user">
+            <Link to="/login-user" className="menu-nav-link">
               <Button variant="contained" color="primary">
                 Log in
               </Button>
             </Link>
-            <Link to="/signup-new-user">
+            <Link to="/signup-new-user" className="menu-nav-link">
               <Button variant="outlined" color="primary">
                 Sign up
               </Button>
@@ -75,7 +75,7 @@ function LandingMiddle() {
         <div>
           <img
             src={imageUrlMapping.landingPagePictureFour}
-            alt="girl-with-phone"
+            alt="couple-having-different-roads"
             className="landing-page-picture"
           />
         </div>
@@ -90,7 +90,7 @@ function LandingBottom() {
         <div>
           <img
             src={imageUrlMapping.landingPagePictureTwo}
-            alt="black-swan-attention"
+            alt="lighter-move-on"
             className="landing-page-picture"
           />
         </div>
@@ -120,7 +120,10 @@ function SmallCardDetail({ icon, content }) {
 
 function PriceSection() {
   return (
-    <div className="price-section-bg flexbox-pricing">
+    <div
+      className="price-section-bg flexbox-pricing"
+      style={{ paddingTop: 50 }}
+    >
       <h2>A Price To Suit Everyone</h2>
       <p>
         Phasellus lacinia enim in congue iaculis. In hac habitasse platea

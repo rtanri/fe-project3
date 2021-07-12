@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.scss";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import { Typography } from "@material-ui/core";
 
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";

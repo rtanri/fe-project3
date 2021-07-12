@@ -12,6 +12,12 @@
   text-decoration: none;
 }
 
+.main-body {
+  padding-top: 80px;
+  padding-bottom: 50px;
+  min-height: 300px;
+}
+
 /* ====== Landing page ====== */
 
 .landing-header {
@@ -45,8 +51,8 @@
 
 .flexbox-landing {
   display: flex;
-  justify-content: center;
   flex-direction: row;
+  justify-content: center;
   flex-wrap: nowrap;
 }
 
@@ -88,9 +94,13 @@
   justify-content: start;
   align-items: center;
   flex-wrap: nowrap;
-  padding-top: 80px;
+  // padding-top: 50px;
 
   p {
     max-width: 500px;
+  }
+
+  .margin-bottom-top {
+    margin-bottom: 20px;
   }
 }
