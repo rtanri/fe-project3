@@ -3,6 +3,7 @@ import "./App.scss";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import LandingPage from "./pages/LandingPage";
+import NavBar from "./components/NavBar";
 
 const custom_theme = createTheme({
   palette: {
@@ -19,6 +20,7 @@ function App() {
   return (
     <ThemeProvider theme={custom_theme}>
       <div>
+        <NavBar />
         <LandingPage />
       </div>
     </ThemeProvider>
