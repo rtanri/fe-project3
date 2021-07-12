@@ -2,6 +2,7 @@ import React from "react";
 import Icon from "@material-ui/core/Icon";
 import { imageUrlMapping } from "../constants/imageUrlMapping";
 import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 function LandingPage() {
   return (
@@ -26,12 +27,16 @@ function LandingTop() {
             conubia nostra, per inceptos himenaeos.
           </p>
           <div className="buttonList">
-            <Button variant="contained" color="primary">
-              Log in
-            </Button>
-            <Button variant="outlined" color="primary">
-              Sign up
-            </Button>
+            <Link to="/login-user">
+              <Button variant="contained" color="primary">
+                Log in
+              </Button>
+            </Link>
+            <Link to="/signup-new-user">
+              <Button variant="outlined" color="primary">
+                Sign up
+              </Button>
+            </Link>
           </div>
         </div>
         <img
@@ -123,9 +128,11 @@ function PriceSection() {
         nostra, per inceptos himenaeos.
       </p>
       <h1>$40</h1>
-      <Button variant="contained" color="primary">
-        Log-in Now
-      </Button>
+      <Link to="/login-user">
+        <Button variant="contained" color="primary">
+          Log-in Now
+        </Button>
+      </Link>
     </div>
   );
 }

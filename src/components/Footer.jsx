@@ -4,7 +4,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { spacing } from "@material-ui/system";
 import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({

@@ -2,8 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import { spacing } from "@material-ui/system";
 import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,6 +14,12 @@ const useStyles = makeStyles(theme => ({
     marginBottom: "-50px",
     alignItems: "center",
   },
+  buttonStyling: {
+    marginRight: 15,
+    fontSize: 18,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
 }));
 
 export default function NavBar() {
@@ -23,15 +29,21 @@ export default function NavBar() {
     <div className={classes.root}>
       <AppBar position="static" elevation={0} className={classes.appBarStyling}>
         <Toolbar variant="dense">
-          <Button color="primary" style={{ marginRight: 15 }}>
-            Home
-          </Button>
-          <Button color="primary" style={{ marginRight: 15 }}>
-            Forum
-          </Button>
-          <Button color="primary" style={{ marginRight: 15 }}>
-            Delivery
-          </Button>
+          <Link to="/" exact className="menu-nav-link">
+            <Button color="primary" className={classes.buttonStyling}>
+              Home
+            </Button>
+          </Link>
+          <Link to="/forum" className="menu-nav-link">
+            <Button color="primary" className={classes.buttonStyling}>
+              Forum
+            </Button>
+          </Link>
+          <Link to="/Delivery" className="menu-nav-link">
+            <Button color="primary" className={classes.buttonStyling}>
+              Delivery
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>
