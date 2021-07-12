@@ -69,21 +69,22 @@
 .price-section-bg {
   background-image: url("https://i.imgur.com/XKC9mza.png");
   height: 100%;
-  min-height: 550px;
+  min-height: 500px;
   background-size: cover;
   background-repeat: none;
   background-position: center;
   margin-top: -50px;
-  margin-bottom: -50px;
+  margin-bottom: -100px;
 }
 
 .flexbox-pricing {
   display: flex;
   flex-direction: column;
   text-align: center;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   flex-wrap: nowrap;
+  padding-top: 80px;
 
   p {
     max-width: 500px;

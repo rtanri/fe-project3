@@ -4,6 +4,7 @@ import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import LandingPage from "./pages/LandingPage";
 import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
 const custom_theme = createTheme({
   palette: {
@@ -22,6 +23,7 @@ function App() {
       <div>
         <NavBar />
         <LandingPage />
+        <Footer />
       </div>
     </ThemeProvider>
   );

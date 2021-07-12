@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  appBarTransparent: {
+  appBarStyling: {
     backgroundColor: "rgba(67, 129, 168,0)",
     marginBottom: "-50px",
     alignItems: "center",
@@ -21,11 +21,7 @@ export default function NavBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar
-        position="static"
-        elevation={0}
-        className={classes.appBarTransparent}
-      >
+      <AppBar position="static" elevation={0} className={classes.appBarStyling}>
         <Toolbar variant="dense">
           <Button color="primary" style={{ marginRight: 15 }}>
             Home
