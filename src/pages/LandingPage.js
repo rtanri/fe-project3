@@ -1,6 +1,7 @@
 import React from "react";
-import pictureOne from "../background-images/landing-page-girl-and-phone.jpg";
+import Icon from "@material-ui/core/Icon";
 import { imageUrlMapping } from "../constants/imageUrlMapping";
+import { Button } from "@material-ui/core";
 
 function LandingPage() {
   return (
@@ -8,26 +9,70 @@ function LandingPage() {
       <LandingTop />
       <LandingMiddle />
       <LandingBottom />
+      <PriceSection />
     </div>
   );
 }
 
 function LandingTop() {
   return (
-    <div className="top-landing-bg">
-      <h1 className="top-landing-content">FreshStart</h1>
+    <div className="landing-header top-landing-bg">
+      <div className="flexbox-landing">
+        <div className="header-content">
+          <h1>Welcome to FreshStart</h1>
+          <p>
+            Phasellus lacinia enim in congue iaculis. In hac habitasse platea
+            dictumst. Class aptent taciti sociosqu ad litora torquent per
+            conubia nostra, per inceptos himenaeos.
+          </p>
+          <div className="buttonList">
+            <Button variant="contained" color="primary">
+              Log in
+            </Button>
+            <Button variant="outlined" color="primary">
+              Sign up
+            </Button>
+          </div>
+        </div>
+        <img
+          src={imageUrlMapping.landingPageDiamondRing}
+          alt="welcome_image"
+          className="header-title-image"
+        />
+      </div>
     </div>
   );
 }
+
 function LandingMiddle() {
   return (
     <div className="middle-landing-bg">
       <div className="flexbox-landing">
-        <div>
-          <p>lorum ipsum</p>
+        <div className="landing-subcontext">
+          <h1>Introducing FreshStart</h1>
+          <p className="extra-spacing">
+            Life must goes on even after a bad heartbreak from work, lover or
+            health. We understand that everyone might fail one day, we help you
+            to move-on with:
+          </p>
+
+          <div className="flexbox-landing">
+            <SmallCardDetail
+              icon="local_shipping"
+              content="Returning sentimental items to your ex-lover or enemy"
+            />
+            <SmallCardDetail
+              icon="forum"
+              content="Listening your story anonymously"
+            />
+          </div>
         </div>
         <div>
-          <img src={imageUrlMapping.pictureTwo} alt="girl-with-phone" />
+          <img
+            src={imageUrlMapping.landingPagePictureFour}
+            alt="girl-with-phone"
+            className="landing-page-picture"
+          />
         </div>
       </div>
     </div>
@@ -35,8 +80,52 @@ function LandingMiddle() {
 }
 function LandingBottom() {
   return (
-    <div className="bottom-landing-bg">
-      <h1 className="bottom-landing-content">BottomPart</h1>
+    <div className="middle-landing-bg">
+      <div className="flexbox-landing">
+        <div>
+          <img
+            src={imageUrlMapping.landingPagePictureTwo}
+            alt="black-swan-attention"
+            className="landing-page-picture"
+          />
+        </div>
+        <div className="landing-subcontext">
+          <h1>Have a lighter move on</h1>
+          <p>
+            Let us do the unfinished business and allow you to build a better
+            future with lighter heart.
+          </p>
+          <p>Start by loving yourself in order to love other people</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SmallCardDetail({ icon, content }) {
+  return (
+    <div style={{ margin: 10 }}>
+      <Icon style={{ fontSize: 40 }} color="primary">
+        {icon}
+      </Icon>
+      <p>{content}</p>
+    </div>
+  );
+}
+
+function PriceSection() {
+  return (
+    <div className="price-section-bg flexbox-pricing">
+      <h2>A Price To Suit Everyone</h2>
+      <p>
+        Phasellus lacinia enim in congue iaculis. In hac habitasse platea
+        dictumst. Class aptent taciti sociosqu ad litora torquent per conubia
+        nostra, per inceptos himenaeos.
+      </p>
+      <h1>$40</h1>
+      <Button variant="contained" color="primary">
+        Log-in Now
+      </Button>
     </div>
   );
 }

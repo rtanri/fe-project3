@@ -12,12 +12,6 @@ const custom_theme = createTheme({
     secondary: {
       main: "#0044ff",
     },
-    primary: {
-      main: "#111B47",
-    },
-    secondary: {
-      main: "#0044ff",
-    },
   },
 });
 
