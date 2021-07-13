@@ -3,16 +3,16 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.scss";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography } from "@material-ui/core";
+// import { Typography } from "@material-ui/core";
 
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 
-import LandingPage from "./pages/LandingPage";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Forum from "./pages/Forum";
-import Delivery from "./pages/Delivery";
+import LandingPage from "./components/pages/LandingPage";
+import Login from "./components/pages/Login";
+import Signup from "./components/pages/Signup";
+import Forum from "./components/pages/Forum";
+import Delivery from "./components/pages/Delivery";
 
 const custom_theme = createTheme({
   palette: {

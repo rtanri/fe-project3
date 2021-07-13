@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   pageTitle: {
@@ -25,6 +26,42 @@ const useStyles = makeStyles(theme => ({
 export default function Signup() {
   const classes = useStyles();
 
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
+
+  function postUserData() {
+    axios
+      .post("http://localhost:8000/api/v1/users/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+      })
+      .then(response => {
+        console.log("sign-up successful");
+
+        this.props.history.push("/login");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    postUserData();
+  }, []);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    postUserData();
+  };
+
+  // componentDidMount, depends on inside the array (nothing, firstName, etc)
+
   return (
     <div className="main-body flexbox-column">
       <h1 className={classes.pageTitle}>
@@ -36,50 +73,65 @@ export default function Signup() {
           <div>
             <TextField
               required
-              id="outlined-required"
+              id="firstName"
               label="First Name"
-              defaultValue=""
               variant="outlined"
               size="small"
               style={{ marginRight: 20 }}
               className={classes.smallFormInput}
+              value={firstName}
+              onChange={e => {
+                setFirstName(e.target.value);
+              }}
             />
             <TextField
-              id="outlined-required"
+              id="lastName"
               label="Last Name"
-              defaultValue=""
               variant="outlined"
               size="small"
               className={classes.smallFormInput}
+              value={lastName}
+              onChange={e => {
+                setLastName(e.target.value);
+              }}
             />
           </div>
 
           <TextField
             required
-            id="outlined-required"
+            id="email"
             label="Email Address"
-            defaultValue=""
             variant="outlined"
             size="small"
             className={classes.formInput}
+            value={email}
+            onChange={e => {
+              setEmail(e.target.value);
+            }}
           />
           <TextField
             required
             id="outlined-required"
             label="Password"
-            defaultValue=""
             variant="outlined"
             size="small"
             className={classes.formInput}
+            value={password}
+            onChange={e => {
+              setPassword(e.target.value);
+            }}
           />
           <TextField
             required
-            id="outlined-required"
+            id="confirmPassword"
             label="Confirm Password"
-            defaultValue=""
             variant="outlined"
             size="small"
             className={classes.formInput}
+            value={confirmPassword}
+            onChange={e => {
+              setConfirmPassword(e.target.value);
+            }}
           />
           <Button
             type="submit"
@@ -87,6 +139,9 @@ export default function Signup() {
             variant="contained"
             color="primary"
             style={{ margin: 20, width: 150 }}
+            onSubmit={e => {
+              handleSubmit(e);
+            }}
           >
             Register
           </Button>

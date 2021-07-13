@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   pageTitle: {
@@ -21,6 +22,39 @@ const useStyles = makeStyles(theme => ({
 export default function Login() {
   const classes = useStyles();
 
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  function findUserData() {
+    axios
+      .post("http://localhost:8000/api/v1/users/login", {
+        email,
+        password,
+      })
+      .then(response => {
+        // after successful login, store the token as cookie
+        const { cookies } = this.props;
+
+        cookies.set("auth_token", response.data.token, {
+          path: "/",
+        });
+        console.log("login successful");
+        this.props.history.push("/");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    findUserData();
+  }, []);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    findUserData();
+  };
+
   return (
     <div className="main-body flexbox-column">
       <h1 className={classes.pageTitle}>Login FreshStart Account Today</h1>
@@ -29,21 +63,27 @@ export default function Login() {
         <form className="flexbox-column">
           <TextField
             required
-            id="outlined-required"
+            id="email"
             label="Email Address"
-            defaultValue=""
             variant="outlined"
             size="small"
             className={classes.formInput}
+            value={email}
+            onChange={e => {
+              setEmail(e.target.value);
+            }}
           />
           <TextField
             required
-            id="outlined-required"
+            id="password"
             label="Password"
-            defaultValue=""
             variant="outlined"
             size="small"
             className={classes.formInput}
+            value={password}
+            onChange={e => {
+              setPassword(e.target.value);
+            }}
           />
           <Button
             type="submit"
@@ -51,6 +91,9 @@ export default function Login() {
             variant="contained"
             color="primary"
             style={{ margin: 20, width: 150 }}
+            onSubmit={e => {
+              handleSubmit(e);
+            }}
           >
             Submit
           </Button>

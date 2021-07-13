@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "@material-ui/core/Icon";
-import { imageUrlMapping } from "../constants/imageUrlMapping";
+import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
