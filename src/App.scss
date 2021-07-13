@@ -1,5 +1,28 @@
 /* ====== General Overal App ====== */
 // mostly I add in index.scss like css for body{}
+.flexbox-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+.flexbox-column {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: nowrap;
+  // padding-top: 50px;
+  p {
+    max-width: 500px;
+  }
+
+  .margin-bottom-top {
+    margin-bottom: 20px;
+  }
+}
+
 .buttonList {
   margin: 50px 0;
   button {
@@ -49,13 +72,6 @@
   background-position: right;
 }
 
-.flexbox-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: nowrap;
-}
-
 .middle-landing-bg {
   padding-top: 0;
   margin-bottom: 20px;
@@ -85,24 +101,6 @@
   background-position: center;
   margin-top: -50px;
   margin-bottom: -100px;
-}
-
-.flexbox-column {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: start;
-  align-items: center;
-  flex-wrap: nowrap;
-  // padding-top: 50px;
-
-  p {
-    max-width: 500px;
-  }
-
-  .margin-bottom-top {
-    margin-bottom: 20px;
-  }
 }
 
 /* ====== Login / Sign up ====== */

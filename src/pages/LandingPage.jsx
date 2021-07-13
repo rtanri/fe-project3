@@ -18,7 +18,7 @@ function LandingPage() {
 function LandingTop() {
   return (
     <div className="landing-header top-landing-bg">
-      <div className="flexbox-landing">
+      <div className="flexbox-row">
         <div className="header-content">
           <h1>Welcome to FreshStart</h1>
           <p>
@@ -52,7 +52,7 @@ function LandingTop() {
 function LandingMiddle() {
   return (
     <div className="middle-landing-bg">
-      <div className="flexbox-landing">
+      <div className="flexbox-row">
         <div className="landing-subcontext">
           <h1>Introducing FreshStart</h1>
           <p className="extra-spacing">
@@ -61,7 +61,7 @@ function LandingMiddle() {
             to move-on with:
           </p>
 
-          <div className="flexbox-landing">
+          <div className="flexbox-row">
             <SmallCardDetail
               icon="local_shipping"
               content="Returning sentimental items to your ex-lover or enemy"
@@ -86,7 +86,7 @@ function LandingMiddle() {
 function LandingBottom() {
   return (
     <div className="middle-landing-bg">
-      <div className="flexbox-landing">
+      <div className="flexbox-row">
         <div>
           <img
             src={imageUrlMapping.landingPagePictureTwo}
@@ -120,10 +120,7 @@ function SmallCardDetail({ icon, content }) {
 
 function PriceSection() {
   return (
-    <div
-      className="price-section-bg flexbox-pricing"
-      style={{ paddingTop: 50 }}
-    >
+    <div className="price-section-bg flexbox-column" style={{ paddingTop: 50 }}>
       <h2>A Price To Suit Everyone</h2>
       <p>
         Phasellus lacinia enim in congue iaculis. In hac habitasse platea
