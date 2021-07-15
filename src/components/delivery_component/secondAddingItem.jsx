@@ -4,7 +4,9 @@ import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/button";
 import { Link } from "react-router-dom";
-import ItemDetailDrawer from "./drawer";
+import ItemDetailDrawer from "./Drawer";
+// import AddItemModal from "./AddItemModal";
+import Modal from "@material-ui/core/Modal";
 
 const useStyles = makeStyles({
   subTitle: {
@@ -26,6 +28,17 @@ const useStyles = makeStyles({
     width: 150,
     height: 150,
     overflow: "hidden",
+    border: "1px solid #111B47",
+  },
+  modalPaper: {
+    position: "absolute",
+    top: "35%",
+    left: "35%",
+    width: 450,
+    backgroundColor: "white",
+    boxShadow: 3,
+    padding: 10,
+    border: "2px solid #111B47",
   },
 });
 
@@ -63,18 +76,49 @@ function ItemCard({ itemName, source }) {
 }
 
 function ButtonList() {
+  const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className="buttonList">
-      <Link to="/add-one-item" className="menu-nav-link">
-        <Button variant="contained" color="primary">
-          Add Item
-        </Button>
-      </Link>
+      <Button variant="contained" color="primary" onClick={handleOpen}>
+        Add Item
+      </Button>
       <Link to="/payment-detail" className="menu-nav-link">
         <Button variant="outlined" color="primary">
           Check Out
         </Button>
       </Link>
+      <Modal open={open} onClose={handleClose}>
+        <div className={classes.modalPaper}>
+          <h2>Simple React Modal</h2>
+          <p>Hello World</p>
+        </div>
+      </Modal>
     </div>
   );
 }
+
+// function AddItemModal() {
+//   const [open, setOpen] = React.useState(false);
+//   const classes = useStyles();
+
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
+//   return (
+//     <Modal open={open} onClose={handleClose}>
+//       <div className={classes.modalPaper}>
+//         <h2>Simple React Modal</h2>
+//         <p>Hello World</p>
+//       </div>
+//     </Modal>
+//   );
+// }
