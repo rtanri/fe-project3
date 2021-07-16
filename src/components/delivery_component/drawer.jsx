@@ -65,7 +65,15 @@ export default function ItemDetailDrawer() {
   );
 
   return (
-    <div>
+    <div
+      style={{
+        border: "1px solid black",
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: "#eaeaea",
+      }}
+    >
+      <span>Test Open Drawer:</span>
       {["left", "right"].map(anchor => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
