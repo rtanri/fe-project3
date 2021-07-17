@@ -38,7 +38,7 @@ export default function Payment() {
   const [focus, setFocus] = useState(""); //for styling and animation
 
   return (
-    <div className="flexbox-row main-body" style={{ minHeight: 550 }}>
+    <div className="flexbox-row" style={{ minHeight: 550 }}>
       <div id="PaymentForm" className="flexbox-column">
         <h2>Enter Credit Card Detail</h2>
         <div className="credit-card">

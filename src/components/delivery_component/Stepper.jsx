@@ -5,18 +5,11 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-
-import SelectSituation from "../delivery_component/FirstSelectSituation";
-import AddingItem from "../delivery_component/SecondAddingItem";
 import Payment from "../delivery_component/ThirdPayment";
-import SubmitSuccess from "../delivery_component/ForthPaymentSuccess";
-import OrderList from "../delivery_component/FiveOrderList";
-import DeliveryStepper from "../delivery_component/Stepper";
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
-    marginTop: 80,
   },
   backButton: {
     marginRight: theme.spacing(1),
@@ -28,24 +21,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ["Relationship", "Add Item", "Payment", "Finish"];
+  return [
+    "Select master blaster campaign settings",
+    "Create an ad group",
+    "Create an ad",
+  ];
 }
-function getStepContent(stepIndex, ...props) {
+
+function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
-      return <SelectSituation {...props} />;
+      return "Select campaign settings...";
     case 1:
-      return <AddingItem {...props} />;
+      return <Payment />;
     case 2:
-      return <Payment {...props} />;
+      return "This is the bit I really care about!";
     case 3:
-      return <SubmitSuccess {...props} />;
+      return "This is the bit I really care about!";
+    case 4:
+      return "This is the bit I really care about!";
     default:
       return "Unknown stepIndex";
   }
 }
 
-export default function DeliveryWithStepper() {
+export default function DeliveryStepper() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -82,7 +82,7 @@ export default function DeliveryWithStepper() {
         ) : (
           <div>
             <Typography className={classes.instructions}>
-              {getStepContent(activeStep, handleNext, handleBack)}
+              {getStepContent(activeStep)}
             </Typography>
             <div>
               <Button

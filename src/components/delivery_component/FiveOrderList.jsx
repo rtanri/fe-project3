@@ -67,7 +67,7 @@ const useStyles = makeStyles({
 export default function OrderList() {
   const classes = useStyles();
   return (
-    <div className="main-body">
+    <div className="">
       <h1 align="center">Order list</h1>
       <div className="flexbox-row">
         <div className={classes.orderListBox}>

@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 export default function SelectSituation() {
   const classes = useStyles();
   return (
-    <div className="flexbox-column main-body">
+    <div className="flexbox-column">
       <h1 className="">What kind of relationship do you have?</h1>
       <p className={classes.subTitle}>
         Let us handle the sentimental items collection and delivery for you

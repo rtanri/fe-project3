@@ -12,7 +12,7 @@ import LandingPage from "./components/pages/LandingPage";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import Forum from "./components/pages/Forum";
-import Delivery from "./components/pages/Delivery";
+import DeliveryWithStepper from "./components/pages/Delivery";
 
 import SelectSituation from "./components/delivery_component/FirstSelectSituation";
 import AddingItem from "./components/delivery_component/SecondAddingItem";
@@ -41,7 +41,10 @@ function App() {
             <Route path="/login-user" component={Login} />
             <Route path="/signup-new-user" component={Signup} />
             <Route path="/forum" component={Forum} />
-            <Route path="/delivery" component={Delivery} />
+            <Route
+              path="/deliver-collect-item"
+              component={DeliveryWithStepper}
+            />
             <Route path="/relationship" component={SelectSituation} />
             <Route path="/add-item" component={AddingItem} />
             <Route path="/payment" component={Payment} />

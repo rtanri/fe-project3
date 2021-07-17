@@ -36,10 +36,10 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AddingItem() {
+export default function AddingItem(props) {
   const classes = useStyles();
   return (
-    <div className="flexbox-column main-body">
+    <div className="flexbox-column">
       <h1>Add Your Items</h1>
       <p className={classes.subTitle}>Max: 4 units</p>
       <div className="flexbox-row">
@@ -47,7 +47,7 @@ export default function AddingItem() {
         <ItemCard itemName="teddy bear" source={imageUrlMapping.addedItem} />
         <ItemCard itemName="working desk" source={imageUrlMapping.addedItem} />
       </div>
-      <ButtonList />
+      <ButtonList {...props} />
       <ItemDetailDrawer />
     </div>
   );
@@ -66,7 +66,7 @@ function ItemCard({ itemName, source }) {
   );
 }
 
-function ButtonList() {
+function ButtonList(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 
@@ -83,7 +83,11 @@ function ButtonList() {
         Add Item
       </Button>
       <Link to="/payment" className="menu-nav-link">
-        <Button variant="outlined" color="primary">
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => props.handleNext()}
+        >
           Check Out
         </Button>
       </Link>

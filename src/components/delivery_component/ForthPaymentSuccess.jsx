@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 export default function SelectSituation() {
   const classes = useStyles();
   return (
-    <div className="flexbox-column main-body">
+    <div className="flexbox-column">
       <h1 className="">Payment Successful</h1>
       <p className={classes.subTitle}>
         We will process your order, visit your order dashboard to check the
