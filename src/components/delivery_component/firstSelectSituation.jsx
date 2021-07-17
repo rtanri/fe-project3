@@ -6,6 +6,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   subTitle: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles({
 export default function SelectSituation() {
   const classes = useStyles();
   return (
-    <div className="flexbox-column">
+    <div className="flexbox-column main-body">
       <h1 className="">What kind of relationship do you have?</h1>
       <p className={classes.subTitle}>
         Let us handle the sentimental items collection and delivery for you
@@ -58,18 +59,20 @@ function RelationshipCard({ title, context, image }) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.cardStyling}>
-      <CardActionArea>
-        <CardMedia className={classes.cardImage} image={image} />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {context}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+    <Link to={"/add-item"} className={classes.cardStyling}>
+      <Card>
+        <CardActionArea>
+          <CardMedia className={classes.cardImage} image={image} />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {context}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Link>
   );
 }

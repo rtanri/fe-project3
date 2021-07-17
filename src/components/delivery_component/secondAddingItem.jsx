@@ -4,7 +4,7 @@ import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/button";
 import { Link } from "react-router-dom";
-import ItemDetailDrawer from "./Drawer";
+import ItemDetailDrawer from "./LeftDrawer";
 // import AddItemModal from "./AddItemModal";
 import Modal from "@material-ui/core/Modal";
 
@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 export default function AddingItem() {
   const classes = useStyles();
   return (
-    <div className="flexbox-column">
+    <div className="flexbox-column main-body">
       <h1>Add Your Items</h1>
       <p className={classes.subTitle}>Max: 4 units</p>
       <div className="flexbox-row">
@@ -91,7 +91,7 @@ function ButtonList() {
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Add Item
       </Button>
-      <Link to="/payment-detail" className="menu-nav-link">
+      <Link to="/payment" className="menu-nav-link">
         <Button variant="outlined" color="primary">
           Check Out
         </Button>

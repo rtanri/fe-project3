@@ -39,7 +39,7 @@ export default function NavBar() {
               Forum
             </Button>
           </Link>
-          <Link to="/Delivery" className="menu-nav-link">
+          <Link to="/relationship" className="menu-nav-link">
             <Button color="primary" className={classes.buttonStyling}>
               Delivery
             </Button>
