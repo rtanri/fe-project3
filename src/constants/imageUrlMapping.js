@@ -12,6 +12,9 @@ export const imageUrlMapping = {
   shortTermDates: "https://i.imgur.com/YzstunI.png",
   almostBTO: "https://i.imgur.com/6B1412C.png",
 
+  /* ====== adding item page ====== */
+  addedItem: "https://i.imgur.com/GPrewQv.png",
+
   /* ====== order and payment success page ====== */
   orderSubmittedGirl: "https://i.imgur.com/Dj74NcD.png",
   orderSubmittedMan: "https://i.imgur.com/h1dDkVa.png",

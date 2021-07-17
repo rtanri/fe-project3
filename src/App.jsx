@@ -18,6 +18,7 @@ import SelectSituation from "./components/delivery_component/FirstSelectSituatio
 import AddingItem from "./components/delivery_component/SecondAddingItem";
 import Payment from "./components/delivery_component/ThirdPayment";
 import SubmitSuccess from "./components/delivery_component/ForthPaymentSuccess";
+import OrderList from "./components/delivery_component/FiveOrderList";
 
 const custom_theme = createTheme({
   palette: {
@@ -45,6 +46,7 @@ function App() {
             <Route path="/add-item" component={AddingItem} />
             <Route path="/payment" component={Payment} />
             <Route path="/successful-order" component={SubmitSuccess} />
+            <Route path="/order-list" component={OrderList} />
             <Route path="/" exact component={LandingPage} />
           </Switch>
           <Footer />

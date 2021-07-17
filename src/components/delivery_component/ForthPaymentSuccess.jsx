@@ -21,7 +21,7 @@ export default function SelectSituation() {
         We will process your order, visit your order dashboard to check the
         status
       </p>
-      <Link to="/" className="menu-nav-link">
+      <Link to="/order-list" className="menu-nav-link">
         <Button
           type="button"
           className="margin-bottom"

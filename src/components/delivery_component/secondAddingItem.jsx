@@ -25,20 +25,14 @@ const useStyles = makeStyles({
     boxShadow: "none",
   },
   cardImage: {
-    width: 150,
-    height: 150,
+    width: 90,
+    height: 90,
     overflow: "hidden",
-    border: "1px solid #111B47",
+    padding: 20,
   },
-  modalPaper: {
-    position: "absolute",
-    top: "35%",
-    left: "35%",
-    width: 450,
-    backgroundColor: "white",
-    boxShadow: 3,
-    padding: 10,
-    border: "2px solid #111B47",
+  addedProductName: {
+    fontWeight: 500,
+    fontSize: "1.2rem",
   },
 });
 
@@ -49,12 +43,9 @@ export default function AddingItem() {
       <h1>Add Your Items</h1>
       <p className={classes.subTitle}>Max: 4 units</p>
       <div className="flexbox-row">
-        <ItemCard itemName="sofa" source={imageUrlMapping.oneNightLove} />
-        <ItemCard
-          itemName="teddy bear"
-          source={imageUrlMapping.shortTermDates}
-        />
-        <ItemCard itemName="working desk" source={imageUrlMapping.almostBTO} />
+        <ItemCard itemName="sofa" source={imageUrlMapping.addedItem} />
+        <ItemCard itemName="teddy bear" source={imageUrlMapping.addedItem} />
+        <ItemCard itemName="working desk" source={imageUrlMapping.addedItem} />
       </div>
       <ButtonList />
       <ItemDetailDrawer />
@@ -68,7 +59,7 @@ function ItemCard({ itemName, source }) {
   return (
     <div className={classes.cardStyling}>
       <img className={classes.cardImage} src={source} alt="item_image" />
-      <Typography variant="body2" color="textSecondary" component="p">
+      <Typography component="p" className={classes.addedProductName}>
         {itemName}
       </Typography>
     </div>
@@ -105,20 +96,3 @@ function ButtonList() {
     </div>
   );
 }
-
-// function AddItemModal() {
-//   const [open, setOpen] = React.useState(false);
-//   const classes = useStyles();
-
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
-//   return (
-//     <Modal open={open} onClose={handleClose}>
-//       <div className={classes.modalPaper}>
-//         <h2>Simple React Modal</h2>
-//         <p>Hello World</p>
-//       </div>
-//     </Modal>
-//   );
-// }

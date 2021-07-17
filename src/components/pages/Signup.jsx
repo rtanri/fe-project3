@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -26,24 +26,25 @@ const useStyles = makeStyles(theme => ({
 export default function Signup() {
   const classes = useStyles();
 
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
+  // const [firstName, setFirstName] = useState(null);
+  // const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState(null);
 
   function postUserData() {
     axios
-      .post("http://localhost:8000/api/v1/users/register", {
-        firstName,
-        lastName,
+      .post("http://localhost:4000/api/v1/user/signup", {
+        // firstName,
+        // lastName,
+        username,
         email,
         password,
-        confirmPassword,
+        // confirmPassword,
       })
       .then(response => {
         console.log("sign-up successful");
-
         this.props.history.push("/login");
       })
       .catch(err => {
@@ -51,12 +52,9 @@ export default function Signup() {
       });
   }
 
-  useEffect(() => {
-    postUserData();
-  }, []);
-
   const handleSubmit = e => {
     e.preventDefault();
+    console.log("submit");
     postUserData();
   };
 
@@ -69,9 +67,15 @@ export default function Signup() {
       </h1>
       <div className="login-box">
         <h3 className={classes.formHeader}>Sign up for a free account</h3>
-        <form className="flexbox-column">
+        <form
+          className="flexbox-column"
+          onSubmit={e => {
+            console.log(123);
+            handleSubmit(e);
+          }}
+        >
           <div>
-            <TextField
+            {/* <TextField
               required
               id="firstName"
               label="First Name"
@@ -94,6 +98,17 @@ export default function Signup() {
               onChange={e => {
                 setLastName(e.target.value);
               }}
+            /> */}
+            <TextField
+              id="username"
+              label="User Name"
+              variant="outlined"
+              size="small"
+              className={classes.formInput}
+              value={username}
+              onChange={e => {
+                setUsername(e.target.value);
+              }}
             />
           </div>
 
@@ -111,7 +126,7 @@ export default function Signup() {
           />
           <TextField
             required
-            id="outlined-required"
+            id="password"
             label="Password"
             variant="outlined"
             size="small"
@@ -121,7 +136,7 @@ export default function Signup() {
               setPassword(e.target.value);
             }}
           />
-          <TextField
+          {/* <TextField
             required
             id="confirmPassword"
             label="Confirm Password"
@@ -132,16 +147,13 @@ export default function Signup() {
             onChange={e => {
               setConfirmPassword(e.target.value);
             }}
-          />
+          /> */}
           <Button
             type="submit"
             className="margin-bottom"
             variant="contained"
             color="primary"
             style={{ margin: 20, width: 150 }}
-            onSubmit={e => {
-              handleSubmit(e);
-            }}
           >
             Register
           </Button>

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { findUserData } from "../../services/usersService";
 
 const useStyles = makeStyles(theme => ({
   pageTitle: {
@@ -22,36 +22,12 @@ const useStyles = makeStyles(theme => ({
 export default function Login() {
   const classes = useStyles();
 
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-
-  function findUserData() {
-    axios
-      .post("http://localhost:8000/api/v1/users/login", {
-        email,
-        password,
-      })
-      .then(response => {
-        // after successful login, store the token as cookie
-        const { cookies } = this.props;
-
-        cookies.set("auth_token", response.data.token, {
-          path: "/",
-        });
-        console.log("login successful");
-        this.props.history.push("/");
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  useEffect(() => {
-    findUserData();
-  }, []);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
+    console.log("submit clicked");
     findUserData();
   };
 
@@ -60,7 +36,12 @@ export default function Login() {
       <h1 className={classes.pageTitle}>Login FreshStart Account Today</h1>
       <div className="login-box">
         <h3 className={classes.formHeader}>Login</h3>
-        <form className="flexbox-column">
+        <form
+          className="flexbox-column"
+          onSubmit={e => {
+            handleSubmit(e);
+          }}
+        >
           <TextField
             required
             id="email"
@@ -91,9 +72,6 @@ export default function Login() {
             variant="contained"
             color="primary"
             style={{ margin: 20, width: 150 }}
-            onSubmit={e => {
-              handleSubmit(e);
-            }}
           >
             Submit
           </Button>

@@ -20,6 +20,7 @@ const useStyles = makeStyles({
     marginLeft: 10,
     paddingBottom: 20,
     paddingTop: 0,
+    textDecoration: "none",
   },
   cardImage: {
     height: 250,
