@@ -7,6 +7,8 @@ import { ThemeProvider } from "@material-ui/styles";
 
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 import LandingPage from "./components/pages/LandingPage";
 import Login from "./components/pages/Login";
@@ -37,6 +39,7 @@ function App() {
       <ThemeProvider theme={custom_theme}>
         <div>
           <NavBar />
+          <ToastContainer />
           <Switch>
             <Route path="/login-user" component={Login} />
             <Route path="/signup-new-user" component={Signup} />
@@ -50,7 +53,7 @@ function App() {
             <Route path="/payment" component={Payment} />
             <Route path="/successful-order" component={SubmitSuccess} />
             <Route path="/order-list" component={OrderList} />
-            <Route path="/" exact component={LandingPage} />
+            <Route path="/" component={LandingPage} />
           </Switch>
           <Footer />
         </div>

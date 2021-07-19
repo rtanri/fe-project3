@@ -100,6 +100,7 @@ export default function Signup() {
               }}
             /> */}
             <TextField
+              required
               id="username"
               label="User Name"
               variant="outlined"
