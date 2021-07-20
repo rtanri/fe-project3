@@ -34,6 +34,15 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: "1.2rem",
   },
+  modalStyling: {
+    position: "absolute",
+    width: 400,
+    border: "2px solid #000",
+    boxShadow: 5,
+    padding: 10,
+    top: "33%",
+    left: "33%",
+  },
 });
 
 export default function AddingItem(props) {
@@ -82,17 +91,22 @@ function ButtonList(props) {
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Add Item
       </Button>
-      <Link to="/payment" className="menu-nav-link">
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => props.handleNext()}
-        >
-          Check Out
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={e => props.handleBack(e)}
+      >
+        Back
+      </Button>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={e => props.handleNext(e)}
+      >
+        Check Out
+      </Button>
       <Modal open={open} onClose={handleClose}>
-        <div className={classes.modalPaper}>
+        <div className={classes.modalStyling}>
           <h2>Simple React Modal</h2>
           <p>Hello World</p>
         </div>

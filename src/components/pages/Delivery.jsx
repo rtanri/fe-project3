@@ -1,5 +1,5 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -13,92 +13,133 @@ import SubmitSuccess from "../delivery_component/ForthPaymentSuccess";
 import OrderList from "../delivery_component/FiveOrderList";
 import DeliveryStepper from "../delivery_component/Stepper";
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   root: {
     width: "100%",
     marginTop: 80,
   },
   backButton: {
-    marginRight: theme.spacing(1),
+    marginRight: 20,
   },
   instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginTop: 40,
+    marginBottom: 40,
   },
-}));
+});
 
-function getSteps() {
-  return ["Relationship", "Add Item", "Payment", "Finish"];
+class DeliveryWithStepper extends Component {
+  constructor(props) {
+    super(props);
+    this.handleNext = this.handleNext.bind(this);
+    this.handleBack = this.handleBack.bind(this);
+    // this.handleItemLimit = this.handleItemLimit.bind(this);
+    this.handleAddressCallback = this.handleAddressCallback.bind(this);
+
+    this.state = {
+      activeStep: 0,
+      itemLimit: 0,
+      address: "",
+    };
+  }
+
+  getSteps() {
+    return ["Relationship", "Add Item", "Payment", "Finish"];
+  }
+
+  handleNext(e) {
+    this.setState({
+      activeStep: this.state.activeStep + 1,
+    });
+  }
+
+  handleBack(e) {
+    this.setState({
+      activeStep: this.state.activeStep - 1,
+    });
+  }
+
+  // child update parents by onClick
+  handleItemLimitCallback = childData => {
+    this.setState({
+      itemLimit: childData,
+    });
+  };
+
+  // child update parents by onChange & form-submit
+  handleAddressCallback(inputString) {
+    this.setState({ address: inputString });
+  }
+
+  render() {
+    const { classes } = this.props;
+    const steps = this.getSteps();
+
+    return (
+      <div className={classes.root}>
+        <Stepper activeStep={this.state.activeStep} alternativeLabel>
+          {steps.map(label => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <div>
+          {this.state.activeStep === steps.length ? (
+            <div>
+              <Typography className={classes.instructions}>
+                All steps completed
+              </Typography>
+              <Button onClick={this.handleReset}>Reset</Button>
+            </div>
+          ) : (
+            <div>
+              <Typography className={classes.instructions}>
+                {getStepContent(
+                  this.state.activeStep,
+                  this.handleNext,
+                  this.handleBack,
+                  this.handleItemLimitCallback,
+                  this.handleAddressCallback.bind(this)
+                )}
+              </Typography>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 }
-function getStepContent(stepIndex, ...props) {
+
+function getStepContent(
+  stepIndex,
+  nextPageFunction,
+  backPageFunction,
+  itemLimitFunction,
+  addressFunction
+) {
   switch (stepIndex) {
     case 0:
-      return <SelectSituation {...props} />;
+      return (
+        <SelectSituation
+          handleNext={() => nextPageFunction()}
+          parentCallback={itemLimitFunction}
+          addressCallback={addressFunction}
+        />
+      );
     case 1:
-      return <AddingItem {...props} />;
+      return (
+        <AddingItem
+          handleNext={() => nextPageFunction()}
+          handleBack={() => backPageFunction()}
+        />
+      );
     case 2:
-      return <Payment {...props} />;
+      return <Payment />;
     case 3:
-      return <SubmitSuccess {...props} />;
+      return <SubmitSuccess />;
     default:
       return "Unknown stepIndex";
   }
 }
 
-export default function DeliveryWithStepper() {
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
-
-  const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  return (
-    <div className={classes.root}>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed
-            </Typography>
-            <Button onClick={handleReset}>Reset</Button>
-          </div>
-        ) : (
-          <div>
-            <Typography className={classes.instructions}>
-              {getStepContent(activeStep, handleNext, handleBack)}
-            </Typography>
-            <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.backButton}
-              >
-                Back
-              </Button>
-              <Button variant="contained" color="primary" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+export default withStyles(styles)(DeliveryWithStepper);
