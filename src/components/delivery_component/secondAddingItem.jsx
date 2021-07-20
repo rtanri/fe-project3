@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/button";
+import { Button, TextField } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import ItemDetailDrawer from "./LeftDrawer";
 // import AddItemModal from "./AddItemModal";
@@ -36,12 +36,17 @@ const useStyles = makeStyles({
   },
   modalStyling: {
     position: "absolute",
-    width: 400,
-    border: "2px solid #000",
+    minWidth: "600px",
+    minHeight: "300px",
+    border: "2px solid lightGrey",
     boxShadow: 5,
-    padding: 10,
-    top: "33%",
-    left: "33%",
+    padding: 30,
+    top: "30%",
+    left: "30%",
+    backgroundColor: "white",
+  },
+  uploadMenu: {
+    fontSize: 15,
   },
 });
 
@@ -107,8 +112,68 @@ function ButtonList(props) {
       </Button>
       <Modal open={open} onClose={handleClose}>
         <div className={classes.modalStyling}>
-          <h2>Simple React Modal</h2>
-          <p>Hello World</p>
+          <h2 align="center">Add Item Details</h2>
+          <form>
+            <div className="flexbox-column-start">
+              <div className="form-line-input">
+                <label className="formLabelSize">Name: </label>
+
+                <TextField
+                  required
+                  id="name"
+                  label="Teddy Bear"
+                  size="small"
+                  variant="outlined"
+                  className="smallFormInput"
+                  onChange={e => this.props.addressCallback(e.target.value)}
+                />
+              </div>
+              <div className="form-line-input">
+                <label className="formLabelSize">Weight: </label>
+
+                <TextField
+                  required
+                  id="weight"
+                  label="500gr, 2kg"
+                  size="small"
+                  variant="outlined"
+                  className="smallFormInput"
+                  onChange={e => this.props.addressCallback(e.target.value)}
+                />
+              </div>
+              <div className="form-line-input">
+                <label className="formLabelSize">Upload Image: </label>
+
+                <Button>
+                  <input type="file" className={classes.uploadMenu} />
+                </Button>
+              </div>
+              <div className="form-line-input">
+                <label className="formLabelSize">Description: </label>
+
+                <TextField
+                  id="description"
+                  label="fragile, have a black remark on the left"
+                  size="small"
+                  variant="outlined"
+                  className="formInput"
+                  onChange={e => this.props.addressCallback(e.target.value)}
+                />
+              </div>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{
+                  marginTop: 20,
+                  marginLeft: 150,
+                  marginBottom: 20,
+                  width: 150,
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+          </form>
         </div>
       </Modal>
     </div>

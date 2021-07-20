@@ -6,7 +6,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/button";
+import { Button, TextField } from "@material-ui/core";
 
 const styles = theme => ({
   subTitle: {
@@ -25,11 +25,24 @@ const styles = theme => ({
   cardImage: {
     height: 250,
   },
+  selectMenu: {
+    width: 200,
+    height: 30,
+    fontSize: 14,
+    paddingLeft: 10,
+    border: "1px solid lightgrey",
+    borderRadius: 4,
+  },
+  formLabel: {
+    marginTop: 30,
+    marginBottom: 30,
+  },
 });
 
 class SelectSituation extends Component {
-  onCardClick = params => {
+  onCardClick = (e, params) => {
     this.props.parentCallback(params);
+    console.log(e.target);
   };
 
   render() {
@@ -43,7 +56,7 @@ class SelectSituation extends Component {
         </p>
         <div className="flexbox-row">
           <Card className={classes.cardStyling}>
-            <CardActionArea onClick={e => this.onCardClick(2)}>
+            <CardActionArea onClick={e => this.onCardClick(e, 2)}>
               <CardMedia
                 className={classes.cardImage}
                 image={imageUrlMapping.oneNightLove}
@@ -61,7 +74,7 @@ class SelectSituation extends Component {
           </Card>
 
           <Card className={classes.cardStyling}>
-            <CardActionArea onClick={e => this.onCardClick(5)}>
+            <CardActionArea onClick={e => this.onCardClick(e, 5)}>
               <CardMedia
                 className={classes.cardImage}
                 image={imageUrlMapping.shortTermDates}
@@ -79,7 +92,7 @@ class SelectSituation extends Component {
           </Card>
 
           <Card className={classes.cardStyling}>
-            <CardActionArea onClick={e => this.onCardClick(10)}>
+            <CardActionArea onClick={e => this.onCardClick(e, 10)}>
               <CardMedia
                 className={classes.cardImage}
                 image={imageUrlMapping.almostBTO}
@@ -96,6 +109,35 @@ class SelectSituation extends Component {
           </Card>
         </div>
         <div>
+          <form align="left">
+            <div className={classes.formLabel}>
+              <label>Delivery Type: </label>
+              <select
+                required
+                onChange={e => this.props.deliveryCallback(e.target.value)}
+                className={classes.selectMenu}
+              >
+                <option value="">Select type</option>
+                <option value="collect">Collecting item</option>
+                <option value="return">Returning item</option>
+              </select>
+            </div>
+            <div className={classes.formLabel}>
+              <label>Address: </label>
+
+              <TextField
+                required
+                id="address"
+                label="Address"
+                multiline
+                rows={3}
+                size="small"
+                variant="outlined"
+                className="formInput"
+                onChange={e => this.props.addressCallback(e.target.value)}
+              />
+            </div>
+          </form>
           <Button
             variant="contained"
             color="secondary"
@@ -104,12 +146,6 @@ class SelectSituation extends Component {
           >
             Next
           </Button>
-          <form>
-            <label>Test on address state [success]: </label>
-            <input
-              onChange={e => this.props.addressCallback(e.target.value)}
-            ></input>
-          </form>
         </div>
       </div>
     );

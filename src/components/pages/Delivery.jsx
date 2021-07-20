@@ -33,12 +33,14 @@ class DeliveryWithStepper extends Component {
     this.handleNext = this.handleNext.bind(this);
     this.handleBack = this.handleBack.bind(this);
     // this.handleItemLimit = this.handleItemLimit.bind(this);
+    this.handleDeliveryCallback = this.handleDeliveryCallback.bind(this);
     this.handleAddressCallback = this.handleAddressCallback.bind(this);
 
     this.state = {
       activeStep: 0,
       itemLimit: 0,
       address: "",
+      deliveryType: "",
     };
   }
 
@@ -70,6 +72,10 @@ class DeliveryWithStepper extends Component {
     this.setState({ address: inputString });
   }
 
+  handleDeliveryCallback(inputString) {
+    this.setState({ deliveryType: inputString });
+  }
+
   render() {
     const { classes } = this.props;
     const steps = this.getSteps();
@@ -99,6 +105,7 @@ class DeliveryWithStepper extends Component {
                   this.handleNext,
                   this.handleBack,
                   this.handleItemLimitCallback,
+                  this.handleDeliveryCallback.bind(this),
                   this.handleAddressCallback.bind(this)
                 )}
               </Typography>
@@ -115,6 +122,7 @@ function getStepContent(
   nextPageFunction,
   backPageFunction,
   itemLimitFunction,
+  deliveryTypeFunction,
   addressFunction
 ) {
   switch (stepIndex) {
@@ -123,6 +131,7 @@ function getStepContent(
         <SelectSituation
           handleNext={() => nextPageFunction()}
           parentCallback={itemLimitFunction}
+          deliveryCallback={deliveryTypeFunction}
           addressCallback={addressFunction}
         />
       );
