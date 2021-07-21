@@ -6,8 +6,8 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-import SelectSituation from "../delivery_component/FirstSelectSituation";
-import AddingItem from "../delivery_component/SecondAddingItem";
+import SelectSituation from "../delivery_component/firstSelectSituation";
+import AddingItem from "../delivery_component/secondAddingItem";
 import Payment from "../delivery_component/ThirdPayment";
 import SubmitSuccess from "../delivery_component/ForthPaymentSuccess";
 import OrderList from "../delivery_component/FiveOrderList";

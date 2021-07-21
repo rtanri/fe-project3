@@ -108,10 +108,11 @@ class SelectSituation extends Component {
             </CardActionArea>
           </Card>
         </div>
-        <div>
-          <form align="left">
-            <div className={classes.formLabel}>
-              <label>Delivery Type: </label>
+
+        <form>
+          <div className="flexbox-column-start">
+            <div className="form-line-input">
+              <label className="formLabelSize">Delivery Type: </label>
               <select
                 required
                 onChange={e => this.props.deliveryCallback(e.target.value)}
@@ -122,8 +123,8 @@ class SelectSituation extends Component {
                 <option value="return">Returning item</option>
               </select>
             </div>
-            <div className={classes.formLabel}>
-              <label>Address: </label>
+            <div className="form-line-input">
+              <label className="formLabelSize">Address: </label>
 
               <TextField
                 required
@@ -137,16 +138,16 @@ class SelectSituation extends Component {
                 onChange={e => this.props.addressCallback(e.target.value)}
               />
             </div>
-          </form>
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ marginTop: 20, marginBottom: 20, width: 150 }}
-            onClick={this.props.handleNext}
-          >
-            Next
-          </Button>
-        </div>
+          </div>
+        </form>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ marginTop: 20, marginBottom: 20, width: 150 }}
+          onClick={this.props.handleNext}
+        >
+          Next
+        </Button>
       </div>
     );
   }

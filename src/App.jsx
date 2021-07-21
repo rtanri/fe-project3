@@ -16,8 +16,8 @@ import Signup from "./components/pages/Signup";
 import Forum from "./components/pages/Forum";
 import DeliveryWithStepper from "./components/pages/Delivery";
 
-import SelectSituation from "./components/delivery_component/FirstSelectSituation";
-import AddingItem from "./components/delivery_component/SecondAddingItem";
+import SelectSituation from "./components/delivery_component/firstSelectSituation";
+import AddingItem from "./components/delivery_component/secondAddingItem";
 import Payment from "./components/delivery_component/ThirdPayment";
 import SubmitSuccess from "./components/delivery_component/ForthPaymentSuccess";
 import OrderList from "./components/delivery_component/FiveOrderList";

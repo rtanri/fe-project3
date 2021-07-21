@@ -41,8 +41,8 @@ const useStyles = makeStyles({
     border: "2px solid lightGrey",
     boxShadow: 5,
     padding: 30,
-    top: "30%",
-    left: "30%",
+    top: "15%",
+    left: "25%",
     backgroundColor: "white",
   },
   uploadMenu: {

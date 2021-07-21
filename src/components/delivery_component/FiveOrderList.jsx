@@ -14,6 +14,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   orderListBox: {
@@ -66,8 +68,16 @@ const useStyles = makeStyles({
 
 export default function OrderList() {
   const classes = useStyles();
+
+  let history = useHistory();
+
+  const handleClick = () => {
+    toast("Create new order with Ref #12435");
+    history.push("/deliver-collect-item");
+  };
+
   return (
-    <div className="">
+    <div className="main-body">
       <h1 align="center">Order list</h1>
       <div className="flexbox-row">
         <div className={classes.orderListBox}>
@@ -75,6 +85,16 @@ export default function OrderList() {
             <OrderCard />
             <OrderCard />
             <OrderCard />
+            <p align="center">
+              <Button
+                onClick={handleClick}
+                type="button"
+                variant="contained"
+                color="primary"
+              >
+                Create new order
+              </Button>
+            </p>
           </div>
         </div>
         <div>
