@@ -167,3 +167,16 @@
     color: #6f7cb2;
   }
 }
+
+/* ======= Forum ======= */
+.post-list {
+  margin-top: 50px;
+}
+
+.flexbox-row-forum {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}

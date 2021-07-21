@@ -12,7 +12,7 @@ import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
-import Button from "@material-ui/core/Button";
+import { Button, Divider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -23,6 +23,7 @@ const useStyles = makeStyles({
     minWidth: "600px",
     minHeight: "300px",
     backgroundColor: "#eaeaea",
+    borderRadius: 4,
   },
   orderSheet: {
     minWidth: "250px",
@@ -31,8 +32,11 @@ const useStyles = makeStyles({
     marginLeft: 20,
     border: "2px solid gray",
     position: "relative",
+    borderRadius: 4,
   },
   orderCard: {
+    border: "1px solid grey",
+    borderRadius: 4,
     minWidth: 275,
     maxHeight: 150,
     margin: 10,
@@ -45,7 +49,7 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   eachCardHeader: {
-    border: "1px solid grey",
+    // border: "1px solid grey",
     maxHeight: 30,
     padding: 5,
   },
@@ -55,7 +59,7 @@ const useStyles = makeStyles({
     margin: 0,
   },
   eachCardBody: {
-    border: "1px solid grey",
+    // border: "1px solid grey",
     padding: 0,
     maxHeight: 50,
   },
@@ -166,6 +170,7 @@ function OrderCard() {
         className={classes.eachCardHeader}
       />
       <CardContent className={classes.eachCardBody}>
+        <Divider />
         <ListItem>
           <ListItemAvatar>
             <Avatar>

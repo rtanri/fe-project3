@@ -41,7 +41,12 @@ export default function NavBar() {
           </Link>
           <Link to="/deliver-collect-item" className="menu-nav-link">
             <Button color="primary" className={classes.buttonStyling}>
-              Delivery
+              New Delivery
+            </Button>
+          </Link>
+          <Link to="/order-list" className="menu-nav-link">
+            <Button color="primary" className={classes.buttonStyling}>
+              Your Order
             </Button>
           </Link>
         </Toolbar>
