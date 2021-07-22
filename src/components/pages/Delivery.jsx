@@ -10,8 +10,6 @@ import SelectSituation from "../delivery_component/firstSelectSituation";
 import AddingItem from "../delivery_component/secondAddingItem";
 import Payment from "../delivery_component/ThirdPayment";
 import SubmitSuccess from "../delivery_component/ForthPaymentSuccess";
-import OrderList from "../delivery_component/FiveOrderList";
-import DeliveryStepper from "../delivery_component/Stepper";
 
 const styles = theme => ({
   root: {

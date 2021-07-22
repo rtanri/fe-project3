@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.scss";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import { withCookies } from "react-cookie";
+
 // import { Typography } from "@material-ui/core";
 
 import NavBar from "./components/NavBar";
@@ -33,21 +35,30 @@ const custom_theme = createTheme({
   },
 });
 
-function App() {
+function App(props) {
+  const [cookie, setCookie] = useState(false);
+
+  useEffect(() => {
+    const token = props.cookies.get("auth_token");
+    if (!token) {
+      return setCookie(false);
+    } else {
+      return setCookie(true);
+    }
+  }, [props.cookies]);
+
   return (
     <Router>
       <ThemeProvider theme={custom_theme}>
         <div>
-          <NavBar />
+          {/* <NavBar cookie={cookie} handleSetCookie={setCookie} /> */}
+          <NavBar logout={() => setCookie(false)} cookie={cookie} />
           <ToastContainer />
           <Switch>
             <Route path="/login-user" component={Login} />
             <Route path="/signup-new-user" component={Signup} />
             <Route path="/forum" component={Forum} />
-            <Route
-              path="/deliver-collect-item"
-              component={DeliveryWithStepper}
-            />
+            <Route path="/new-deliver" component={DeliveryWithStepper} />
             <Route path="/relationship" component={SelectSituation} />
             <Route path="/add-item" component={AddingItem} />
             <Route path="/payment" component={Payment} />
@@ -62,4 +73,4 @@ function App() {
   );
 }
 
-export default App;
+export default withCookies(App);

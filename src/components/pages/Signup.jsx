@@ -36,12 +36,12 @@ export default function Signup() {
   function postUserData() {
     axios
       .post("http://localhost:4000/api/v1/user/signup", {
-        // firstName,
-        // lastName,
         username,
         email,
         password,
         // confirmPassword,
+        // firstName,
+        // lastName,
       })
       .then(response => {
         console.log("sign-up successful");

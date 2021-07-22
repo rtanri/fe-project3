@@ -178,5 +178,19 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-around;
+  text-align: left;
   flex-wrap: wrap;
+}
+
+.flexbox-column-forum {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.MuiCardContent-root:last-child {
+  padding-bottom: 0;
 }

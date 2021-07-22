@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function NavBar() {
+function NavBar(props) {
   const classes = useStyles();
 
   return (
@@ -49,8 +49,25 @@ export default function NavBar() {
               Your Order
             </Button>
           </Link>
+          {props.cookie ? (
+            <Button
+              color="secondary"
+              className={classes.buttonStyling}
+              onClick={props.logout}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Link to="/login-user" className="menu-nav-link">
+              <Button color="primary" className={classes.buttonStyling}>
+                Login
+              </Button>
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+
+export default NavBar;

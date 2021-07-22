@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import Typography from "@material-ui/core/Typography";
 import { Button, TextField } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import ItemDetailDrawer from "./LeftDrawer";
 // import AddItemModal from "./AddItemModal";
 import Modal from "@material-ui/core/Modal";
