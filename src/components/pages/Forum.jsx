@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
@@ -45,25 +46,30 @@ const useStyles = makeStyles(theme => ({
     marginTop: 10,
     backgroundColor: "coral",
   },
+  jsonState: {
+    marginTop: 10,
+    marginBottom: 20,
+    textAlign: "center",
+  },
 }));
 
-let posts = [
+let postsData = [
   {
-    id: "1",
+    id: "0",
     user: "Energetic Pomerian",
     create_at: "July 5, 2021",
     context:
       "I feel very down when she said she want to broke up with me because the time is not right. Well, she did mention that she want to focus on her study in University especially in final year. Recently situation between us was not good because of the stress she got from final year project and I always demand more time on her weekends.",
   },
   {
-    id: "2",
+    id: "1",
     user: "Spicy Duck",
     create_at: "July 7, 2021",
     context:
       "My ex-boyfriend keep calling me fat, he's so mean. But i like eating more than him. Good bye ex",
   },
   {
-    id: "3",
+    id: "2",
     user: "Worry Koala",
     create_at: "July 9, 2021",
     context:
@@ -71,7 +77,7 @@ let posts = [
   },
 ];
 
-let comments = [
+let commentsData = [
   {
     id: "123",
     user: "Super Flamingo",
@@ -97,67 +103,167 @@ let comments = [
   },
 ];
 
-function Forum() {
-  const [newPost, setNewPost] = useState("");
-  const [allPosts, setAllPosts] = useState(posts);
+//source of post - https://jsonplaceholder.typicode.com/posts
+//source of comment - https://jsonplaceholder.typicode.com/comments
 
-  // console.log(posts);
-  const displayPost = () => {
-    posts.map(post => {
-      return <Post props={post} />;
-    });
+function Forum() {
+  const classes = useStyles();
+  const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState({ user: "", context: "" });
+
+  // useEffect(() => {
+  //   axios
+  //     .get("https://jsonplaceholder.typicode.com/posts", {
+  //       params: {
+  //         _limit: 5,
+  //       },
+  //     })
+  //     .then(res => {
+  //       console.log(res);
+  //       setPosts(res.data);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+  useEffect(() => {
+    setPosts(postsData);
+  }, []);
+
+  const handlePostSubmit = () => {
+    toast("Post button is clicked");
+    // set the postId
+    const postId = posts.length;
+
+    //ingest the new post into postData array
+    let createNewPost = {
+      id: postId,
+      user: newPost.user,
+      create_at: "July 23, 2021",
+      context: newPost.context,
+    };
+
+    postsData.push(createNewPost);
+
+    //empty the input-box
+    setNewPost({ user: "", context: "" });
   };
 
   return (
     <div className="main-body">
       <h1 align="center">FreshStart Forum</h1>
-      <div className="post-list flexbox-column-forum">{displayPost}</div>
+      <div className="post-list flexbox-column-forum">
+        <div>
+          <form>
+            <TextField
+              id="user_comment"
+              label="Username"
+              variant="outlined"
+              size="small"
+              value={newPost.user}
+              className={classes.formInput}
+              onChange={e => {
+                setNewPost({ ...newPost, user: e.target.value });
+              }}
+            />
+            <TextField
+              id="comment"
+              label="Write Post Content..."
+              variant="outlined"
+              size="small"
+              value={newPost.context}
+              className={classes.formInput}
+              onChange={e => {
+                setNewPost({ ...newPost, context: e.target.value });
+              }}
+            />
+            <Button
+              type="button"
+              variant="contained"
+              color="secondary"
+              style={{ display: "inline" }}
+              onClick={handlePostSubmit}
+            >
+              Post
+            </Button>
+            <p className={classes.jsonState}>{JSON.stringify(newPost)}</p>
+          </form>
+        </div>
+        {posts.map(post => (
+          // <Post userId={post.userId} content={post.title} />
+          <Post key={post.id} title={post.user} body={post.context} />
+        ))}
+      </div>
     </div>
   );
 }
 
-function Post(comments, props) {
+function Post({ title, body }) {
   const classes = useStyles();
-  const [newComment, setNewComment] = useState("");
-  const [allComments, setAllComments] = useState(comments);
+  const [newComment, setNewComment] = useState({ user: "", context: "" });
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    setComments(commentsData);
+  }, []);
 
   const handleCommentSubmit = () => {
     toast("Comment button is clicked");
+    // set the postId
+    const commentId = comments.length;
+
+    //ingest the new post into postData array
+    let createNewComment = {
+      id: commentId,
+      user: newComment.user,
+      create_at: "July 23, 2021",
+      context: newComment.context,
+    };
+
+    commentsData.push(createNewComment);
+
+    //empty the input-box
+    setNewComment({ user: "", context: "" });
   };
 
   return (
     <Card className={classes.cardStyling}>
       <CardHeader
         avatar={<Avatar className={classes.avatar}>E</Avatar>}
-        title="Energetic Armadillo"
+        //title={props.userId}
+        title={title}
         subheader="July 5, 2021"
       />
 
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          I feel very down when she said she want to broke up with me because
-          the time is not right. Well, she did mention that she want to focus on
-          her study in University especially in final year. Recently situation
-          between us was not good because of the stress she got from final year
-          project and I always demand more time on her weekends.
-        </Typography>
-      </CardContent>
+      <CardContent>{body}</CardContent>
       <Divider />
       <CardActions disableSpacing>
         <form>
+          <TextField
+            id="user_comment"
+            label="User"
+            variant="outlined"
+            size="small"
+            value={newComment.user}
+            className={classes.formInput}
+            onChange={e => {
+              setNewComment({ ...newComment, user: e.target.value });
+            }}
+          />
           <TextField
             id="comment"
             label="Write encouragement..."
             variant="outlined"
             size="small"
-            value={newComment}
+            value={newComment.context}
             className={classes.formInput}
             onChange={e => {
-              setNewComment(e.target.value);
+              setNewComment({ ...newComment, context: e.target.value });
             }}
           />
           <Button
-            type="submit"
+            type="button"
             variant="contained"
             color="secondary"
             style={{ display: "inline" }}
@@ -165,15 +271,17 @@ function Post(comments, props) {
           >
             Post
           </Button>
+          <p className={classes.jsonState}>{JSON.stringify(newComment)}</p>
         </form>
       </CardActions>
-      <Comment />
-      <Comment />
+      {comments.map(item => (
+        <Comment key={item.id} title={item.user} body={item.context} />
+      ))}
     </Card>
   );
 }
 
-function Comment() {
+function Comment({ title, body }) {
   const classes = useStyles();
 
   const handleStyling = () => {
@@ -198,8 +306,8 @@ function Comment() {
           </ListItemAvatar>
           <ListItemText
             className={classes.repliedCommentText}
-            primary="Super Flamingo"
-            secondary="Bro, i feel you, you can try to eat more pizza and be happy"
+            primary={title}
+            secondary={body}
           />
         </ListItem>
       </CardContent>
