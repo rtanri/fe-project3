@@ -55,22 +55,25 @@ const useStyles = makeStyles(theme => ({
 
 let postsData = [
   {
-    id: "0",
-    user: "Energetic Pomerian",
+    _id: "0",
+    user_id: "111",
+    username: "Energetic Pomerian",
     create_at: "July 5, 2021",
     context:
       "I feel very down when she said she want to broke up with me because the time is not right. Well, she did mention that she want to focus on her study in University especially in final year. Recently situation between us was not good because of the stress she got from final year project and I always demand more time on her weekends.",
   },
   {
-    id: "1",
-    user: "Spicy Duck",
+    _id: "1",
+    user_id: "222",
+    username: "Spicy Duck",
     create_at: "July 7, 2021",
     context:
       "My ex-boyfriend keep calling me fat, he's so mean. But i like eating more than him. Good bye ex",
   },
   {
-    id: "2",
-    user: "Worry Koala",
+    _id: "2",
+    user_id: "333",
+    username: "Worry Koala",
     create_at: "July 9, 2021",
     context:
       "Just finished my toxic relationship, feels so good and so much freedom. Do you think i should watch Black Widow with my family or new potential girlfriend?",
@@ -79,24 +82,24 @@ let postsData = [
 
 let commentsData = [
   {
-    id: "123",
-    user: "Super Flamingo",
+    _id: "412314",
+    user_id: "999",
     post_id: "1",
     create_at: "July 9, 2021",
     context:
       "Bro, i feel you, you can try to eat more pizza and be happy. Try new stuff crust hawaiian pizza",
   },
   {
-    id: "912",
-    user: "Super Flamingo",
+    _id: "124234",
+    user_id: "333",
     post_id: "3",
     create_at: "July 10, 2021",
     context:
       "I can say it is a family movie, try to bring your most annoying siblings to watch with you.",
   },
   {
-    id: "542",
-    user: "Super Flamingo",
+    _id: "54252",
+    user_id: "222",
     post_id: "3",
     create_at: "July 9, 2021",
     context: "Super like Natasha Romanov life story. Four thumbs up!",
@@ -127,9 +130,11 @@ function Forum() {
   //     });
   // }, []);
 
-  useEffect(() => {
-    setPosts(postsData);
-  }, []);
+  // useEffect (async() => {
+  //   //const postsData = await fetchAllPosts()
+  //   setPosts(postsData);
+
+  // }, []);
 
   const handlePostSubmit = () => {
     toast("Post button is clicked");
@@ -316,3 +321,10 @@ function Comment({ title, body }) {
 }
 
 export default Forum;
+/*
+1. frontend: call the data for post based on the dates , limit 5.
+2. backend: will send an array of post. Each post of the array need to have user property. Must also have user name and email. and profile picture.
+3. post need to return all comments in array related to the post.
+4. each comment need to return the users name and content. 
+5. write for axios post and get and render , refresh page with new post.
+*/

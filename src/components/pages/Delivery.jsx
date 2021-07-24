@@ -25,7 +25,7 @@ const styles = theme => ({
   },
 });
 
-class DeliveryWithStepper extends Component {
+class Delivery extends Component {
   constructor(props) {
     super(props);
     this.handleNext = this.handleNext.bind(this);
@@ -152,4 +152,4 @@ function getStepContent(
   }
 }
 
-export default withStyles(styles)(DeliveryWithStepper);
+export default withStyles(styles)(Delivery);

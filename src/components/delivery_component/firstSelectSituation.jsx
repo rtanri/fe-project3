@@ -14,14 +14,14 @@ const styles = theme => ({
     marginTop: 0,
     marginBottom: 80,
   },
-  cardStyling: {
-    width: "33%",
-    marginRight: 10,
-    marginLeft: 10,
-    paddingBottom: 20,
-    paddingTop: 0,
-    textDecoration: "none",
-  },
+  // cardStyling: {
+  //   width: "33%",
+  //   marginRight: 10,
+  //   marginLeft: 10,
+  //   paddingBottom: 20,
+  //   paddingTop: 0,
+  //   textDecoration: "none",
+  // },
   cardImage: {
     height: 250,
   },
@@ -43,6 +43,10 @@ class SelectSituation extends Component {
   onCardClick = (e, params) => {
     this.props.parentCallback(params);
     console.log(e.target);
+
+    // let clickedCard = e.target;
+
+    // clickedCard.classList.add("selectedBox");
   };
 
   render() {
@@ -55,7 +59,7 @@ class SelectSituation extends Component {
           Let us handle the sentimental items collection or delivery for you
         </p>
         <div className="flexbox-row">
-          <Card className={classes.cardStyling}>
+          <Card className="relationshipCardStyling">
             <CardActionArea onClick={e => this.onCardClick(e, 2)}>
               <CardMedia
                 className={classes.cardImage}
@@ -73,7 +77,7 @@ class SelectSituation extends Component {
             </CardActionArea>
           </Card>
 
-          <Card className={classes.cardStyling}>
+          <Card className="relationshipCardStyling">
             <CardActionArea onClick={e => this.onCardClick(e, 5)}>
               <CardMedia
                 className={classes.cardImage}
@@ -91,7 +95,7 @@ class SelectSituation extends Component {
             </CardActionArea>
           </Card>
 
-          <Card className={classes.cardStyling}>
+          <Card className="relationshipCardStyling">
             <CardActionArea onClick={e => this.onCardClick(e, 10)}>
               <CardMedia
                 className={classes.cardImage}

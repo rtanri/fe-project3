@@ -194,3 +194,17 @@
 .MuiCardContent-root:last-child {
   padding-bottom: 0;
 }
+
+// delivery
+.relationshipCardStyling {
+  width: 33%;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding-bottom: 20px;
+  padding-top: 0;
+}
+
+.selectedBox {
+  border: 5px solid #6f7cb2;
+  padding: 2px;
+}

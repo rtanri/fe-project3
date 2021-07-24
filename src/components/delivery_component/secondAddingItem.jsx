@@ -82,9 +82,10 @@ export default function AddingItem(props) {
   const classes = useStyles();
   const [allItem, setAllItem] = useState([]);
 
+  // depends on the value change in 'allItem' array state
   useEffect(() => {
     setAllItem(itemData);
-  });
+  }, []);
 
   return (
     <div className="flexbox-column">
@@ -100,13 +101,17 @@ export default function AddingItem(props) {
           />
         ))}
       </div>
-      <ModalAndButtonList {...props} />
+      <ModalAndButtonList
+        {...props}
+        allItem={allItem}
+        setAllItem={setAllItem}
+      />
       <ItemDetailDrawer />
     </div>
   );
 }
 
-function ModalAndButtonList(props) {
+function ModalAndButtonList({ allItem, setAllItem, ...props }) {
   const classes = useStyles();
   // this states will submit into mongodb database
   const [open, setOpen] = React.useState(false);
@@ -129,20 +134,33 @@ function ModalAndButtonList(props) {
   };
 
   const handleFormSubmit = e => {
-    e.preventDefault();
     toast("New item is successfully added");
+
+    const itemId = itemData.length;
 
     // create new item
     let createNewItem = {
-      id: itemData.length,
+      id: itemId,
       name: name,
       weight: weight,
-      //image: image,
+      image: "",
       description: description,
     };
 
     // add new item into product-list
     itemData.push(createNewItem);
+
+    // add new item into 'allItem' state
+    setAllItem([
+      ...allItem,
+      {
+        id: itemId,
+        name: name,
+        weight: weight,
+        image: "",
+        description: description,
+      },
+    ]);
 
     // empty the all states + close modal
     setName("");
@@ -150,6 +168,7 @@ function ModalAndButtonList(props) {
     setImage("");
     setDescription("");
     setOpen(false);
+    console.log(props.allItem);
   };
 
   return (
