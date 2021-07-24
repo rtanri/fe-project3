@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   pageTitle: {
@@ -25,29 +27,34 @@ const useStyles = makeStyles(theme => ({
 
 export default function Signup() {
   const classes = useStyles();
+  let history = useHistory();
 
-  // const [firstName, setFirstName] = useState(null);
-  // const [lastName, setLastName] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   function postUserData() {
+    toast(1);
     axios
       .post("http://localhost:4000/api/v1/user/signup", {
+        firstName,
+        lastName,
         username,
         email,
         password,
-        // confirmPassword,
-        // firstName,
-        // lastName,
+        confirmPassword,
       })
       .then(response => {
+        toast(2);
         console.log("sign-up successful");
-        this.props.history.push("/login");
+        history.push("/login");
       })
       .catch(err => {
+        toast(3);
+        toast(err);
         console.log(err);
       });
   }
@@ -70,12 +77,11 @@ export default function Signup() {
         <form
           className="flexbox-column"
           onSubmit={e => {
-            console.log(123);
             handleSubmit(e);
           }}
         >
           <div>
-            {/* <TextField
+            <TextField
               required
               id="firstName"
               label="First Name"
@@ -98,11 +104,11 @@ export default function Signup() {
               onChange={e => {
                 setLastName(e.target.value);
               }}
-            /> */}
+            />
             <TextField
               required
               id="username"
-              label="User Name"
+              label="Username"
               variant="outlined"
               size="small"
               className={classes.formInput}
@@ -137,7 +143,7 @@ export default function Signup() {
               setPassword(e.target.value);
             }}
           />
-          {/* <TextField
+          <TextField
             required
             id="confirmPassword"
             label="Confirm Password"
@@ -148,7 +154,7 @@ export default function Signup() {
             onChange={e => {
               setConfirmPassword(e.target.value);
             }}
-          /> */}
+          />
           <Button
             type="submit"
             className="margin-bottom"

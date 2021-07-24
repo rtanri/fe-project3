@@ -16,6 +16,7 @@ import { Button, Divider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const useStyles = makeStyles({
   orderListBox: {
@@ -77,7 +78,12 @@ export default function OrderList() {
 
   const handleClick = () => {
     toast("Create new order with Ref #12435");
-    history.push("/deliver-collect-item");
+    axios.post("http://localhost:4000/api/v1/orders").then(response => {
+      console.log(response);
+      // axios.get("http://localhost:4000/api/v1/orders").then
+    });
+
+    history.push("/new-deliver");
   };
 
   return (

@@ -53,58 +53,58 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-let postsData = [
-  {
-    _id: "0",
-    user_id: "111",
-    username: "Energetic Pomerian",
-    create_at: "July 5, 2021",
-    context:
-      "I feel very down when she said she want to broke up with me because the time is not right. Well, she did mention that she want to focus on her study in University especially in final year. Recently situation between us was not good because of the stress she got from final year project and I always demand more time on her weekends.",
-  },
-  {
-    _id: "1",
-    user_id: "222",
-    username: "Spicy Duck",
-    create_at: "July 7, 2021",
-    context:
-      "My ex-boyfriend keep calling me fat, he's so mean. But i like eating more than him. Good bye ex",
-  },
-  {
-    _id: "2",
-    user_id: "333",
-    username: "Worry Koala",
-    create_at: "July 9, 2021",
-    context:
-      "Just finished my toxic relationship, feels so good and so much freedom. Do you think i should watch Black Widow with my family or new potential girlfriend?",
-  },
-];
+// let postsData = [
+//   {
+//     _id: "0",
+//     user_id: "111",
+//     username: "Energetic Pomerian",
+//     create_at: "July 5, 2021",
+//     context:
+//       "I feel very down when she said she want to broke up with me because the time is not right. Well, she did mention that she want to focus on her study in University especially in final year. Recently situation between us was not good because of the stress she got from final year project and I always demand more time on her weekends.",
+//   },
+//   {
+//     post_id: "1",
+//     user_id: "222",
+//     username: "Spicy Duck",
+//     create_at: "July 7, 2021",
+//     context:
+//       "My ex-boyfriend keep calling me fat, he's so mean. But i like eating more than him. Good bye ex",
+//   },
+//   {
+//     post_id: "2",
+//     user_id: "333",
+//     username: "Worry Koala",
+//     create_at: "July 9, 2021",
+//     context:
+//       "Just finished my toxic relationship, feels so good and so much freedom. Do you think i should watch Black Widow with my family or new potential girlfriend?",
+//   },
+// ];
 
-let commentsData = [
-  {
-    _id: "412314",
-    user_id: "999",
-    post_id: "1",
-    create_at: "July 9, 2021",
-    context:
-      "Bro, i feel you, you can try to eat more pizza and be happy. Try new stuff crust hawaiian pizza",
-  },
-  {
-    _id: "124234",
-    user_id: "333",
-    post_id: "3",
-    create_at: "July 10, 2021",
-    context:
-      "I can say it is a family movie, try to bring your most annoying siblings to watch with you.",
-  },
-  {
-    _id: "54252",
-    user_id: "222",
-    post_id: "3",
-    create_at: "July 9, 2021",
-    context: "Super like Natasha Romanov life story. Four thumbs up!",
-  },
-];
+// let commentsData = [
+//   {
+//     comment_id: "412314",
+//     user_id: "999",
+//     post_id: "1",
+//     create_at: "July 9, 2021",
+//     context:
+//       "Bro, i feel you, you can try to eat more pizza and be happy. Try new stuff crust hawaiian pizza",
+//   },
+//   {
+//     _id: "124234",
+//     user_id: "333",
+//     post_id: "3",
+//     create_at: "July 10, 2021",
+//     context:
+//       "I can say it is a family movie, try to bring your most annoying siblings to watch with you.",
+//   },
+//   // {
+//   //   _id: "54252",
+//   //   user_id: "222",
+//   //   post_id: "3",
+//   //   create_at: "July 9, 2021",
+//   //   context: "Super like Natasha Romanov life story. Four thumbs up!",
+//   // },
+// ];
 
 //source of post - https://jsonplaceholder.typicode.com/posts
 //source of comment - https://jsonplaceholder.typicode.com/comments
@@ -112,23 +112,25 @@ let commentsData = [
 function Forum() {
   const classes = useStyles();
   const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState({ user: "", context: "" });
+  const [context, setContext] = useState("");
+  // const [newPost, setNewPost] = useState({ user: "", context: "" });
 
-  // useEffect(() => {
-  //   axios
-  //     .get("https://jsonplaceholder.typicode.com/posts", {
-  //       params: {
-  //         _limit: 5,
-  //       },
-  //     })
-  //     .then(res => {
-  //       console.log(res);
-  //       setPosts(res.data);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  function sendAPost() {
+    toast(1);
+    axios
+      .post("http://localhost:4000/api/v1/posts", {
+        context,
+      })
+      .then(response => {
+        toast(2);
+        console.log("post is successful");
+      })
+      .catch(err => {
+        toast(3);
+        toast(err);
+        console.log(err);
+      });
+  }
 
   // useEffect (async() => {
   //   //const postsData = await fetchAllPosts()
@@ -138,21 +140,22 @@ function Forum() {
 
   const handlePostSubmit = () => {
     toast("Post button is clicked");
+    sendAPost();
     // set the postId
-    const postId = posts.length;
+    // const postId = posts.length;
 
-    //ingest the new post into postData array
-    let createNewPost = {
-      id: postId,
-      user: newPost.user,
-      create_at: "July 23, 2021",
-      context: newPost.context,
-    };
+    // //ingest the new post into postData array
+    // let createNewPost = {
+    //   id: postId,
+    //   user: newPost.user,
+    //   create_at: "July 23, 2021",
+    //   context: newPost.context,
+    // };
 
-    postsData.push(createNewPost);
+    // postsData.push(createNewPost);
 
     //empty the input-box
-    setNewPost({ user: "", context: "" });
+    setContext("");
   };
 
   return (
@@ -161,7 +164,7 @@ function Forum() {
       <div className="post-list flexbox-column-forum">
         <div>
           <form>
-            <TextField
+            {/* <TextField
               id="user_comment"
               label="Username"
               variant="outlined"
@@ -171,16 +174,16 @@ function Forum() {
               onChange={e => {
                 setNewPost({ ...newPost, user: e.target.value });
               }}
-            />
+            /> */}
             <TextField
               id="comment"
               label="Write Post Content..."
               variant="outlined"
               size="small"
-              value={newPost.context}
+              value={context}
               className={classes.formInput}
               onChange={e => {
-                setNewPost({ ...newPost, context: e.target.value });
+                setContext(e.target.value);
               }}
             />
             <Button
@@ -192,7 +195,7 @@ function Forum() {
             >
               Post
             </Button>
-            <p className={classes.jsonState}>{JSON.stringify(newPost)}</p>
+            <p className={classes.jsonState}>{JSON.stringify(context)}</p>
           </form>
         </div>
         {posts.map(post => (
@@ -210,7 +213,7 @@ function Post({ title, body }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    setComments(commentsData);
+    // setComments(commentsData);
   }, []);
 
   const handleCommentSubmit = () => {
@@ -226,7 +229,7 @@ function Post({ title, body }) {
       context: newComment.context,
     };
 
-    commentsData.push(createNewComment);
+    // commentsData.push(createNewComment);
 
     //empty the input-box
     setNewComment({ user: "", context: "" });
@@ -323,7 +326,11 @@ function Comment({ title, body }) {
 export default Forum;
 /*
 1. frontend: call the data for post based on the dates , limit 5.
-2. backend: will send an array of post. Each post of the array need to have user property. Must also have user name and email. and profile picture.
+
+2. backend: will send an array of post. 
+Each post of the array need to have user property. 
+Must also have user name and email. and profile picture.
+
 3. post need to return all comments in array related to the post.
 4. each comment need to return the users name and content. 
 5. write for axios post and get and render , refresh page with new post.

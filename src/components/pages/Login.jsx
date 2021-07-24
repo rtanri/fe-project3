@@ -11,6 +11,7 @@ class Login extends React.Component {
     super(props);
     this.state = {
       email: "",
+      username: "",
       password: "",
     };
   }
@@ -20,7 +21,7 @@ class Login extends React.Component {
     toast("1");
     axios
       .post("http://localhost:4000/api/v1/user/login", {
-        email: this.state.email,
+        username: this.state.username,
         password: this.state.password,
       })
       .then(response => {
@@ -61,13 +62,13 @@ class Login extends React.Component {
             <TextField
               required
               id="email"
-              label="Email Address"
+              label="username"
               variant="outlined"
               size="small"
               className="formInput"
-              value={this.state.email}
+              value={this.state.username}
               onChange={e => {
-                this.handleFormChange(e, "email");
+                this.handleFormChange(e, "username");
               }}
             />
             <TextField

@@ -36,16 +36,26 @@ const custom_theme = createTheme({
 });
 
 function App(props) {
-  const [cookie, setCookie] = useState(false);
+  const [cookie, setCookie, removeCookie] = useState(false);
+  // const [token, setToken] = useState("");
 
   useEffect(() => {
+    console.log(props.cookies);
     const token = props.cookies.get("auth_token");
+    console.log(token); // can show auth_token | undefined
+    // setToken(authToken);
     if (!token) {
       return setCookie(false);
     } else {
       return setCookie(true);
     }
   }, [props.cookies]);
+
+  const logout = () => {
+    const token = props.cookies.get("auth_token");
+    removeCookie(token);
+    setCookie(false);
+  };
 
   return (
     <Router>
@@ -58,12 +68,9 @@ function App(props) {
             <Route path="/login-user" component={Login} />
             <Route path="/signup-new-user" component={Signup} />
             <Route path="/forum" component={Forum} />
-            <Route path="/new-deliver" component={Delivery} />
-            <Route path="/relationship" component={SelectSituation} />
-            <Route path="/add-item" component={AddingItem} />
-            <Route path="/payment" component={Payment} />
+            <Route path="/new-deliver" component={Delivery} cookie={cookie} />
             <Route path="/successful-order" component={SubmitSuccess} />
-            <Route path="/order-list" component={OrderList} />
+            <Route path="/order-list" component={OrderList} cookie={cookie} />
             <Route path="/" component={LandingPage} />
           </Switch>
           <Footer />

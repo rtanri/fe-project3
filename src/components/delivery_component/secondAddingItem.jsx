@@ -6,6 +6,7 @@ import { Button, TextField } from "@material-ui/core";
 import ItemDetailDrawer from "./LeftDrawer";
 import { toast } from "react-toastify";
 import Modal from "@material-ui/core/Modal";
+import axios from "axios";
 
 const useStyles = makeStyles({
   subTitle: {
@@ -130,45 +131,36 @@ function ModalAndButtonList({ allItem, setAllItem, ...props }) {
 
   const handleFileChange = e => {
     setImage(e.target.files[0]);
-    toast("file is successfully uploaded");
+    toast("file is uploaded, remember to submit");
   };
 
   const handleFormSubmit = e => {
-    toast("New item is successfully added");
+    let formData = new FormData();
+    formData.append("name", name);
+    formData.append("desc", description);
+    formData.append("weight", weight);
+    if (image) {
+      formData.append("file", image);
+    }
 
-    const itemId = itemData.length;
-
-    // create new item
-    let createNewItem = {
-      id: itemId,
-      name: name,
-      weight: weight,
-      image: "",
-      description: description,
-    };
-
-    // add new item into product-list
-    itemData.push(createNewItem);
-
-    // add new item into 'allItem' state
-    setAllItem([
-      ...allItem,
-      {
-        id: itemId,
-        name: name,
-        weight: weight,
-        image: "",
-        description: description,
-      },
-    ]);
-
-    // empty the all states + close modal
-    setName("");
-    setWeight("");
-    setImage("");
-    setDescription("");
-    setOpen(false);
-    console.log(props.allItem);
+    // checking the inside of formData
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
+    axios
+      .post("http://localhost:4000/api/v1/products", formData)
+      .then(response => {
+        toast("New item is successfully added");
+        setName("");
+        setWeight("");
+        setImage("");
+        setDescription("");
+        setOpen(false);
+      })
+      .catch(err => {
+        toast("error adding item");
+        console.log(err);
+      });
   };
 
   return (
@@ -244,6 +236,7 @@ function ModalAndButtonList({ allItem, setAllItem, ...props }) {
                 <Button>
                   <input
                     type="file"
+                    name="file"
                     className={classes.uploadMenu}
                     onChange={e => handleFileChange(e)}
                   />
