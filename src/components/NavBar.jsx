@@ -39,7 +39,7 @@ function NavBar(props) {
               Forum
             </Button>
           </Link>
-          <Link to="/deliver-collect-item" className="menu-nav-link">
+          <Link to="/new-deliver" className="menu-nav-link">
             <Button color="primary" className={classes.buttonStyling}>
               New Delivery
             </Button>

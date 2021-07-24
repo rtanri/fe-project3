@@ -52,7 +52,7 @@ class SelectSituation extends Component {
       <div className="flexbox-column">
         <h1 className="">What kind of relationship do you have?</h1>
         <p className={classes.subTitle}>
-          Let us handle the sentimental items collection and delivery for you
+          Let us handle the sentimental items collection or delivery for you
         </p>
         <div className="flexbox-row">
           <Card className={classes.cardStyling}>
@@ -66,8 +66,8 @@ class SelectSituation extends Component {
                   One Night Love
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  Mostly with 1-2 items that you feel too shy to give or ask for
-                  return in person
+                  Max 2 items - you feel too shy to give or ask for return in
+                  person
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -81,7 +81,7 @@ class SelectSituation extends Component {
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  Short Term Date
+                  1 or 2 Year Dates
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
                   Max 5 Items - couple spent at least Valentine or Christmas
@@ -102,7 +102,8 @@ class SelectSituation extends Component {
                   Almost BTO
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  Max 10 items where most couples used to live together
+                  Max 10 items - Life must goes on... some couples used to live
+                  together
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -167,7 +168,6 @@ export default withStyles(styles)(SelectSituation);
   context="Going through Valentine or Christmas together at least 1 time"
   image={imageUrlMapping.shortTermDates}
 />
-
 
 <RelationshipCard
   title="Almost Collect BTO Key"

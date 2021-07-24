@@ -104,7 +104,8 @@ class DeliveryWithStepper extends Component {
                   this.handleBack,
                   this.handleItemLimitCallback,
                   this.handleDeliveryCallback.bind(this),
-                  this.handleAddressCallback.bind(this)
+                  this.handleAddressCallback.bind(this),
+                  this.state.itemLimit
                 )}
               </Typography>
             </div>
@@ -121,7 +122,8 @@ function getStepContent(
   backPageFunction,
   itemLimitFunction,
   deliveryTypeFunction,
-  addressFunction
+  addressFunction,
+  addItemLimit
 ) {
   switch (stepIndex) {
     case 0:
@@ -138,6 +140,7 @@ function getStepContent(
         <AddingItem
           handleNext={() => nextPageFunction()}
           handleBack={() => backPageFunction()}
+          addItemLimit={addItemLimit}
         />
       );
     case 2:

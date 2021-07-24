@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import Typography from "@material-ui/core/Typography";
 import { Button, TextField } from "@material-ui/core";
 import ItemDetailDrawer from "./LeftDrawer";
-// import AddItemModal from "./AddItemModal";
+import { toast } from "react-toastify";
 import Modal from "@material-ui/core/Modal";
 
 const useStyles = makeStyles({
   subTitle: {
     whiteSpace: "nowrap",
     marginTop: 0,
-    marginBottom: 80,
+    marginBottom: 50,
+    fontWeight: 500,
   },
   cardStyling: {
     width: 150,
@@ -22,16 +23,21 @@ const useStyles = makeStyles({
     paddingTop: 0,
     border: "none",
     boxShadow: "none",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   cardImage: {
     width: 90,
     height: 90,
     overflow: "hidden",
+    //border: "1px solid lightGray",
     padding: 20,
   },
   addedProductName: {
-    fontWeight: 500,
-    fontSize: "1.2rem",
+    fontWeight: 400,
+    fontSize: "1.1rem",
+    textAlign: "center",
   },
   modalStyling: {
     position: "absolute",
@@ -47,41 +53,67 @@ const useStyles = makeStyles({
   uploadMenu: {
     fontSize: 15,
   },
+  modalButton: {
+    marginTop: 20,
+    marginLeft: 150,
+    marginBottom: 20,
+    width: 150,
+  },
 });
+
+let itemData = [
+  {
+    id: "0",
+    name: "Brown teddy bear",
+    weight: "600gr",
+    image: "",
+    description: "it is very fluffy and has light brown color",
+  },
+  {
+    id: "1",
+    name: "Phone Charger",
+    weight: "400gr",
+    image: "",
+    description: "IphoneXR charger, together with cable",
+  },
+];
 
 export default function AddingItem(props) {
   const classes = useStyles();
+  const [allItem, setAllItem] = useState([]);
+
+  useEffect(() => {
+    setAllItem(itemData);
+  });
+
   return (
     <div className="flexbox-column">
       <h1>Add Your Items</h1>
-      <p className={classes.subTitle}>Max: 4 units</p>
-      <div className="flexbox-row">
-        <ItemCard itemName="sofa" source={imageUrlMapping.addedItem} />
-        <ItemCard itemName="teddy bear" source={imageUrlMapping.addedItem} />
-        <ItemCard itemName="working desk" source={imageUrlMapping.addedItem} />
+      <h2 className={classes.subTitle}> Limit: {props.addItemLimit} items</h2>
+      <div className="flexbox-row-forum">
+        {/* data from itemCard will be received the axios product pull */}
+        {allItem.map(itemCard => (
+          <ItemCard
+            key={itemCard.id}
+            itemName={itemCard.name}
+            imageSrc={imageUrlMapping.pushItem}
+          />
+        ))}
       </div>
-      <ButtonList {...props} />
+      <ModalAndButtonList {...props} />
       <ItemDetailDrawer />
     </div>
   );
 }
 
-function ItemCard({ itemName, source }) {
+function ModalAndButtonList(props) {
   const classes = useStyles();
-
-  return (
-    <div className={classes.cardStyling}>
-      <img className={classes.cardImage} src={source} alt="item_image" />
-      <Typography component="p" className={classes.addedProductName}>
-        {itemName}
-      </Typography>
-    </div>
-  );
-}
-
-function ButtonList(props) {
+  // this states will submit into mongodb database
   const [open, setOpen] = React.useState(false);
-  const classes = useStyles();
+  const [name, setName] = useState("");
+  const [weight, setWeight] = useState("");
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -90,33 +122,72 @@ function ButtonList(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleFileChange = e => {
+    setImage(e.target.files[0]);
+    toast("file is successfully uploaded");
+  };
+
+  const handleFormSubmit = e => {
+    e.preventDefault();
+    toast("New item is successfully added");
+
+    // create new item
+    let createNewItem = {
+      id: itemData.length,
+      name: name,
+      weight: weight,
+      //image: image,
+      description: description,
+    };
+
+    // add new item into product-list
+    itemData.push(createNewItem);
+
+    // empty the all states + close modal
+    setName("");
+    setWeight("");
+    setImage("");
+    setDescription("");
+    setOpen(false);
+  };
+
   return (
     <div className="buttonList">
-      <Button variant="contained" color="primary" onClick={handleOpen}>
-        Add Item
-      </Button>
+      {/* Button: Back */}
       <Button
-        variant="contained"
+        variant="outlined"
         color="secondary"
         onClick={e => props.handleBack(e)}
       >
         Back
       </Button>
+
+      {/* Button: Add Item */}
+      <Button variant="contained" color="primary" onClick={handleOpen}>
+        Add Item
+      </Button>
+
+      {/* Button: Check Out */}
       <Button
-        variant="outlined"
-        color="primary"
+        variant="contained"
+        color="secondary"
         onClick={e => props.handleNext(e)}
       >
         Check Out
       </Button>
+
+      {/* Modal with add-item form, can open and close with setOpen */}
       <Modal open={open} onClose={handleClose}>
         <div className={classes.modalStyling}>
           <h2 align="center">Add Item Details</h2>
+
+          {/* Form */}
           <form>
             <div className="flexbox-column-start">
+              {/* item name input form */}
               <div className="form-line-input">
                 <label className="formLabelSize">Name: </label>
-
                 <TextField
                   required
                   id="name"
@@ -124,12 +195,16 @@ function ButtonList(props) {
                   size="small"
                   variant="outlined"
                   className="smallFormInput"
-                  onChange={e => this.props.addressCallback(e.target.value)}
+                  value={name}
+                  onChange={e => {
+                    setName(e.target.value);
+                  }}
                 />
               </div>
+
+              {/* item weight input form */}
               <div className="form-line-input">
                 <label className="formLabelSize">Weight: </label>
-
                 <TextField
                   required
                   id="weight"
@@ -137,16 +212,26 @@ function ButtonList(props) {
                   size="small"
                   variant="outlined"
                   className="smallFormInput"
-                  onChange={e => this.props.addressCallback(e.target.value)}
+                  value={weight}
+                  onChange={e => {
+                    setWeight(e.target.value);
+                  }}
                 />
               </div>
+
+              {/* upload image input form */}
               <div className="form-line-input">
                 <label className="formLabelSize">Upload Image: </label>
-
                 <Button>
-                  <input type="file" className={classes.uploadMenu} />
+                  <input
+                    type="file"
+                    className={classes.uploadMenu}
+                    onChange={e => handleFileChange(e)}
+                  />
                 </Button>
               </div>
+
+              {/* description input form */}
               <div className="form-line-input">
                 <label className="formLabelSize">Description: </label>
 
@@ -156,18 +241,20 @@ function ButtonList(props) {
                   size="small"
                   variant="outlined"
                   className="formInput"
-                  onChange={e => this.props.addressCallback(e.target.value)}
+                  value={description}
+                  onChange={e => {
+                    setDescription(e.target.value);
+                  }}
                 />
               </div>
+
+              {/* Button: Modal Submit */}
               <Button
+                className={classes.modalButton}
                 variant="contained"
                 color="primary"
-                style={{
-                  marginTop: 20,
-                  marginLeft: 150,
-                  marginBottom: 20,
-                  width: 150,
-                }}
+                type="button"
+                onClick={handleFormSubmit}
               >
                 Submit
               </Button>
@@ -175,6 +262,19 @@ function ButtonList(props) {
           </form>
         </div>
       </Modal>
+    </div>
+  );
+}
+
+function ItemCard({ itemName, imageSrc }) {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.cardStyling}>
+      <img className={classes.cardImage} src={imageSrc} alt="item_image" />
+      <Typography component="p" className={classes.addedProductName}>
+        {itemName}
+      </Typography>
     </div>
   );
 }
