@@ -14,14 +14,6 @@ const styles = theme => ({
     marginTop: 0,
     marginBottom: 80,
   },
-  // cardStyling: {
-  //   width: "33%",
-  //   marginRight: 10,
-  //   marginLeft: 10,
-  //   paddingBottom: 20,
-  //   paddingTop: 0,
-  //   textDecoration: "none",
-  // },
   cardImage: {
     height: 250,
   },
@@ -115,7 +107,7 @@ class SelectSituation extends Component {
         </div>
 
         <form>
-          <div className="flexbox-column-start">
+          <div className="flexbox-column-start" style={{ width: "700px" }}>
             <div className="form-line-input">
               <label className="formLabelSize">Delivery Type: </label>
               <select
@@ -130,18 +122,48 @@ class SelectSituation extends Component {
             </div>
             <div className="form-line-input">
               <label className="formLabelSize">Address: </label>
-
-              <TextField
-                required
-                id="address"
-                label="Address"
-                multiline
-                rows={3}
-                size="small"
-                variant="outlined"
-                className="formInput"
-                onChange={e => this.props.addressCallback(e.target.value)}
-              />
+              <div className="flexbox-column address-field">
+                <TextField
+                  required
+                  label="Address"
+                  size="small"
+                  variant="outlined"
+                  className="formInput"
+                  onChange={e =>
+                    this.props.addressCallback(e.target.value, "address")
+                  }
+                />
+                <TextField
+                  required
+                  label="Postal Code"
+                  size="small"
+                  variant="outlined"
+                  className="formInput"
+                  onChange={e =>
+                    this.props.addressCallback(e.target.value, "postalCode")
+                  }
+                />
+                <TextField
+                  required
+                  label="City"
+                  size="small"
+                  variant="outlined"
+                  className="formInput"
+                  onChange={e =>
+                    this.props.addressCallback(e.target.value, "city")
+                  }
+                />
+                <TextField
+                  required
+                  label="Country"
+                  size="small"
+                  variant="outlined"
+                  className="formInput"
+                  onChange={e =>
+                    this.props.addressCallback(e.target.value, "country")
+                  }
+                />
+              </div>
             </div>
           </div>
         </form>

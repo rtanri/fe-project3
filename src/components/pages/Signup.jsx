@@ -50,7 +50,7 @@ export default function Signup() {
       .then(response => {
         toast(2);
         console.log("sign-up successful");
-        history.push("/login");
+        history.push("/login-user");
       })
       .catch(err => {
         toast(3);

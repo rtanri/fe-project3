@@ -28,17 +28,20 @@ class Login extends React.Component {
         toast("2");
         toast(response.message);
         // after successful login, store the token as cookie
-        const { cookies } = this.props; // this.props still counted as undefined
+        const { cookies } = this.props;
 
+        // set auth_token as name of token get from backend response.data
         cookies.set("auth_token", response.data.token, {
           path: "/",
         });
+
+        console.log(cookies);
         toast("login successful, user is found");
-        this.props.history.push("/");
+        this.props.history.push("/"); //success
       })
       .catch(err => {
         toast("3");
-        toast(err.message);
+        toast(err.response.data.message);
       });
   }
   handleFormChange(e, fieldName) {

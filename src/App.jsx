@@ -17,10 +17,6 @@ import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import Forum from "./components/pages/Forum";
 import Delivery from "./components/pages/Delivery";
-
-import SelectSituation from "./components/delivery_component/firstSelectSituation";
-import AddingItem from "./components/delivery_component/secondAddingItem";
-import Payment from "./components/delivery_component/ThirdPayment";
 import SubmitSuccess from "./components/delivery_component/ForthPaymentSuccess";
 import OrderList from "./components/delivery_component/FiveOrderList";
 
@@ -36,14 +32,13 @@ const custom_theme = createTheme({
 });
 
 function App(props) {
-  const [cookie, setCookie, removeCookie] = useState(false);
-  // const [token, setToken] = useState("");
+  const [cookie, setCookie] = useState(false);
 
   useEffect(() => {
     console.log(props.cookies);
     const token = props.cookies.get("auth_token");
-    console.log(token); // can show auth_token | undefined
-    // setToken(authToken);
+    // can show auth_token | undefined
+
     if (!token) {
       return setCookie(false);
     } else {
@@ -51,18 +46,16 @@ function App(props) {
     }
   }, [props.cookies]);
 
-  const logout = () => {
-    const token = props.cookies.get("auth_token");
-    removeCookie(token);
-    setCookie(false);
-  };
+  // const handleLogout = () => {
+  //   setCookie(false);
+  // };
 
   return (
     <Router>
       <ThemeProvider theme={custom_theme}>
         <div>
           {/* <NavBar cookie={cookie} handleSetCookie={setCookie} /> */}
-          <NavBar logout={() => setCookie(false)} cookie={cookie} />
+          <NavBar cookie={cookie} />
           <ToastContainer />
           <Switch>
             <Route path="/login-user" component={Login} />

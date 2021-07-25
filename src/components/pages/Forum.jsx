@@ -12,6 +12,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { TextField, Button, Divider } from "@material-ui/core";
 import { toast } from "react-toastify";
+import { withCookies } from "react-cookie";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   cardStyling: {
@@ -53,82 +55,53 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// let postsData = [
-//   {
-//     _id: "0",
-//     user_id: "111",
-//     username: "Energetic Pomerian",
-//     create_at: "July 5, 2021",
-//     context:
-//       "I feel very down when she said she want to broke up with me because the time is not right. Well, she did mention that she want to focus on her study in University especially in final year. Recently situation between us was not good because of the stress she got from final year project and I always demand more time on her weekends.",
-//   },
-//   {
-//     post_id: "1",
-//     user_id: "222",
-//     username: "Spicy Duck",
-//     create_at: "July 7, 2021",
-//     context:
-//       "My ex-boyfriend keep calling me fat, he's so mean. But i like eating more than him. Good bye ex",
-//   },
-//   {
-//     post_id: "2",
-//     user_id: "333",
-//     username: "Worry Koala",
-//     create_at: "July 9, 2021",
-//     context:
-//       "Just finished my toxic relationship, feels so good and so much freedom. Do you think i should watch Black Widow with my family or new potential girlfriend?",
-//   },
-// ];
-
-// let commentsData = [
-//   {
-//     comment_id: "412314",
-//     user_id: "999",
-//     post_id: "1",
-//     create_at: "July 9, 2021",
-//     context:
-//       "Bro, i feel you, you can try to eat more pizza and be happy. Try new stuff crust hawaiian pizza",
-//   },
-//   {
-//     _id: "124234",
-//     user_id: "333",
-//     post_id: "3",
-//     create_at: "July 10, 2021",
-//     context:
-//       "I can say it is a family movie, try to bring your most annoying siblings to watch with you.",
-//   },
-//   // {
-//   //   _id: "54252",
-//   //   user_id: "222",
-//   //   post_id: "3",
-//   //   create_at: "July 9, 2021",
-//   //   context: "Super like Natasha Romanov life story. Four thumbs up!",
-//   // },
-// ];
-
-//source of post - https://jsonplaceholder.typicode.com/posts
-//source of comment - https://jsonplaceholder.typicode.com/comments
-
-function Forum() {
+function Forum(props) {
+  let history = useHistory();
   const classes = useStyles();
+  const [myToken, setMyToken] = useState("");
   const [posts, setPosts] = useState([]);
   const [context, setContext] = useState("");
   // const [newPost, setNewPost] = useState({ user: "", context: "" });
+  // const token = cookie.get("auth_token");
+
+  //get auth token from cookie, if doesnt exist/empty, redirect to login
+  useEffect(() => {
+    authenticateUser();
+  }, [props.cookies]);
+
+  function authenticateUser() {
+    // validate and see if token exist
+    console.log(props.cookies);
+    const token = props.cookies.get("auth_token");
+
+    if (!token) {
+      history.push("/login-user");
+      toast("Login user to open forum");
+    }
+    setMyToken(token);
+  }
 
   function sendAPost() {
     toast(1);
+    console.log(myToken);
     axios
-      .post("http://localhost:4000/api/v1/posts", {
-        context,
-      })
+      .post(
+        "http://localhost:4000/api/v1/posts",
+        { context },
+        {
+          headers: {
+            token: myToken,
+          },
+        }
+      )
       .then(response => {
         toast(2);
         console.log("post is successful");
       })
       .catch(err => {
         toast(3);
-        toast(err);
-        console.log(err);
+        toast(err.response.data.message);
+        console.log(err.response);
       });
   }
 
@@ -141,20 +114,6 @@ function Forum() {
   const handlePostSubmit = () => {
     toast("Post button is clicked");
     sendAPost();
-    // set the postId
-    // const postId = posts.length;
-
-    // //ingest the new post into postData array
-    // let createNewPost = {
-    //   id: postId,
-    //   user: newPost.user,
-    //   create_at: "July 23, 2021",
-    //   context: newPost.context,
-    // };
-
-    // postsData.push(createNewPost);
-
-    //empty the input-box
     setContext("");
   };
 
@@ -164,17 +123,6 @@ function Forum() {
       <div className="post-list flexbox-column-forum">
         <div>
           <form>
-            {/* <TextField
-              id="user_comment"
-              label="Username"
-              variant="outlined"
-              size="small"
-              value={newPost.user}
-              className={classes.formInput}
-              onChange={e => {
-                setNewPost({ ...newPost, user: e.target.value });
-              }}
-            /> */}
             <TextField
               id="comment"
               label="Write Post Content..."
@@ -323,7 +271,7 @@ function Comment({ title, body }) {
   );
 }
 
-export default Forum;
+export default withCookies(Forum);
 /*
 1. frontend: call the data for post based on the dates , limit 5.
 

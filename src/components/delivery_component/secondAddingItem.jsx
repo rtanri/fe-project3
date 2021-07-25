@@ -183,7 +183,7 @@ function ModalAndButtonList({ allItem, setAllItem, ...props }) {
       <Button
         variant="contained"
         color="secondary"
-        onClick={e => props.handleNext(e)}
+        onClick={e => props.handleOrderFormSubmit(e)}
       >
         Check Out
       </Button>

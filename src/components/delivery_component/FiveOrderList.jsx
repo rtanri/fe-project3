@@ -94,7 +94,6 @@ export default function OrderList() {
           <div>
             <OrderCard />
             <OrderCard />
-            <OrderCard />
             <p align="center">
               <Button
                 onClick={handleClick}

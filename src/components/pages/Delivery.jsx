@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -10,6 +11,8 @@ import SelectSituation from "../delivery_component/firstSelectSituation";
 import AddingItem from "../delivery_component/secondAddingItem";
 import Payment from "../delivery_component/ThirdPayment";
 import SubmitSuccess from "../delivery_component/ForthPaymentSuccess";
+import { withCookies } from "react-cookie";
+import { toast } from "react-toastify";
 
 const styles = theme => ({
   root: {
@@ -35,11 +38,28 @@ class Delivery extends Component {
     this.handleAddressCallback = this.handleAddressCallback.bind(this);
 
     this.state = {
+      myToken: "",
       activeStep: 0,
       itemLimit: 0,
       address: "",
+      postalCode: "",
+      city: "",
+      country: "",
       deliveryType: "",
     };
+  }
+
+  componentDidMount() {
+    const { cookies } = this.props;
+    let token = cookies.get("auth_token");
+    if (!token) {
+      this.props.history.push("/login-user");
+      toast("Please login to set item delivery");
+    }
+    // record the token inside the state
+    this.setState({
+      myToken: token,
+    });
   }
 
   getSteps() {
@@ -66,12 +86,42 @@ class Delivery extends Component {
   };
 
   // child update parents by onChange & form-submit
-  handleAddressCallback(inputString) {
-    this.setState({ address: inputString });
+  handleAddressCallback(inputString, fieldName) {
+    let newState = {};
+    newState[fieldName] = inputString;
+    this.setState(newState);
   }
 
   handleDeliveryCallback(inputString) {
     this.setState({ deliveryType: inputString });
+  }
+
+  handleOrderFormSubmit() {
+    axios
+      .post(
+        "http://localhost:4000/api/v1/orders",
+        {
+          addressType: this.state.address,
+          postalCode: this.state.postalCode,
+          city: this.state.city,
+          country: this.state.country,
+        },
+        {
+          headers: {
+            token: this.state.myToken,
+          },
+        }
+      )
+      .then(response => {
+        toast(2);
+        toast("Order is successfully loaded");
+        this.handleNext();
+      })
+      .catch(err => {
+        toast(3);
+        toast(err.response.data.message);
+        console.log(err.response);
+      });
   }
 
   render() {
@@ -105,7 +155,8 @@ class Delivery extends Component {
                   this.handleItemLimitCallback,
                   this.handleDeliveryCallback.bind(this),
                   this.handleAddressCallback.bind(this),
-                  this.state.itemLimit
+                  this.state.itemLimit,
+                  this.handleOrderFormSubmit
                 )}
               </Typography>
             </div>
@@ -123,7 +174,8 @@ function getStepContent(
   itemLimitFunction,
   deliveryTypeFunction,
   addressFunction,
-  addItemLimit
+  addItemLimit,
+  handleOrderFormSubmit
 ) {
   switch (stepIndex) {
     case 0:
@@ -138,7 +190,7 @@ function getStepContent(
     case 1:
       return (
         <AddingItem
-          handleNext={() => nextPageFunction()}
+          handleOrderFormSubmit={() => handleOrderFormSubmit()}
           handleBack={() => backPageFunction()}
           addItemLimit={addItemLimit}
         />
@@ -152,4 +204,4 @@ function getStepContent(
   }
 }
 
-export default withStyles(styles)(Delivery);
+export default withCookies(withStyles(styles)(Delivery));
