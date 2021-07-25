@@ -153,7 +153,7 @@ function ModalAndButtonList({ fetchListOfItem, ...props }) {
         setImage("");
         setDescription("");
         setOpen(false);
-        props.fetchListOfItem;
+        props.fetchListOfItem();
       })
       .catch(err => {
         toast("error adding item");
