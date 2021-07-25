@@ -1,14 +1,40 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import { Button, TextField, Divider } from "@material-ui/core";
+import {
+  Button,
+  Typography,
+  Divider,
+  TextField,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+} from "@material-ui/core";
 
-const styles = theme => ({
+// importing sub-component
+import AddingItem from "../delivery_component/secondAddingItem";
+import Payment from "../delivery_component/ThirdPayment";
+import SubmitSuccess from "../delivery_component/ForthPaymentSuccess";
+
+import { withCookies } from "react-cookie";
+import { toast } from "react-toastify";
+
+const useStyles = makeStyles({
+  title: {
+    textAlign: "center",
+    fontSize: "50px",
+  },
+  divider: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  instructions: {
+    marginTop: 40,
+    marginBottom: 40,
+  },
   subTitle: {
     whiteSpace: "nowrap",
     marginTop: 0,
@@ -31,17 +57,64 @@ const styles = theme => ({
   },
 });
 
-class SelectSituation extends Component {
-  onCardClick = (e, params) => {
-    this.props.parentCallback(params);
-    console.log(e.target);
-  };
+function NewDelivery(props) {
+  const classes = useStyles();
+  let history = useHistory();
+  const [myToken, setMyToken] = useState("");
+  const [itemLimit, setItemLimit] = useState("");
+  const [deliveryType, setDeliveryType] = useState("");
+  const [address, setAddress] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
 
-  render() {
-    const { classes } = this.props;
-    console;
+  useEffect(() => {
+    authenticateUser();
+  }, [props.cookies]);
 
-    return (
+  function authenticateUser() {
+    // validate and see if token exist
+    console.log(props.cookies);
+    const token = props.cookies.get("auth_token");
+
+    if (!token) {
+      history.push("/login-user");
+      toast("Please login to set new delivery");
+    }
+    setMyToken(token);
+  }
+
+  function handleOrderFormSubmit() {
+    axios
+      .post(
+        "http://localhost:4000/api/v1/orders",
+        {
+          addressType: address,
+          postalCode: postalCode,
+          city: city,
+          country: country,
+        },
+        {
+          headers: {
+            token: myToken,
+          },
+        }
+      )
+      .then(response => {
+        toast(2);
+        toast("Order is successfully loaded");
+      })
+      .catch(err => {
+        toast(3);
+        toast(err.response.data.message);
+        console.log(err.response);
+      });
+  }
+
+  return (
+    <div className="main-body">
+      <h1 className={classes.title}>Set a New Delivery</h1>
+      {/* Relationship type = item limit */}
       <div className="flexbox-column">
         <h1 className="">What kind of relationship do you have?</h1>
         <p className={classes.subTitle}>
@@ -49,7 +122,7 @@ class SelectSituation extends Component {
         </p>
         <div className="flexbox-row">
           <Card className="relationshipCardStyling">
-            <CardActionArea onClick={e => this.onCardClick(e, 2)}>
+            <CardActionArea onClick={() => setItemLimit(2)}>
               <CardMedia
                 className={classes.cardImage}
                 image={imageUrlMapping.oneNightLove}
@@ -67,7 +140,7 @@ class SelectSituation extends Component {
           </Card>
 
           <Card className="relationshipCardStyling">
-            <CardActionArea onClick={e => this.onCardClick(e, 5)}>
+            <CardActionArea onClick={() => setItemLimit(5)}>
               <CardMedia
                 className={classes.cardImage}
                 image={imageUrlMapping.shortTermDates}
@@ -85,7 +158,7 @@ class SelectSituation extends Component {
           </Card>
 
           <Card className="relationshipCardStyling">
-            <CardActionArea onClick={e => this.onCardClick(e, 10)}>
+            <CardActionArea onClick={() => setItemLimit(10)}>
               <CardMedia
                 className={classes.cardImage}
                 image={imageUrlMapping.almostBTO}
@@ -102,14 +175,14 @@ class SelectSituation extends Component {
             </CardActionArea>
           </Card>
         </div>
-
+        {/* Address */}
         <form>
           <div className="flexbox-column-start" style={{ width: "700px" }}>
             <div className="form-line-input">
               <label className="formLabelSize">Delivery Type: </label>
               <select
                 required
-                onChange={e => this.props.deliveryCallback(e.target.value)}
+                onChange={e => setDeliveryType(e.target.value)}
                 className={classes.selectMenu}
               >
                 <option value="">Select type</option>
@@ -126,9 +199,7 @@ class SelectSituation extends Component {
                   size="small"
                   variant="outlined"
                   className="formInput"
-                  onChange={e =>
-                    this.props.addressCallback(e.target.value, "address")
-                  }
+                  onChange={e => setAddress(e.target.value)}
                 />
                 <TextField
                   required
@@ -136,9 +207,7 @@ class SelectSituation extends Component {
                   size="small"
                   variant="outlined"
                   className="formInput"
-                  onChange={e =>
-                    this.props.addressCallback(e.target.value, "postalCode")
-                  }
+                  onChange={e => setPostalCode(e.target.value)}
                 />
                 <TextField
                   required
@@ -146,9 +215,7 @@ class SelectSituation extends Component {
                   size="small"
                   variant="outlined"
                   className="formInput"
-                  onChange={e =>
-                    this.props.addressCallback(e.target.value, "city")
-                  }
+                  onChange={e => setCity(e.target.value)}
                 />
                 <TextField
                   required
@@ -156,36 +223,19 @@ class SelectSituation extends Component {
                   size="small"
                   variant="outlined"
                   className="formInput"
-                  onChange={e =>
-                    this.props.addressCallback(e.target.value, "country")
-                  }
+                  onChange={e => setCountry(e.target.value)}
                 />
               </div>
             </div>
           </div>
         </form>
       </div>
-    );
-  }
+      <Divider className={classes.divider} />
+      <AddingItem myToken={myToken} />
+      <Divider className={classes.divider} />
+      <Payment />;
+    </div>
+  );
 }
 
-export default withStyles(styles)(SelectSituation);
-
-/* 
-<RelationshipCard
-  title="One Night"
-  context="Mostly with 1-2 items that you feel too shy to give or ask for return in person"
-  image={imageUrlMapping.oneNight}
-/>
-
-<RelationshipCard
-  title="Short Term Dates"
-  context="Going through Valentine or Christmas together at least 1 time"
-  image={imageUrlMapping.shortTermDates}
-/>
-
-<RelationshipCard
-  title="Almost Collect BTO Key"
-  context="Mostly with 1-2 items that you feel too shy to give or ask for return in person"
-  image={imageUrlMapping.almostBTO}
-/> */
+export default withCookies(NewDelivery);

@@ -16,7 +16,7 @@ import LandingPage from "./components/pages/LandingPage";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import Forum from "./components/pages/Forum";
-import Delivery from "./components/pages/Delivery";
+import NewDelivery from "./components/pages/NewDelivery";
 import SubmitSuccess from "./components/delivery_component/ForthPaymentSuccess";
 import OrderList from "./components/delivery_component/FiveOrderList";
 
@@ -61,7 +61,11 @@ function App(props) {
             <Route path="/login-user" component={Login} />
             <Route path="/signup-new-user" component={Signup} />
             <Route path="/forum" component={Forum} />
-            <Route path="/new-deliver" component={Delivery} cookie={cookie} />
+            <Route
+              path="/new-deliver"
+              component={NewDelivery}
+              cookie={cookie}
+            />
             <Route path="/successful-order" component={SubmitSuccess} />
             <Route path="/order-list" component={OrderList} cookie={cookie} />
             <Route path="/" component={LandingPage} />

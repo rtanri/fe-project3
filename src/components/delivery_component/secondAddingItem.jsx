@@ -3,10 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import Typography from "@material-ui/core/Typography";
 import { Button, TextField } from "@material-ui/core";
-import ItemDetailDrawer from "./LeftDrawer";
 import { toast } from "react-toastify";
 import Modal from "@material-ui/core/Modal";
 import axios from "axios";
+import { withCookies } from "react-cookie";
 
 const useStyles = makeStyles({
   subTitle: {
@@ -62,31 +62,26 @@ const useStyles = makeStyles({
   },
 });
 
-let itemData = [
-  {
-    id: "0",
-    name: "Brown teddy bear",
-    weight: "600gr",
-    image: "",
-    description: "it is very fluffy and has light brown color",
-  },
-  {
-    id: "1",
-    name: "Phone Charger",
-    weight: "400gr",
-    image: "",
-    description: "IphoneXR charger, together with cable",
-  },
-];
-
-export default function AddingItem(props) {
+function AddingItem(props) {
   const classes = useStyles();
   const [allItem, setAllItem] = useState([]);
 
   // depends on the value change in 'allItem' array state
   useEffect(() => {
-    setAllItem(itemData);
+    fetchListOfItem();
   }, []);
+
+  const fetchListOfItem = async () => {
+    toast("fetch item func");
+
+    const result = await axios.get("http://localhost:4000/api/v1/products", {
+      headers: {
+        token: props.cookies.get("auth_token"),
+      },
+    });
+
+    setAllItem(result.data);
+  };
 
   return (
     <div className="flexbox-column">
@@ -96,23 +91,21 @@ export default function AddingItem(props) {
         {/* data from itemCard will be received the axios product pull */}
         {allItem.map(itemCard => (
           <ItemCard
-            key={itemCard.id}
+            key={itemCard._id}
             itemName={itemCard.name}
             imageSrc={imageUrlMapping.pushItem}
           />
         ))}
       </div>
       <ModalAndButtonList
+        fetchListOfItem={() => fetchListOfItem()}
         {...props}
-        allItem={allItem}
-        setAllItem={setAllItem}
       />
-      <ItemDetailDrawer />
     </div>
   );
 }
 
-function ModalAndButtonList({ allItem, setAllItem, ...props }) {
+function ModalAndButtonList({ fetchListOfItem, ...props }) {
   const classes = useStyles();
   // this states will submit into mongodb database
   const [open, setOpen] = React.useState(false);
@@ -148,7 +141,11 @@ function ModalAndButtonList({ allItem, setAllItem, ...props }) {
       console.log(pair[0] + ": " + pair[1]);
     }
     axios
-      .post("http://localhost:4000/api/v1/products", formData)
+      .post("http://localhost:4000/api/v1/products", formData, {
+        headers: {
+          token: props.myToken,
+        },
+      })
       .then(response => {
         toast("New item is successfully added");
         setName("");
@@ -156,6 +153,7 @@ function ModalAndButtonList({ allItem, setAllItem, ...props }) {
         setImage("");
         setDescription("");
         setOpen(false);
+        props.fetchListOfItem;
       })
       .catch(err => {
         toast("error adding item");
@@ -165,15 +163,6 @@ function ModalAndButtonList({ allItem, setAllItem, ...props }) {
 
   return (
     <div className="buttonList">
-      {/* Button: Back */}
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={e => props.handleBack(e)}
-      >
-        Back
-      </Button>
-
       {/* Button: Add Item */}
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Add Item
@@ -185,7 +174,7 @@ function ModalAndButtonList({ allItem, setAllItem, ...props }) {
         color="secondary"
         onClick={e => props.handleOrderFormSubmit(e)}
       >
-        Check Out
+        Save Progress
       </Button>
 
       {/* Modal with add-item form, can open and close with setOpen */}
@@ -290,3 +279,5 @@ function ItemCard({ itemName, imageSrc }) {
     </div>
   );
 }
+
+export default withCookies(AddingItem);

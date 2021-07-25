@@ -97,6 +97,8 @@ class Delivery extends Component {
   }
 
   handleOrderFormSubmit() {
+    console.log(this.state);
+
     axios
       .post(
         "http://localhost:4000/api/v1/orders",
@@ -190,7 +192,7 @@ function getStepContent(
     case 1:
       return (
         <AddingItem
-          handleOrderFormSubmit={() => handleOrderFormSubmit()}
+          handleOrderFormSubmit={handleOrderFormSubmit}
           handleBack={() => backPageFunction()}
           addItemLimit={addItemLimit}
         />
