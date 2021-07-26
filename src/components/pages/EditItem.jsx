@@ -4,8 +4,9 @@ import { toast } from "react-toastify";
 import { Button, TextField } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { withCookies } from "react-cookie";
 
-function EditItem() {
+function EditItem(props) {
   let history = useHistory();
   const [product, setProduct] = useState({});
   const [itemName, setItemName] = useState("");
@@ -22,27 +23,49 @@ function EditItem() {
     getItemDetail();
   }, []);
 
-  function getItemDetail() {
+  const getItemDetail = () => {
+    toast(1);
     axios
-      .get("http://localhost:4000/api/v1/products/" + params.itemID)
+      .get(
+        "http://localhost:4000/api/v1/products/" + params.itemID,
+        {},
+        {
+          headers: {
+            token: props.cookies.get("auth_token"),
+          },
+        }
+      )
       .then(response => {
+        toast(2);
+        console.log(response.data);
         setProduct(response.data);
       })
       .catch(err => {
+        toast(3);
         console.log(err);
       });
-  }
+  };
 
   const editItemDetail = () => {
+    toast(1);
+    toast(params.itemID);
     axios
-      .patch("http://localhost:4000/api/v1/products/" + params.itemID, {
-        name: itemName,
-        weight: itemWeight,
-        desc: itemDesc,
-      })
+      .patch(
+        "http://localhost:4000/api/v1/products/" + params.itemID,
+        {
+          name: itemName,
+          weight: itemWeight,
+          desc: itemDesc,
+        },
+        {
+          headers: {
+            token: props.cookies.get("auth_token"),
+          },
+        }
+      )
       .then(response => {
         toast("Item is edited");
-        history.push("/new-deliver");
+        history.goBack();
       })
       .catch(err => {
         toast(err.response.data.message);
@@ -55,7 +78,7 @@ function EditItem() {
       .then(response => {
         console.log("delete product");
         console.log(response.data);
-        history.push("/new-deliver");
+        history.goBack();
       })
       .catch(err => {
         toast(err.response.data.message);
@@ -162,4 +185,4 @@ function EditItem() {
   );
 }
 
-export default EditItem;
+export default withCookies(EditItem);

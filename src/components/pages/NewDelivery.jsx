@@ -17,9 +17,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 
 // importing sub-component
-// import AddingItem from "../delivery_component/secondAddingItem";
-import Payment from "../delivery_component/ThirdPayment";
-import SubmitSuccess from "../delivery_component/ForthPaymentSuccess";
+import Payment from "../delivery_component/Payment";
 
 import { withCookies } from "react-cookie";
 import { toast } from "react-toastify";
@@ -140,11 +138,14 @@ function NewDelivery(props) {
   const fetchListOfItem = async () => {
     toast("fetch item func");
 
-    const result = await axios.get("http://localhost:4000/api/v1/products", {
-      headers: {
-        token: props.cookies.get("auth_token"),
-      },
-    });
+    const result = await axios.get(
+      "http://localhost:4000/api/v1/products/" + params.orderID,
+      {
+        headers: {
+          token: props.cookies.get("auth_token"),
+        },
+      }
+    );
 
     setAllItem(result.data);
   };
@@ -329,15 +330,16 @@ function NewDelivery(props) {
                 />
               </div>
             </div>
-            <Button
-              onClick={() => handleSubmitAddress()}
-              type="button"
-              variant="contained"
-              color="primary"
-            >
-              Save Address
-            </Button>
           </div>
+          <Button
+            onClick={() => handleSubmitAddress()}
+            type="button"
+            variant="contained"
+            color="primary"
+            className="button-submit"
+          >
+            Save Address
+          </Button>
         </form>
       </div>
       <Divider className={classes.divider} />
@@ -358,6 +360,7 @@ function NewDelivery(props) {
           ))}
         </div>
         <ModalAndButtonList
+          itemLimit={itemLimit}
           fetchListOfItem={() => fetchListOfItem()}
           {...props}
         />
@@ -368,8 +371,9 @@ function NewDelivery(props) {
   );
 }
 
-function ModalAndButtonList({ fetchListOfItem, ...props }) {
+function ModalAndButtonList({ itemLimit, fetchListOfItem, ...props }) {
   const classes = useStyles();
+  let params = useParams();
   // this states will submit into mongodb database
   const [open, setOpen] = React.useState(false);
   const [name, setName] = useState("");
@@ -405,11 +409,15 @@ function ModalAndButtonList({ fetchListOfItem, ...props }) {
     }
     console.log(props.cookies.get("auth_token"));
     axios
-      .post("http://localhost:4000/api/v1/products", formData, {
-        headers: {
-          token: props.cookies.get("auth_token"),
-        },
-      })
+      .post(
+        "http://localhost:4000/api/v1/products/" + params.orderID,
+        formData,
+        {
+          headers: {
+            token: props.cookies.get("auth_token"),
+          },
+        }
+      )
       .then(response => {
         toast("New item is successfully added");
         setName("");
@@ -427,6 +435,10 @@ function ModalAndButtonList({ fetchListOfItem, ...props }) {
       });
   };
 
+  const handleOrderFormSubmit = () => {
+    console.log("handle form submit clicked");
+  };
+
   return (
     <div className="buttonList">
       {/* Button: Add Item */}
@@ -438,7 +450,7 @@ function ModalAndButtonList({ fetchListOfItem, ...props }) {
       <Button
         variant="contained"
         color="secondary"
-        onClick={e => props.handleOrderFormSubmit(e)}
+        onClick={() => handleOrderFormSubmit()}
       >
         Save Progress
       </Button>

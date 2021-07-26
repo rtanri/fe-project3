@@ -18,8 +18,8 @@ import Signup from "./components/pages/Signup";
 import Forum from "./components/pages/Forum";
 import NewDelivery from "./components/pages/NewDelivery";
 import EditItem from "./components/pages/EditItem";
-import SubmitSuccess from "./components/delivery_component/ForthPaymentSuccess";
-import OrderList from "./components/delivery_component/FiveOrderList";
+import PaymentSuccess from "./components/delivery_component/PaymentSuccess";
+import Dashboard from "./components/pages/Dashboard";
 
 const custom_theme = createTheme({
   palette: {
@@ -66,15 +66,14 @@ function App(props) {
               path="/new-delivery/:orderID/:addressID"
               component={NewDelivery}
             />
-
             <Route
               path="/new-deliver/"
               component={NewDelivery}
               cookie={cookie}
             />
-            <Route path="/successful-order" component={SubmitSuccess} />
+            <Route path="/successful-order" component={PaymentSuccess} />
             <Route path="/item/:itemID" component={EditItem} />
-            <Route path="/order-list" component={OrderList} cookie={cookie} />
+            <Route path="/dashboard" component={Dashboard} cookie={cookie} />
             <Route path="/" component={LandingPage} />
           </Switch>
           <Footer />

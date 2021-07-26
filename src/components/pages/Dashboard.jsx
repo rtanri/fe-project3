@@ -72,7 +72,7 @@ const useStyles = makeStyles({
   },
 });
 
-function OrderList(props) {
+function Dashboard(props) {
   const classes = useStyles();
   const [myToken, setMyToken] = useState("");
   let history = useHistory();
@@ -220,4 +220,4 @@ function OrderCard() {
   );
 }
 
-export default withCookies(OrderList);
+export default withCookies(Dashboard);

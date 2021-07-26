@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SelectSituation() {
+export default function PaymentSuccess() {
   const classes = useStyles();
   return (
     <div className="flexbox-column main-body">

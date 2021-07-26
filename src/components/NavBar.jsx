@@ -39,14 +39,14 @@ function NavBar(props) {
               Forum
             </Button>
           </Link>
-          <Link to="/new-deliver" className="menu-nav-link">
+          {/* <Link to="/new-deliver" className="menu-nav-link">
             <Button color="primary" className={classes.buttonStyling}>
               New Delivery
             </Button>
-          </Link>
-          <Link to="/order-list" className="menu-nav-link">
+          </Link> */}
+          <Link to="/dashboard" className="menu-nav-link">
             <Button color="primary" className={classes.buttonStyling}>
-              Your Order
+              Dashboard
             </Button>
           </Link>
           {props.cookie ? (
