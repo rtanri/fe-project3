@@ -63,6 +63,11 @@ function App(props) {
             <Route path="/signup-new-user" component={Signup} />
             <Route path="/forum" component={Forum} />
             <Route
+              path="/new-delivery/:orderID/:addressID"
+              component={NewDelivery}
+            />
+
+            <Route
               path="/new-deliver/"
               component={NewDelivery}
               cookie={cookie}

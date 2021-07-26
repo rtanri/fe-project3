@@ -79,7 +79,7 @@ function OrderList(props) {
 
   useEffect(() => {
     authenticateUser();
-  }, [props.cookies]);
+  }, []);
 
   const authenticateUser = () => {
     // validate and see if token exist
@@ -93,22 +93,30 @@ function OrderList(props) {
     setMyToken(token);
   };
 
-  const handleClick = () => {
-    toast("1");
+  const createNewOrder = () => {
+    console.log(props.cookies.get("auth_token"));
     axios
-      .post("http://localhost:4000/api/v1/new-order", {
-        headers: {
-          token: myToken,
-        },
-      })
+      .post(
+        "http://localhost:4000/api/v1/orders",
+        {},
+        {
+          headers: {
+            token: props.cookies.get("auth_token"),
+          },
+        }
+      )
       .then(response => {
-        console.log(response.data.orderID);
-        toast("New Order Created");
         toast("2");
-        // axios.get("http://localhost:4000/api/v1/orders").then
+        console.log(response.data);
+        const orderID = response.data.orderID;
+        const addressID = response.data.addressID;
+        toast(orderID);
+        history.push("/new-delivery/" + orderID + "/" + addressID);
+      })
+      .catch(err => {
+        toast(3);
+        toast(err.response.data.message);
       });
-
-    history.push("/");
   };
 
   return (
@@ -121,7 +129,7 @@ function OrderList(props) {
             <OrderCard />
             <p align="center">
               <Button
-                onClick={handleClick}
+                onClick={() => createNewOrder()}
                 type="button"
                 variant="contained"
                 color="primary"

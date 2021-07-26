@@ -14,7 +14,7 @@ import {
   CardMedia,
   Modal,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // importing sub-component
 // import AddingItem from "../delivery_component/secondAddingItem";
@@ -107,6 +107,7 @@ const useStyles = makeStyles({
 function NewDelivery(props) {
   const classes = useStyles();
   let history = useHistory();
+  let params = useParams();
 
   const [myToken, setMyToken] = useState("");
   const [itemLimit, setItemLimit] = useState("");
@@ -119,12 +120,14 @@ function NewDelivery(props) {
   const [allItem, setAllItem] = useState([]);
   useEffect(() => {
     authenticateUser();
+    fetchAddressData();
     fetchListOfItem();
-  }, [props.cookies]);
+  }, []);
 
   const authenticateUser = async () => {
     // validate and see if token exist
-    console.log(props.cookies);
+    // console.log(props.cookies);
+    console.log(params);
     const token = props.cookies.get("auth_token");
 
     if (!token) {
@@ -146,19 +149,51 @@ function NewDelivery(props) {
     setAllItem(result.data);
   };
 
-  function handleOrderFormSubmit() {
+  const fetchAddressData = async () => {
+    toast("fetch address data");
+    if (!params.addressID) {
+      toast("orderID is not available");
+      return;
+    }
+
     axios
-      .post(
-        "http://localhost:4000/api/v1/orders",
+      .get("http://localhost:4000/api/v1/addAddress/" + params.addressID, {
+        headers: {
+          token: props.cookies.get("auth_token"),
+        },
+      })
+      .then(async response => {
+        console.log("address data");
+        console.log(response.data);
+
+        setAddress(response.data.addressType);
+        setPostalCode(response.data.postalCode);
+        setCity(response.data.city);
+        setCountry(response.data.country);
+        setItemLimit(response.data.itemLimit);
+        setDeliveryType(response.data.deliveryType);
+      });
+  };
+
+  const handleSubmitAddress = () => {
+    if (!params.addressID) {
+      toast("orderID is not available");
+      return;
+    }
+    axios
+      .patch(
+        "http://localhost:4000/api/v1/addAddress/" + params.addressID,
         {
           addressType: address,
           postalCode: postalCode,
           city: city,
           country: country,
+          itemLimit: itemLimit,
+          deliveryType: deliveryType,
         },
         {
           headers: {
-            token: myToken,
+            token: props.cookies.get("auth_token"),
           },
         }
       )
@@ -171,7 +206,7 @@ function NewDelivery(props) {
         toast(err.response.data.message);
         console.log(err.response);
       });
-  }
+  };
 
   return (
     <div className="main-body">
@@ -244,6 +279,7 @@ function NewDelivery(props) {
               <label className="formLabelSize">Delivery Type: </label>
               <select
                 required
+                value={deliveryType}
                 onChange={e => setDeliveryType(e.target.value)}
                 className={classes.selectMenu}
               >
@@ -261,6 +297,7 @@ function NewDelivery(props) {
                   size="small"
                   variant="outlined"
                   className="formInput"
+                  value={address}
                   onChange={e => setAddress(e.target.value)}
                 />
                 <TextField
@@ -269,6 +306,7 @@ function NewDelivery(props) {
                   size="small"
                   variant="outlined"
                   className="formInput"
+                  value={postalCode}
                   onChange={e => setPostalCode(e.target.value)}
                 />
                 <TextField
@@ -277,6 +315,7 @@ function NewDelivery(props) {
                   size="small"
                   variant="outlined"
                   className="formInput"
+                  value={city}
                   onChange={e => setCity(e.target.value)}
                 />
                 <TextField
@@ -285,10 +324,19 @@ function NewDelivery(props) {
                   size="small"
                   variant="outlined"
                   className="formInput"
+                  value={country}
                   onChange={e => setCountry(e.target.value)}
                 />
               </div>
             </div>
+            <Button
+              onClick={() => handleSubmitAddress()}
+              type="button"
+              variant="contained"
+              color="primary"
+            >
+              Save Address
+            </Button>
           </div>
         </form>
       </div>
