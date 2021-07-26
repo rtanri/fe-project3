@@ -115,14 +115,14 @@ function NewDelivery(props) {
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-  const [allItem, setAllItem] = useState([]);
 
+  const [allItem, setAllItem] = useState([]);
   useEffect(() => {
     authenticateUser();
     fetchListOfItem();
   }, [props.cookies]);
 
-  function authenticateUser() {
+  const authenticateUser = async () => {
     // validate and see if token exist
     console.log(props.cookies);
     const token = props.cookies.get("auth_token");
@@ -132,7 +132,7 @@ function NewDelivery(props) {
       toast("Please login to set new delivery");
     }
     setMyToken(token);
-  }
+  };
 
   const fetchListOfItem = async () => {
     toast("fetch item func");
@@ -355,10 +355,11 @@ function ModalAndButtonList({ fetchListOfItem, ...props }) {
     for (var pair of formData.entries()) {
       console.log(pair[0] + ": " + pair[1]);
     }
+    console.log(props.cookies.get("auth_token"));
     axios
       .post("http://localhost:4000/api/v1/products", formData, {
         headers: {
-          token: props.myToken,
+          token: props.cookies.get("auth_token"),
         },
       })
       .then(response => {
@@ -368,11 +369,13 @@ function ModalAndButtonList({ fetchListOfItem, ...props }) {
         setImage("");
         setDescription("");
         setOpen(false);
-        fetchListOfItem();
       })
       .catch(err => {
-        toast("error adding item");
-        console.log(err);
+        toast(err.response.data.message);
+        console.log(err.response.data.message);
+      })
+      .finally(async () => {
+        await fetchListOfItem();
       });
   };
 

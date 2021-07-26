@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -17,6 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { withCookies } from "react-cookie";
 
 const useStyles = makeStyles({
   orderListBox: {
@@ -71,19 +72,43 @@ const useStyles = makeStyles({
   },
 });
 
-export default function OrderList() {
+function OrderList(props) {
   const classes = useStyles();
-
+  const [myToken, setMyToken] = useState("");
   let history = useHistory();
 
-  const handleClick = () => {
-    toast("Create new order with Ref #12435");
-    axios.post("http://localhost:4000/api/v1/orders").then(response => {
-      console.log(response);
-      // axios.get("http://localhost:4000/api/v1/orders").then
-    });
+  useEffect(() => {
+    authenticateUser();
+  }, [props.cookies]);
 
-    history.push("/new-deliver");
+  const authenticateUser = () => {
+    // validate and see if token exist
+    console.log(props.cookies);
+    const token = props.cookies.get("auth_token");
+
+    if (!token) {
+      history.push("/login-user");
+      toast("Please login to create new Order");
+    }
+    setMyToken(token);
+  };
+
+  const handleClick = () => {
+    toast("1");
+    axios
+      .post("http://localhost:4000/api/v1/new-order", {
+        headers: {
+          token: myToken,
+        },
+      })
+      .then(response => {
+        console.log(response.data.orderID);
+        toast("New Order Created");
+        toast("2");
+        // axios.get("http://localhost:4000/api/v1/orders").then
+      });
+
+    history.push("/");
   };
 
   return (
@@ -167,8 +192,6 @@ function OrderCard() {
     <Card className={classes.orderCard}>
       <CardHeader
         title="Date: Sat 17, July 2021"
-        //   //   titleTypographyProps={{ variant: "p", color: "purple" }}
-        //   //   subheaderTypographyProps={{ variant: "p" }}
         classes={{
           title: classes.headerTitle,
         }}
@@ -188,3 +211,5 @@ function OrderCard() {
     </Card>
   );
 }
+
+export default withCookies(OrderList);
