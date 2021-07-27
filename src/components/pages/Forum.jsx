@@ -67,9 +67,10 @@ function Forum(props) {
   //get auth token from cookie, if doesnt exist/empty, redirect to login
   useEffect(() => {
     authenticateUser();
-  }, [props.cookies]);
+    fetchListOfPosts();
+  }, []);
 
-  function authenticateUser() {
+  const authenticateUser = () => {
     // validate and see if token exist
     console.log(props.cookies);
     const token = props.cookies.get("auth_token");
@@ -79,9 +80,17 @@ function Forum(props) {
       toast("Login user to open forum");
     }
     setMyToken(token);
-  }
+  };
 
-  function sendAPost() {
+  const fetchListOfPosts = async () => {
+    toast("fetch posts");
+
+    const result = await axios.get("http://localhost:4000/api/v1/posts");
+    console.log(result.data);
+    setPosts(result.data);
+  };
+
+  const sendAPost = () => {
     toast(1);
     console.log(myToken);
     axios
@@ -103,18 +112,13 @@ function Forum(props) {
         toast(err.response.data.message);
         console.log(err.response);
       });
-  }
-
-  // useEffect (async() => {
-  //   //const postsData = await fetchAllPosts()
-  //   setPosts(postsData);
-
-  // }, []);
+  };
 
   const handlePostSubmit = () => {
     toast("Post button is clicked");
     sendAPost();
     setContext("");
+    // await fetchListOfPosts();
   };
 
   return (
@@ -139,7 +143,7 @@ function Forum(props) {
               variant="contained"
               color="secondary"
               style={{ display: "inline" }}
-              onClick={handlePostSubmit}
+              onClick={() => handlePostSubmit()}
             >
               Post
             </Button>
@@ -148,74 +152,109 @@ function Forum(props) {
         </div>
         {posts.map(post => (
           // <Post userId={post.userId} content={post.title} />
-          <Post key={post.id} title={post.user} body={post.context} />
+
+          <Post key={post.id} item={post} />
         ))}
       </div>
     </div>
   );
 }
 
-function Post({ title, body }) {
+function Post({ key, item }) {
   const classes = useStyles();
-  const [newComment, setNewComment] = useState({ user: "", context: "" });
+
+  //inside post
+  const [avatar, setAvatar] = useState("");
+  const [context, setContext] = useState("");
+  const [username, setUsername] = useState("");
+  const [postDate, setPostDate] = useState("");
+
+  // comment
   const [comments, setComments] = useState([]);
+  const [commentContent, setCommentContent] = useState("");
 
   useEffect(() => {
+    setInitialData();
+    fetchListOfComment();
     // setComments(commentsData);
   }, []);
 
+  const setInitialData = () => {
+    const titleString = item.username;
+    const username = `@${titleString}`;
+    setUsername(username);
+    const avatarName = titleString.slice(0, 1).toUpperCase();
+    setAvatar(avatarName);
+
+    const dateRaw = item.createdAt.slice(0, 10);
+    const postDate = new Date(dateRaw).toString().slice(0, 15);
+    setPostDate(postDate);
+
+    const context = item.context;
+    setContext(context);
+  };
+
+  const fetchListOfComment = async () => {
+    toast("fetch comment by post id");
+
+    // const result = await axios.get("http://localhost:4000/api/v1/posts");
+    // console.log(result.data);
+    // setPosts(result.data);
+  };
+
+  const sendAComment = () => {
+    toast(1);
+    // console.log(myToken);
+    // axios
+    //   .post(
+    //     "http://localhost:4000/api/v1/posts",
+    //     { context },
+    //     {
+    //       headers: {
+    //         token: myToken,
+    //       },
+    //     }
+    //   )
+    //   .then(response => {
+    //     toast(2);
+    //     console.log("post is successful");
+    //   })
+    //   .catch(err => {
+    //     toast(3);
+    //     toast(err.response.data.message);
+    //     console.log(err.response);
+    //   });
+  };
+
   const handleCommentSubmit = () => {
-    toast("Comment button is clicked");
-    // set the postId
-    const commentId = comments.length;
-
-    //ingest the new post into postData array
-    let createNewComment = {
-      id: commentId,
-      user: newComment.user,
-      create_at: "July 23, 2021",
-      context: newComment.context,
-    };
-
-    // commentsData.push(createNewComment);
-
-    //empty the input-box
-    setNewComment({ user: "", context: "" });
+    toast("Post button is clicked");
+    // sendAComment();
+    // setcommentContent("");
+    // await fetchListOfPosts();
   };
 
   return (
     <Card className={classes.cardStyling}>
       <CardHeader
-        avatar={<Avatar className={classes.avatar}>E</Avatar>}
+        avatar={<Avatar className={classes.avatar}>{avatar}</Avatar>}
         //title={props.userId}
-        title={title}
-        subheader="July 5, 2021"
+        title={username}
+        subheader={postDate}
       />
 
-      <CardContent>{body}</CardContent>
+      <CardContent>{context}</CardContent>
       <Divider />
       <CardActions disableSpacing>
         <form>
-          <TextField
-            id="user_comment"
-            label="User"
-            variant="outlined"
-            size="small"
-            value={newComment.user}
-            className={classes.formInput}
-            onChange={e => {
-              setNewComment({ ...newComment, user: e.target.value });
-            }}
-          />
           <TextField
             id="comment"
             label="Write encouragement..."
             variant="outlined"
             size="small"
-            value={newComment.context}
+            value={commentContent}
             className={classes.formInput}
             onChange={e => {
-              setNewComment({ ...newComment, context: e.target.value });
+              setCommentContent(e.target.value);
             }}
           />
           <Button
@@ -225,9 +264,9 @@ function Post({ title, body }) {
             style={{ display: "inline" }}
             onClick={handleCommentSubmit}
           >
-            Post
+            Say
           </Button>
-          <p className={classes.jsonState}>{JSON.stringify(newComment)}</p>
+          <p className={classes.jsonState}>{JSON.stringify(commentContent)}</p>
         </form>
       </CardActions>
       {comments.map(item => (
