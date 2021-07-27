@@ -18,7 +18,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 
 // importing sub-component
-import Payment from "../delivery_component/Payment";
+// import Payment from "../delivery_component/Payment";
 
 import { withCookies } from "react-cookie";
 import { toast } from "react-toastify";
@@ -367,7 +367,6 @@ function NewDelivery(props) {
         />
       </div>
       <Divider className={classes.divider} />
-      <Payment />;
     </div>
   );
 }
@@ -436,24 +435,11 @@ function ModalAndButtonList({ itemLimit, fetchListOfItem, ...props }) {
       });
   };
 
-  const handleOrderFormSubmit = () => {
-    console.log("handle form submit clicked");
-  };
-
   return (
     <div className="buttonList">
       {/* Button: Add Item */}
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Add Item
-      </Button>
-
-      {/* Button: Check Out */}
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => handleOrderFormSubmit()}
-      >
-        Save Progress
       </Button>
 
       {/* Modal with add-item form, can open and close with setOpen */}
@@ -550,7 +536,7 @@ function ItemCard({ itemID, itemName, imageSrc, item }) {
   const classes = useStyles();
 
   return (
-    <Link to={"/item/" + itemID}>
+    <Link to={"/item/" + itemID} style={{ textDecoration: "none" }}>
       <div className={classes.cardStyling}>
         <img className={classes.itemImage} src={imageSrc} alt="item_image" />
         <Typography component="p" className={classes.addedProductName}>

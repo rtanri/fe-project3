@@ -18,7 +18,8 @@ import Signup from "./components/pages/Signup";
 import Forum from "./components/pages/Forum";
 import NewDelivery from "./components/pages/NewDelivery";
 import EditItem from "./components/pages/EditItem";
-import PaymentSuccess from "./components/delivery_component/PaymentSuccess";
+import PaymentSuccess from "./components/pages/PaymentSuccess";
+import Payment from "./components/pages/Payment";
 import Dashboard from "./components/pages/Dashboard";
 
 const custom_theme = createTheme({
@@ -69,6 +70,11 @@ function App(props) {
             <Route
               path="/new-deliver/"
               component={NewDelivery}
+              cookie={cookie}
+            />
+            <Route
+              path="/payment/:orderID"
+              component={Payment}
               cookie={cookie}
             />
             <Route path="/successful-order" component={PaymentSuccess} />

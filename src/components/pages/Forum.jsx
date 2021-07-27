@@ -9,7 +9,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
 import { TextField, Button, Divider } from "@material-ui/core";
 import { toast } from "react-toastify";
 import { withCookies } from "react-cookie";
@@ -153,7 +152,7 @@ function Forum(props) {
         {posts.map(post => (
           // <Post userId={post.userId} content={post.title} />
 
-          <Post key={post.id} item={post} />
+          <Post key={post._id} item={post} />
         ))}
       </div>
     </div>

@@ -135,6 +135,15 @@
   margin-bottom: 80px;
 }
 
+.pageTitle-less-margin {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.subTitle-success-page {
+  min-width: 700px;
+}
+
 .formHeader {
   text-align: left;
   margin-bottom: 40px;
@@ -219,4 +228,14 @@
 .address-field {
   margin: 0;
   display: inline-flex;
+}
+
+.order-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.order-subtitle {
+  margin: 0;
+  font-size: 0.9em;
 }

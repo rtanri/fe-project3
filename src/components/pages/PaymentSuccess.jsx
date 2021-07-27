@@ -4,24 +4,15 @@ import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles({
-  subTitle: {
-    whiteSpace: "nowrap",
-    marginTop: 0,
-    marginBottom: 10,
-  },
-});
-
 export default function PaymentSuccess() {
-  const classes = useStyles();
   return (
     <div className="flexbox-column main-body">
-      <h1 className="">Payment Successful</h1>
-      <p className={classes.subTitle}>
+      <h1 className="pageTitle-less-margin">Payment Successful</h1>
+      <p className="subTitle-success-page">
         We will process your order, visit your order dashboard to check the
         status
       </p>
-      <Link to="/order-list" className="menu-nav-link">
+      <Link to="/dashboard" className="menu-nav-link">
         <Button
           type="button"
           className="margin-bottom"

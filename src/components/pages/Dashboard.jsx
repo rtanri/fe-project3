@@ -14,7 +14,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import { Button, Divider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { withCookies } from "react-cookie";
@@ -70,15 +70,20 @@ const useStyles = makeStyles({
     bottom: "20px",
     margin: 5,
   },
+  cardTitle: {
+    padding: "5px 0 2px 10px",
+  },
 });
 
 function Dashboard(props) {
   const classes = useStyles();
   const [myToken, setMyToken] = useState("");
+  const [allOrder, setAllOrder] = useState([]);
   let history = useHistory();
 
   useEffect(() => {
     authenticateUser();
+    fetchListOfOrder();
   }, []);
 
   const authenticateUser = () => {
@@ -119,14 +124,26 @@ function Dashboard(props) {
       });
   };
 
+  const fetchListOfOrder = async () => {
+    toast("fetch order func");
+    const result = await axios.get("http://localhost:4000/api/v1/allOrders/", {
+      headers: {
+        token: props.cookies.get("auth_token"),
+      },
+    });
+    console.log(result.data);
+    setAllOrder(result.data);
+  };
+
   return (
     <div className="main-body">
       <h1 align="center">Order list</h1>
       <div className="flexbox-row">
         <div className={classes.orderListBox}>
           <div>
-            <OrderCard />
-            <OrderCard />
+            {allOrder.map(order => (
+              <OrderCard key={order._id} item={order} />
+            ))}
             <p align="center">
               <Button
                 onClick={() => createNewOrder()}
@@ -139,84 +156,115 @@ function Dashboard(props) {
             </p>
           </div>
         </div>
-        <div>
+        {/* <div>
           <OrderIdWithDetail />
-        </div>
+        </div> */}
       </div>
     </div>
   );
 }
 
-function OrderIdWithDetail() {
+// function OrderIdWithDetail() {
+//   const classes = useStyles();
+//   return (
+//     <div>
+//       <List className={classes.orderSheet}>
+//         <h2 align="center">Order #1231431</h2>
+//         <Typography as="p" align="center">
+//           Jul 2021
+//         </Typography>
+//         <hr />
+//         <ListItem>
+//           <ListItemAvatar>
+//             <Avatar>
+//               <ImageIcon />
+//             </Avatar>
+//           </ListItemAvatar>
+//           <ListItemText primary="Item 1" secondary="weight: 500gr" />
+//         </ListItem>
+//         <ListItem>
+//           <ListItemAvatar>
+//             <Avatar>
+//               <WorkIcon />
+//             </Avatar>
+//           </ListItemAvatar>
+//           <ListItemText primary="Item 2" secondary="weight: 500gr" />
+//         </ListItem>
+//         <ListItem>
+//           <ListItemAvatar>
+//             <Avatar>
+//               <BeachAccessIcon />
+//             </Avatar>
+//           </ListItemAvatar>
+//           <ListItemText primary="Item 3" secondary="weight: 500gr" />
+//         </ListItem>
+//         <hr style={{ position: "relative", top: 50 }} />
+//         <div className={classes.addressBox}>
+//           <Typography as="h4">Delivery to</Typography>
+//           <Typography as="p">
+//             3 bedok reservoir view #08-12, Singapore 456341
+//           </Typography>
+//         </div>
+//       </List>
+//     </div>
+//   );
+// }
+
+function OrderCard({ item }) {
   const classes = useStyles();
+  const [postDate, setPostDate] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [addressId, setAddressId] = useState("");
+  const [quantity, setQuantity] = useState("");
+
+  useEffect(() => {
+    setInitialData();
+  }, []);
+
+  const setInitialData = () => {
+    console.log(item);
+
+    const orderCode = item._id;
+    setOrderId(orderCode);
+
+    const addressCode = item.address;
+    setAddressId(addressCode);
+
+    const dateRaw = item.createdAt.slice(0, 10);
+    const postDate = new Date(dateRaw).toString().slice(0, 15);
+    setPostDate(postDate);
+
+    const productAmount = item.products.length;
+    setQuantity(productAmount);
+  };
+
   return (
-    <div>
-      <List className={classes.orderSheet}>
-        <h2 align="center">Order #1231431</h2>
-        <Typography as="p" align="center">
-          Jul 2021
+    <Link
+      to={"/new-delivery/" + orderId + "/" + addressId}
+      style={{ textDecoration: "none" }}
+    >
+      <Card className={classes.orderCard}>
+        <Typography as="p" align="left" className={classes.cardTitle}>
+          <strong>Created Date: </strong>
+          {postDate}
         </Typography>
-        <hr />
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <ImageIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Item 1" secondary="weight: 500gr" />
-        </ListItem>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <WorkIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Item 2" secondary="weight: 500gr" />
-        </ListItem>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <BeachAccessIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Item 3" secondary="weight: 500gr" />
-        </ListItem>
-        <hr style={{ position: "relative", top: 50 }} />
-        <div className={classes.addressBox}>
-          <Typography as="h4">Delivery to</Typography>
-          <Typography as="p">
-            3 bedok reservoir view #08-12, Singapore 456341
-          </Typography>
-        </div>
-      </List>
-    </div>
-  );
-}
-
-function OrderCard() {
-  const classes = useStyles();
-
-  return (
-    <Card className={classes.orderCard}>
-      <CardHeader
-        title="Date: Sat 17, July 2021"
-        classes={{
-          title: classes.headerTitle,
-        }}
-        className={classes.eachCardHeader}
-      />
-      <CardContent className={classes.eachCardBody}>
-        <Divider />
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <BeachAccessIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Order #1231431" secondary="Quantity: 4" />
-        </ListItem>
-      </CardContent>
-    </Card>
+        <CardContent className={classes.eachCardBody}>
+          <Divider />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <BeachAccessIcon />
+              </Avatar>
+            </ListItemAvatar>
+            {/* <ListItemText primary={orderId} secondary={quantity} /> */}
+            <ListItemText>
+              <strong>Tracking ID :</strong> {orderId}
+            </ListItemText>
+            <ListItemText align="right">{quantity} item(s)</ListItemText>
+          </ListItem>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 
