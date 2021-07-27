@@ -47,11 +47,12 @@ const useStyles = makeStyles(theme => ({
     marginTop: 10,
     backgroundColor: "coral",
   },
-  jsonState: {
-    marginTop: 10,
-    marginBottom: 20,
-    textAlign: "center",
-  },
+
+  // jsonState: {
+  //   marginTop: 10,
+  //   marginBottom: 20,
+  //   textAlign: "center",
+  // },
 }));
 
 function Forum(props) {
@@ -119,11 +120,12 @@ function Forum(props) {
     <div className="main-body">
       <h1 align="center">FreshStart Forum</h1>
       <div className="post-list flexbox-column-forum">
-        <div>
+        <div className="new-post-container">
+          <p>New Post</p>
           <form>
             <TextField
               id="comment"
-              label="Write Post Content..."
+              label="share what's your thought..."
               variant="outlined"
               size="small"
               value={context}
@@ -141,20 +143,25 @@ function Forum(props) {
             >
               Post
             </Button>
-            <p className={classes.jsonState}>{JSON.stringify(context)}</p>
+            {/* <p className={classes.jsonState}>{JSON.stringify(context)}</p> */}
           </form>
         </div>
         {posts.map(post => (
           // <Post userId={post.userId} content={post.title} />
 
-          <Post key={post._id} item={post} myToken={myToken} />
+          <Post
+            key={post._id}
+            item={post}
+            myToken={myToken}
+            commentsArr={post.comments}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function Post({ key, item, myToken }) {
+function Post({ item, myToken }) {
   const classes = useStyles();
 
   //inside post
@@ -163,6 +170,7 @@ function Post({ key, item, myToken }) {
   const [username, setUsername] = useState("");
   const [postDate, setPostDate] = useState("");
   const [postId, setPostId] = useState("");
+  const [commentsId, setCommentsId] = useState([]);
 
   // comment
   const [comments, setComments] = useState([]);
@@ -170,34 +178,45 @@ function Post({ key, item, myToken }) {
 
   useEffect(() => {
     setInitialData();
-    // fetchListOfComment();
+    if (postId) {
+      fetchListOfComment();
+    }
   }, []);
 
   const setInitialData = async () => {
-    const titleString = item.username;
-    const username = `@${titleString}`;
-    setUsername(username);
-    const avatarName = titleString.slice(0, 1).toUpperCase();
-    setAvatar(avatarName);
+    try {
+      console.log(item.comments);
+      setCommentsId(item.comments);
 
-    const dateRaw = item.createdAt.slice(0, 10);
-    const postDate = new Date(dateRaw).toString().slice(0, 15);
-    setPostDate(postDate);
+      const titleString = item.username;
+      const username = `@${titleString}`;
+      setUsername(username);
+      const avatarName = titleString.slice(0, 1).toUpperCase();
+      setAvatar(avatarName);
 
-    const context = item.context;
-    setContext(context);
+      const dateRaw = item.createdAt.slice(0, 10);
+      const postDate = new Date(dateRaw).toString().slice(0, 15);
+      setPostDate(postDate);
 
-    const postRef = item._id;
-    setPostId(postRef);
-    await fetchListOfComment();
+      const context = item.context;
+      setContext(context);
+
+      const postRef = item._id;
+      setPostId(postRef);
+    } catch (err) {
+      console.log(err);
+    }
+    if (item._id) {
+      await fetchListOfComment(item._id);
+    } else {
+      console.log("PostId cannot be found");
+    }
   };
 
-  const fetchListOfComment = async () => {
+  const fetchListOfComment = async postId => {
     // toast("fetch comment by post id");
-    console.log(postId);
     const result = await axios.get(
-      "http://localhost:4000/api/v1/posts/comments",
-      { postId: postId }
+      "http://localhost:4000/api/v1/comments/" + postId
     );
     console.log(result.data);
     setComments(result.data);
@@ -206,8 +225,8 @@ function Post({ key, item, myToken }) {
   const sendAComment = () => {
     axios
       .post(
-        "http://localhost:4000/api/v1/posts/comments",
-        { context: commentContent, postId: postId },
+        "http://localhost:4000/api/v1/comments/" + postId,
+        { context: commentContent },
         {
           headers: {
             token: myToken,
@@ -228,7 +247,7 @@ function Post({ key, item, myToken }) {
   };
 
   const handleCommentSubmit = async () => {
-    toast("Post button is clicked");
+    toast("Say button is clicked");
     sendAComment();
     setCommentContent("");
     await fetchListOfComment();
@@ -267,18 +286,44 @@ function Post({ key, item, myToken }) {
           >
             Say
           </Button>
-          <p className={classes.jsonState}>{JSON.stringify(commentContent)}</p>
+          {/* <p className={classes.jsonState}>{JSON.stringify(commentContent)}</p> */}
         </form>
       </CardActions>
       {comments.map(item => (
-        <Comment key={item.id} title={item.user} body={item.context} />
+        <Comment key={item._id} item={item} />
       ))}
     </Card>
   );
 }
 
-function Comment({ title, body }) {
+function Comment({ item }) {
   const classes = useStyles();
+  const [avatar, setAvatar] = useState("");
+  const [context, setContext] = useState("");
+  const [username, setUsername] = useState("");
+  const [postDate, setPostDate] = useState("");
+
+  useEffect(() => {
+    setInitialData();
+    handleStyling();
+  }, []);
+
+  const setInitialData = async () => {
+    if (item.username) {
+      const titleString = item.username;
+      const username = `@${titleString}`;
+      setUsername(username);
+      const avatarName = titleString.slice(0, 1).toUpperCase();
+      setAvatar(avatarName);
+    }
+
+    const dateRaw = item.createdAt.slice(0, 10);
+    const postDate = new Date(dateRaw).toString().slice(0, 15);
+    setPostDate(postDate);
+
+    const context = item.context;
+    setContext(context);
+  };
 
   const handleStyling = () => {
     const commentPadding = document.querySelectorAll(
@@ -289,22 +334,20 @@ function Comment({ title, body }) {
     }
   };
 
-  useEffect(() => {
-    handleStyling();
-  }, []);
-
   return (
     <Card classes={classes.mainCard}>
       <CardContent className={classes.commentCard}>
         <ListItem className={classes.commentFlexbox}>
           <ListItemAvatar>
-            <Avatar className={classes.commentAvatar}>S</Avatar>
+            <Avatar className={classes.commentAvatar}>{avatar}</Avatar>
           </ListItemAvatar>
-          <ListItemText
-            className={classes.repliedCommentText}
-            primary={title}
-            secondary={body}
-          />
+          <div className="comment-context-box">
+            <p className="forum-username">
+              {username} <span className="forum-date">{postDate}</span>
+            </p>
+            {/* <p className="forum-date">{postDate}</p> */}
+            <p className="forum-context">{context}</p>
+          </div>
         </ListItem>
       </CardContent>
     </Card>

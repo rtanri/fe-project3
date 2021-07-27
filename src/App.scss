@@ -239,3 +239,36 @@
   margin: 0;
   font-size: 0.9em;
 }
+
+.new-post-container {
+  margin: 20px auto 60px auto;
+}
+
+.comment-context-box {
+  width: 100%;
+  position: relative;
+  margin: 5px 0 0 0;
+  padding: 10px;
+  background-color: #eaeaea;
+  border-radius: 5px;
+}
+.forum-username {
+  // color: black;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.forum-date {
+  color: grey;
+  font-size: 0.8rem;
+  margin: 0;
+  position: absolute;
+  right: 15px;
+}
+.forum-context {
+  color: black;
+  margin: 0 5px 0 5px;
+  font-size: 0.95rem;
+}
