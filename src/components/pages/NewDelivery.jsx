@@ -3,6 +3,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
+
 import {
   Button,
   Typography,
@@ -137,9 +138,9 @@ function NewDelivery(props) {
 
   const fetchListOfItem = async () => {
     toast("fetch item func");
-
+    console.log(params.orderID);
     const result = await axios.get(
-      "http://localhost:4000/api/v1/products/" + params.orderID,
+      "http://localhost:4000/api/v1/orders/" + params.orderID + "/products",
       {
         headers: {
           token: props.cookies.get("auth_token"),
@@ -164,7 +165,7 @@ function NewDelivery(props) {
         },
       })
       .then(async response => {
-        console.log("address data");
+        console.log("==address data==");
         console.log(response.data);
 
         setAddress(response.data.addressType);

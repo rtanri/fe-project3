@@ -46,7 +46,7 @@ function NavBar(props) {
           </Link> */}
           <Link to="/dashboard" className="menu-nav-link">
             <Button color="primary" className={classes.buttonStyling}>
-              Dashboard
+              Delivery
             </Button>
           </Link>
           {props.cookie ? (

@@ -1,26 +1,16 @@
-// import axios from "axios";
-// import { toast } from "react-toastify";
-// import { withCookies } from "react-cookie";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { withCookies } from "react-cookie";
 
-// export const userLoginService = (email, password) => {
-//   axios
-//     .post("http://localhost:4000/api/v1/user/login", {
-//       email,
-//       password,
-//     })
-//     .then(response => {
-//       toast("2");
-//       // after successful login, store the token as cookie
-//       const { cookies } = this.props;
+// export const fetchListOfItem = async ({ params, props }) => {
+//   toast("fetch item func");
 
-//       cookies.set("auth_token", response.data.token, {
-//         path: "/",
-//       });
-//       toast("login successful, user is found");
-//       this.props.history.push("/");
-//     })
-//     .catch(err => {
-//       toast(err);
-//       // console.log(err);
-//     });
+//   const result = await axios.get(
+//     "http://localhost:4000/api/v1/products/" + params.orderID,
+//     {
+//       headers: {
+//         token: props.cookies.get("auth_token"),
+//       },
+//     }
+//   );
 // };
