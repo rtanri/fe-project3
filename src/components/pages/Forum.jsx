@@ -82,32 +82,27 @@ function Forum(props) {
   };
 
   const fetchListOfPosts = async () => {
-    toast("fetch posts");
-
     const result = await axios.get("http://localhost:4000/api/v1/posts");
     console.log(result.data);
     setPosts(result.data);
   };
 
   const sendAPost = () => {
-    toast(1);
-    console.log(myToken);
+    // console.log(myToken);
     axios
       .post(
         "http://localhost:4000/api/v1/posts",
         { context },
         {
           headers: {
-            token: myToken,
+            token: props.cookies.get("auth_token"),
           },
         }
       )
       .then(response => {
-        toast(2);
         console.log("post is successful");
       })
       .catch(err => {
-        toast(3);
         toast(err.response.data.message);
         console.log(err.response);
       });
@@ -152,14 +147,14 @@ function Forum(props) {
         {posts.map(post => (
           // <Post userId={post.userId} content={post.title} />
 
-          <Post key={post._id} item={post} />
+          <Post key={post._id} item={post} myToken={myToken} />
         ))}
       </div>
     </div>
   );
 }
 
-function Post({ key, item }) {
+function Post({ key, item, myToken }) {
   const classes = useStyles();
 
   //inside post
@@ -167,6 +162,7 @@ function Post({ key, item }) {
   const [context, setContext] = useState("");
   const [username, setUsername] = useState("");
   const [postDate, setPostDate] = useState("");
+  const [postId, setPostId] = useState("");
 
   // comment
   const [comments, setComments] = useState([]);
@@ -174,11 +170,10 @@ function Post({ key, item }) {
 
   useEffect(() => {
     setInitialData();
-    fetchListOfComment();
-    // setComments(commentsData);
+    // fetchListOfComment();
   }, []);
 
-  const setInitialData = () => {
+  const setInitialData = async () => {
     const titleString = item.username;
     const username = `@${titleString}`;
     setUsername(username);
@@ -191,45 +186,52 @@ function Post({ key, item }) {
 
     const context = item.context;
     setContext(context);
+
+    const postRef = item._id;
+    setPostId(postRef);
+    await fetchListOfComment();
   };
 
   const fetchListOfComment = async () => {
-    toast("fetch comment by post id");
-
-    // const result = await axios.get("http://localhost:4000/api/v1/posts");
-    // console.log(result.data);
-    // setPosts(result.data);
+    // toast("fetch comment by post id");
+    console.log(postId);
+    const result = await axios.get(
+      "http://localhost:4000/api/v1/posts/comments",
+      { postId: postId }
+    );
+    console.log(result.data);
+    setComments(result.data);
   };
 
   const sendAComment = () => {
-    toast(1);
-    // console.log(myToken);
-    // axios
-    //   .post(
-    //     "http://localhost:4000/api/v1/posts",
-    //     { context },
-    //     {
-    //       headers: {
-    //         token: myToken,
-    //       },
-    //     }
-    //   )
-    //   .then(response => {
-    //     toast(2);
-    //     console.log("post is successful");
-    //   })
-    //   .catch(err => {
-    //     toast(3);
-    //     toast(err.response.data.message);
-    //     console.log(err.response);
-    //   });
+    axios
+      .post(
+        "http://localhost:4000/api/v1/posts/comments",
+        { context: commentContent, postId: postId },
+        {
+          headers: {
+            token: myToken,
+          },
+        }
+      )
+      .then(response => {
+        toast(2);
+        console.log("comment is successful");
+      })
+      .catch(err => {
+        toast(err.response.data.message);
+        console.log(err.response);
+      })
+      .finally(async () => {
+        await fetchListOfComment();
+      });
   };
 
-  const handleCommentSubmit = () => {
+  const handleCommentSubmit = async () => {
     toast("Post button is clicked");
-    // sendAComment();
-    // setcommentContent("");
-    // await fetchListOfPosts();
+    sendAComment();
+    setCommentContent("");
+    await fetchListOfComment();
   };
 
   return (
