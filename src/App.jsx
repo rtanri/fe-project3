@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import "./App.scss";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { withCookies } from "react-cookie";
+// import AuthApi from "./AuthApi";
 
 // import { Typography } from "@material-ui/core";
 
@@ -34,53 +40,53 @@ const custom_theme = createTheme({
 });
 
 function App(props) {
-  const [cookie, setCookie] = useState(false);
+  const [auth, setAuth] = useState(false);
 
   useEffect(() => {
-    console.log(props.cookies);
     const token = props.cookies.get("auth_token");
     // can show auth_token | undefined
 
     if (!token) {
-      return setCookie(false);
+      return setAuth(false);
     } else {
-      return setCookie(true);
+      return setAuth(true);
     }
   }, [props.cookies]);
-
-  // const handleLogout = () => {
-  //   setCookie(false);
-  // };
 
   return (
     <Router>
       <ThemeProvider theme={custom_theme}>
         <div>
           {/* <NavBar cookie={cookie} handleSetCookie={setCookie} /> */}
-          <NavBar cookie={cookie} />
+          <NavBar auth={auth} setAuth={setAuth} />
           <ToastContainer />
           <Switch>
-            <Route path="/login-user" component={Login} />
-            <Route path="/signup-new-user" component={Signup} />
-            <Route path="/forum" component={Forum} />
+            <ProtectedLogin
+              path="/login-user"
+              auth={auth}
+              setAuth={setAuth}
+              component={Login}
+            />
+            {/* <Route path="/login-user" component={Login} auth={auth} /> */}
+            <ProtectedRoute
+              path="/dashboard"
+              auth={auth}
+              setAuth={() => setAuth(true)}
+              component={Dashboard}
+            />
+            <Route path="/signup-new-user" component={Signup} auth={auth} />
+            <Route path="/forum" component={Forum} cookie={auth} />
             <Route
               path="/new-delivery/:orderID/:addressID"
               component={NewDelivery}
+              cookie={auth}
             />
-            <Route
-              path="/new-deliver/"
-              component={NewDelivery}
-              cookie={cookie}
-            />
-            <Route
-              path="/payment/:orderID"
-              component={Payment}
-              cookie={cookie}
-            />
+
+            <Route path="/payment/:orderID" component={Payment} cookie={auth} />
             <Route path="/successful-order" component={PaymentSuccess} />
             <Route path="/item/:itemID" component={EditItem} />
-            <Route path="/dashboard" component={Dashboard} cookie={cookie} />
-            <Route path="/" component={LandingPage} />
+            <Route path="/" component={LandingPage} cookie={auth} />
+            {/* <Route path="/dashboard" component={Dashboard} cookie={cookie} /> */}
           </Switch>
           <Footer />
         </div>
@@ -88,5 +94,23 @@ function App(props) {
     </Router>
   );
 }
+
+const ProtectedRoute = ({ auth, setAuth, component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={() => (auth ? <Component /> : <Redirect to="/login-user" />)}
+    />
+  );
+};
+
+const ProtectedLogin = ({ auth, setAuth, component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={() => (auth ? <Redirect to="/dashboard" /> : <Component />)}
+    />
+  );
+};
 
 export default withCookies(App);

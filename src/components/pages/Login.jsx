@@ -1,110 +1,110 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // import { userLoginService } from "../../services/usersService";
 import { withCookies } from "react-cookie";
 import axios from "axios";
+
 import { toast } from "react-toastify";
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      username: "",
-      password: "",
-    };
-  }
+const useStyles = makeStyles(theme => ({
+  pageTitle: {
+    textAlign: "center",
+    marginBottom: "80px",
+  },
+  formHeader: {
+    textAlign: "left",
+    marginBottom: "40px",
+  },
+  formInput: {
+    width: "400px",
+    marginBottom: "20px",
+  },
+}));
 
-  handleSubmit(e) {
-    e.preventDefault();
-    toast("1");
+function Login({ auth, setAuth, ...props }) {
+  const classes = useStyles();
+  let history = useHistory();
+
+  // const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = () => {
+    console.log(props);
+    console.log(auth);
     axios
       .post("http://localhost:4000/api/v1/user/login", {
-        username: this.state.username,
-        password: this.state.password,
+        username,
+        password,
       })
       .then(response => {
         toast("2");
-        toast(response.message);
-        // after successful login, store the token as cookie
-        const { cookies } = this.props;
+        console.log(response);
+        props.cookies.set("auth_token", response.data.token, { path: "/" });
 
-        // set auth_token as name of token get from backend response.data
-        cookies.set("auth_token", response.data.token, {
-          path: "/",
-        });
-
-        console.log(cookies);
         toast("login successful, user is found");
-        this.props.history.push("/"); //success
+        window.location.reload();
       })
       .catch(err => {
-        toast("3");
-        toast(err.response.data.message);
+        console.log("3");
+        console.log(err);
+      })
+      .finally(async () => {
+        await history.push("/dashboard");
       });
-  }
-  handleFormChange(e, fieldName) {
-    let newState = {};
-    newState[fieldName] = e.target.value;
+  };
 
-    this.setState(newState);
-  }
-  render() {
-    return (
-      <div className="main-body flexbox-column">
-        <h1 className="pageTitle">Login FreshStart Account Today</h1>
-        <div className="login-box">
-          <h3 className="formHeader">Login</h3>
-          <form
-            className="flexbox-column"
-            onSubmit={e => {
-              this.handleSubmit(e);
+  return (
+    <div className="main-body flexbox-column">
+      <h1 className={classes.pageTitle}>Login FreshStart Account Today</h1>
+      <div className="login-box">
+        <h3 className={classes.formHeader}>Login</h3>
+        <form className="flexbox-column">
+          <TextField
+            required
+            id="email"
+            label="Username"
+            variant="outlined"
+            size="small"
+            className={classes.formInput}
+            value={username}
+            onChange={e => {
+              setUsername(e.target.value);
             }}
+          />
+          <TextField
+            required
+            id="password"
+            label="Password"
+            variant="outlined"
+            size="small"
+            className={classes.formInput}
+            value={password}
+            onChange={e => {
+              setPassword(e.target.value);
+            }}
+          />
+          <Button
+            type="button"
+            className="margin-bottom"
+            variant="contained"
+            color="primary"
+            style={{ margin: 20, width: 150 }}
+            onClick={handleSubmit}
           >
-            <TextField
-              required
-              id="email"
-              label="username"
-              variant="outlined"
-              size="small"
-              className="formInput"
-              value={this.state.username}
-              onChange={e => {
-                this.handleFormChange(e, "username");
-              }}
-            />
-            <TextField
-              required
-              id="password"
-              label="Password"
-              variant="outlined"
-              size="small"
-              className="formInput"
-              value={this.state.password}
-              onChange={e => {
-                this.handleFormChange(e, "password");
-              }}
-            />
-            <Button
-              type="submit"
-              className="margin-bottom"
-              variant="contained"
-              color="primary"
-              style={{ margin: 20, width: 150 }}
-            >
-              Submit
-            </Button>
-          </form>
-        </div>
-        <WordsAndLink url="/" params="Forgot Password?" />
-        <WordsAndLink
-          url="/signup-new-user"
-          params="Don't have an account? click here to sign-up"
-        />
+            Submit
+          </Button>
+        </form>
       </div>
-    );
-  }
+      <WordsAndLink url="/" params="Forgot Password?" />
+      <WordsAndLink
+        url="/signup-new-user"
+        params="Don't have an account? click here to sign-up"
+      />
+    </div>
+  );
 }
 
 function WordsAndLink({ url, params }) {
