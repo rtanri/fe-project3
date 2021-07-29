@@ -39,7 +39,7 @@ export default function Signup() {
   function postUserData() {
     toast(1);
     axios
-      .post("http://localhost:4000/api/v1/user/signup", {
+      .post(`${process.env.REACT_APP_BACKEND}/api/v1/user/signup`, {
         firstName,
         lastName,
         username,

@@ -83,7 +83,9 @@ function Forum(props) {
   };
 
   const fetchListOfPosts = async () => {
-    const result = await axios.get("http://localhost:4000/api/v1/posts");
+    const result = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/v1/posts`
+    );
     console.log(result.data);
     setPosts(result.data);
   };
@@ -92,7 +94,7 @@ function Forum(props) {
     // console.log(myToken);
     axios
       .post(
-        "http://localhost:4000/api/v1/posts",
+        `${process.env.REACT_APP_BACKEND}/api/v1/posts`,
         { context },
         {
           headers: {
@@ -213,10 +215,10 @@ function Post({ item, myToken }) {
     }
   };
 
-  const fetchListOfComment = async postId => {
+  const fetchListOfComment = async () => {
     // toast("fetch comment by post id");
     const result = await axios.get(
-      "http://localhost:4000/api/v1/comments/" + postId
+      `${process.env.REACT_APP_BACKEND}/api/v1/comments/${postId}`
     );
     console.log(result.data);
     setComments(result.data);
@@ -225,7 +227,7 @@ function Post({ item, myToken }) {
   const sendAComment = () => {
     axios
       .post(
-        "http://localhost:4000/api/v1/comments/" + postId,
+        `${process.env.REACT_APP_BACKEND}/api/v1/comments/${postId}`,
         { context: commentContent },
         {
           headers: {
@@ -355,14 +357,3 @@ function Comment({ item }) {
 }
 
 export default withCookies(Forum);
-/*
-1. frontend: call the data for post based on the dates , limit 5.
-
-2. backend: will send an array of post. 
-Each post of the array need to have user property. 
-Must also have user name and email. and profile picture.
-
-3. post need to return all comments in array related to the post.
-4. each comment need to return the users name and content. 
-5. write for axios post and get and render , refresh page with new post.
-*/

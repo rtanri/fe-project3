@@ -35,7 +35,7 @@ function Login({ auth, setAuth, ...props }) {
     console.log(props);
     console.log(auth);
     axios
-      .post("http://localhost:4000/api/v1/user/login", {
+      .post(`${process.env.REACT_APP_BACKEND}/api/v1/user/login`, {
         username,
         password,
       })

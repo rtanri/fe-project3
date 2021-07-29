@@ -139,7 +139,7 @@ function NewDelivery(props) {
   const fetchListOfItem = async () => {
     console.log(params.orderID);
     const result = await axios.get(
-      "http://localhost:4000/api/v1/orders/" + params.orderID + "/products",
+      `${process.env.REACT_APP_BACKEND}/api/v1/orders/${params.orderID}/products`,
       {
         headers: {
           token: props.cookies.get("auth_token"),
@@ -157,11 +157,14 @@ function NewDelivery(props) {
     }
 
     axios
-      .get("http://localhost:4000/api/v1/addAddress/" + params.addressID, {
-        headers: {
-          token: props.cookies.get("auth_token"),
-        },
-      })
+      .get(
+        `${process.env.REACT_APP_BACKEND}/api/v1/addAddress/${params.addressID}`,
+        {
+          headers: {
+            token: props.cookies.get("auth_token"),
+          },
+        }
+      )
       .then(async response => {
         console.log("==address data==");
         console.log(response.data);
@@ -182,7 +185,7 @@ function NewDelivery(props) {
     }
     axios
       .patch(
-        "http://localhost:4000/api/v1/addAddress/" + params.addressID,
+        `${process.env.REACT_APP_BACKEND}/api/v1/addAddress/${params.addressID}`,
         {
           addressType: address,
           postalCode: postalCode,
@@ -208,13 +211,13 @@ function NewDelivery(props) {
       });
   };
 
-  const handleAutoChange = value => {
-    setAutoAddress(value);
-  };
+  // const handleAutoChange = value => {
+  //   setAutoAddress(value);
+  // };
 
-  const handleSelectAddress = value => {
-    setAutoAddress(value);
-  };
+  // const handleSelectAddress = value => {
+  //   setAutoAddress(value);
+  // };
 
   return (
     <div className="main-body">
@@ -474,7 +477,7 @@ function ModalAndButtonList({ itemLimit, fetchListOfItem, ...props }) {
     console.log(props.cookies.get("auth_token"));
     axios
       .post(
-        "http://localhost:4000/api/v1/products/" + params.orderID,
+        `${process.env.REACT_APP_BACKEND}/api/v1/products/${params.orderID}`,
         formData,
         {
           headers: {

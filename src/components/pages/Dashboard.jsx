@@ -121,7 +121,7 @@ function Dashboard(props) {
     console.log(props.cookies.get("auth_token"));
     axios
       .post(
-        "http://localhost:4000/api/v1/orders",
+        `${process.env.REACT_APP_BACKEND}/api/v1/orders`,
         {},
         {
           headers: {
@@ -145,11 +145,14 @@ function Dashboard(props) {
 
   const fetchListOfOrder = async () => {
     // toast("fetch order func");
-    const result = await axios.get("http://localhost:4000/api/v1/allOrders/", {
-      headers: {
-        token: props.cookies.get("auth_token"),
-      },
-    });
+    const result = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/v1/allOrders/`,
+      {
+        headers: {
+          token: props.cookies.get("auth_token"),
+        },
+      }
+    );
     console.log(result.data);
     setAllOrder(result.data);
   };
@@ -223,7 +226,9 @@ function OrderCard({ item, fetchListOfOrder }) {
   };
 
   const handleDeleteOrder = async () => {
-    await axios.delete("http://localhost:4000/api/v1/orders/" + orderId);
+    await axios.delete(
+      `${process.env.REACT_APP_BACKEND}/api/v1/orders/` + orderId
+    );
     fetchListOfOrder();
     history.push("/dashboard");
   };

@@ -57,7 +57,7 @@ function Payment(props) {
     toast("fetch item func");
     console.log(params.orderID);
     const result = await axios.get(
-      "http://localhost:4000/api/v1/orders/" + params.orderID + "/products",
+      `${process.env.REACT_APP_BACKEND}/api/v1/orders/${params.orderID}/products`,
       {
         headers: {
           token: props.cookies.get("auth_token"),
@@ -85,7 +85,9 @@ function Payment(props) {
   };
 
   const handlePay = async () => {
-    await axios.patch("http://localhost:4000/api/v1/payment/" + params.orderID);
+    await axios.patch(
+      `${process.env.REACT_APP_BACKEND}/api/v1/payment/${params.orderID}`
+    );
 
     history.push("/dashboard");
   };

@@ -27,7 +27,7 @@ function EditItem(props) {
     toast(1);
     axios
       .get(
-        "http://localhost:4000/api/v1/products/" + params.itemID,
+        `${process.env.REACT_APP_BACKEND}/api/v1/products/` + params.itemID,
         {},
         {
           headers: {
@@ -51,7 +51,7 @@ function EditItem(props) {
     toast(params.itemID);
     axios
       .patch(
-        "http://localhost:4000/api/v1/products/" + params.itemID,
+        `${process.env.REACT_APP_BACKEND}/api/v1/products/` + params.itemID,
         {
           name: itemName,
           weight: itemWeight,
@@ -74,7 +74,9 @@ function EditItem(props) {
 
   const deleteProduct = e => {
     axios
-      .delete("http://localhost:4000/api/v1/products/" + params.itemID)
+      .delete(
+        `${process.env.REACT_APP_BACKEND}/api/v1/products/${params.itemID}`
+      )
       .then(response => {
         console.log("delete product");
         console.log(response.data);
