@@ -98,7 +98,6 @@ function Login({ auth, setAuth, ...props }) {
           </Button>
         </form>
       </div>
-      <WordsAndLink url="/" params="Forgot Password?" />
       <WordsAndLink
         url="/signup-new-user"
         params="Don't have an account? click here to sign-up"

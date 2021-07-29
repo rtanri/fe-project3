@@ -18,7 +18,9 @@ const useStyles = makeStyles(theme => ({
   cardStyling: {
     maxWidth: 500,
     marginBottom: 20,
-    border: "1px solid #eaeaea",
+    padding: 10,
+    border: "1px solid #111B47",
+    boxShadow: "5px 10px #6f7cb2",
   },
   avatar: {
     backgroundColor: "#111B47",
@@ -47,12 +49,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: 10,
     backgroundColor: "coral",
   },
-
-  // jsonState: {
-  //   marginTop: 10,
-  //   marginBottom: 20,
-  //   textAlign: "center",
-  // },
 }));
 
 function Forum(props) {
@@ -61,10 +57,7 @@ function Forum(props) {
   const [myToken, setMyToken] = useState("");
   const [posts, setPosts] = useState([]);
   const [context, setContext] = useState("");
-  // const [newPost, setNewPost] = useState({ user: "", context: "" });
-  // const token = cookie.get("auth_token");
 
-  //get auth token from cookie, if doesnt exist/empty, redirect to login
   useEffect(() => {
     authenticateUser();
     fetchListOfPosts();
@@ -91,7 +84,6 @@ function Forum(props) {
   };
 
   const sendAPost = () => {
-    // console.log(myToken);
     axios
       .post(
         `${process.env.REACT_APP_BACKEND}/api/v1/posts`,
@@ -111,11 +103,11 @@ function Forum(props) {
       });
   };
 
-  const handlePostSubmit = () => {
+  const handlePostSubmit = async () => {
     toast("Post button is clicked");
     sendAPost();
     setContext("");
-    // await fetchListOfPosts();
+    await fetchListOfPosts();
   };
 
   return (
@@ -123,11 +115,11 @@ function Forum(props) {
       <h1 align="center">FreshStart Forum</h1>
       <div className="post-list flexbox-column-forum">
         <div className="new-post-container">
-          <p>New Post</p>
+          <p className="new-post-title">Tell us your story</p>
           <form>
             <TextField
               id="comment"
-              label="share what's your thought..."
+              label="today i feel ..."
               variant="outlined"
               size="small"
               value={context}
@@ -181,7 +173,7 @@ function Post({ item, myToken }) {
   useEffect(() => {
     setInitialData();
     if (postId) {
-      fetchListOfComment();
+      fetchListOfComment(postId);
     }
   }, []);
 
@@ -215,10 +207,10 @@ function Post({ item, myToken }) {
     }
   };
 
-  const fetchListOfComment = async () => {
+  const fetchListOfComment = async anyPostId => {
     // toast("fetch comment by post id");
     const result = await axios.get(
-      `${process.env.REACT_APP_BACKEND}/api/v1/comments/${postId}`
+      `${process.env.REACT_APP_BACKEND}/api/v1/comments/${anyPostId}`
     );
     console.log(result.data);
     setComments(result.data);
@@ -236,7 +228,6 @@ function Post({ item, myToken }) {
         }
       )
       .then(response => {
-        toast(2);
         console.log("comment is successful");
       })
       .catch(err => {
@@ -248,11 +239,11 @@ function Post({ item, myToken }) {
       });
   };
 
-  const handleCommentSubmit = async () => {
+  const handleCommentSubmit = async anyPostId => {
     toast("Say button is clicked");
     sendAComment();
     setCommentContent("");
-    await fetchListOfComment();
+    await fetchListOfComment(anyPostId);
   };
 
   return (
@@ -262,6 +253,7 @@ function Post({ item, myToken }) {
         //title={props.userId}
         title={username}
         subheader={postDate}
+        titleTypographyProps={{ variant: "h6" }}
       />
 
       <CardContent>{context}</CardContent>
@@ -284,7 +276,7 @@ function Post({ item, myToken }) {
             variant="contained"
             color="secondary"
             style={{ display: "inline" }}
-            onClick={handleCommentSubmit}
+            onClick={() => handleCommentSubmit(postId)}
           >
             Say
           </Button>
@@ -311,6 +303,8 @@ function Comment({ item }) {
   }, []);
 
   const setInitialData = async () => {
+    console.log("comment item");
+    console.log(item);
     if (item.username) {
       const titleString = item.username;
       const username = `@${titleString}`;
