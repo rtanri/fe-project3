@@ -18,7 +18,9 @@ const useStyles = makeStyles(theme => ({
   cardStyling: {
     maxWidth: 500,
     marginBottom: 20,
-    border: "1px solid #eaeaea",
+    padding: 10,
+    border: "1px solid #111B47",
+    boxShadow: "5px 10px #6f7cb2",
   },
   avatar: {
     backgroundColor: "#111B47",
@@ -47,12 +49,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: 10,
     backgroundColor: "coral",
   },
-
-  // jsonState: {
-  //   marginTop: 10,
-  //   marginBottom: 20,
-  //   textAlign: "center",
-  // },
 }));
 
 function Forum(props) {
@@ -61,10 +57,7 @@ function Forum(props) {
   const [myToken, setMyToken] = useState("");
   const [posts, setPosts] = useState([]);
   const [context, setContext] = useState("");
-  // const [newPost, setNewPost] = useState({ user: "", context: "" });
-  // const token = cookie.get("auth_token");
 
-  //get auth token from cookie, if doesnt exist/empty, redirect to login
   useEffect(() => {
     authenticateUser();
     fetchListOfPosts();
@@ -83,16 +76,15 @@ function Forum(props) {
   };
 
   const fetchListOfPosts = async () => {
-    const result = await axios.get("http://localhost:4000/api/v1/posts");
+    const result = await axios.get(`http://localhost:4000/api/v1/posts`);
     console.log(result.data);
     setPosts(result.data);
   };
 
   const sendAPost = () => {
-    // console.log(myToken);
     axios
       .post(
-        "http://localhost:4000/api/v1/posts",
+        `http://localhost:4000/api/v1/posts`,
         { context },
         {
           headers: {
@@ -121,11 +113,11 @@ function Forum(props) {
       <h1 align="center">FreshStart Forum</h1>
       <div className="post-list flexbox-column-forum">
         <div className="new-post-container">
-          <p>New Post</p>
+          <p className="new-post-title">Tell us your story</p>
           <form>
             <TextField
               id="comment"
-              label="share what's your thought..."
+              label="today i feel ..."
               variant="outlined"
               size="small"
               value={context}
@@ -357,14 +349,3 @@ function Comment({ item }) {
 }
 
 export default withCookies(Forum);
-/*
-1. frontend: call the data for post based on the dates , limit 5.
-
-2. backend: will send an array of post. 
-Each post of the array need to have user property. 
-Must also have user name and email. and profile picture.
-
-3. post need to return all comments in array related to the post.
-4. each comment need to return the users name and content. 
-5. write for axios post and get and render , refresh page with new post.
-*/

@@ -1,5 +1,8 @@
 /* ====== General Overal App ====== */
 // mostly I add in index.scss like css for body{}
+// primary color: #111B47
+// secondary color: #6f7cb2
+
 .flexbox-row {
   display: flex;
   flex-direction: row;
@@ -29,6 +32,10 @@
   button {
     width: 150px;
     margin-right: 20px;
+  }
+
+  .icon-button {
+    width: 40px;
   }
 }
 
@@ -242,6 +249,17 @@
 
 .new-post-container {
   margin: 20px auto 60px auto;
+  padding: 20px;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  box-shadow: 5px 10px #6f7cb2;
+
+  .new-post-title {
+    text-align: center;
+    font-weight: 700;
+    margin-top: 0;
+    font-size: 30px;
+  }
 }
 
 .comment-context-box {
@@ -249,13 +267,13 @@
   position: relative;
   margin: 5px 0 0 0;
   padding: 10px;
-  background-color: #eaeaea;
-  border-radius: 5px;
+  border: 1px solid #6f7cb2;
+  border-radius: 10px;
 }
 .forum-username {
   // color: black;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin-top: 0;
   margin-bottom: 0;
 }

@@ -11,12 +11,9 @@ import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import ImageIcon from "@material-ui/icons/Image";
 import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 
 const useStyles = makeStyles({
   orderSheet: {
@@ -36,7 +33,6 @@ const useStyles = makeStyles({
 });
 
 function Payment(props) {
-  const classes = useStyles();
   let history = useHistory();
   let params = useParams();
   const [allItem, setAllItem] = useState([]);
@@ -87,7 +83,7 @@ function Payment(props) {
   const handlePay = async () => {
     await axios.patch("http://localhost:4000/api/v1/payment/" + params.orderID);
 
-    history.push("/dashboard");
+    history.push("/successful-order");
   };
 
   return (

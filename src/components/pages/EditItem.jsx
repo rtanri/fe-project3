@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Button, TextField } from "@material-ui/core";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { Button, TextField, IconButton } from "@material-ui/core";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { useParams, useHistory } from "react-router-dom";
 import { withCookies } from "react-cookie";
 
 function EditItem(props) {
   let history = useHistory();
+
   const [product, setProduct] = useState({});
   const [itemName, setItemName] = useState("");
   const [itemWeight, setItemWeight] = useState("");
@@ -23,8 +24,11 @@ function EditItem(props) {
     getItemDetail();
   }, []);
 
+  const handleBack = () => {
+    history.goBack();
+  };
+
   const getItemDetail = () => {
-    toast(1);
     axios
       .get(
         "http://localhost:4000/api/v1/products/" + params.itemID,
@@ -36,18 +40,15 @@ function EditItem(props) {
         }
       )
       .then(response => {
-        toast(2);
         console.log(response.data);
         setProduct(response.data);
       })
       .catch(err => {
-        toast(3);
         console.log(err);
       });
   };
 
   const editItemDetail = () => {
-    toast(1);
     toast(params.itemID);
     axios
       .patch(
@@ -162,6 +163,10 @@ function EditItem(props) {
 
           <div className="buttonList" style={{ paddingLeft: "10%" }}>
             {/* Button: Modal Submit */}
+
+            <IconButton className="icon-button" onClick={() => handleBack()}>
+              <ArrowBackIcon />
+            </IconButton>
             <Button
               variant="contained"
               color="secondary"
