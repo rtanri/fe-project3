@@ -84,6 +84,12 @@ function Payment(props) {
     history.goBack();
   };
 
+  const handlePay = async () => {
+    await axios.patch("http://localhost:4000/api/v1/payment/" + params.orderID);
+
+    history.push("/dashboard");
+  };
+
   return (
     <div className="main-body">
       <h1 className="pageTitle">Payment for Better FreshStart</h1>
@@ -171,6 +177,7 @@ function Payment(props) {
                   variant="contained"
                   color="primary"
                   style={{ margin: 5, width: 120 }}
+                  onClick={handlePay}
                 >
                   Pay
                 </Button>

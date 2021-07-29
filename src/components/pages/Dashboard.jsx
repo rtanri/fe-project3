@@ -8,16 +8,18 @@ import Avatar from "@material-ui/core/Avatar";
 import ImageIcon from "@material-ui/icons/Image";
 import WorkIcon from "@material-ui/icons/Work";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
+import DeleteIcon from "@material-ui/icons/Delete";
 // import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
-import { Button, Divider } from "@material-ui/core";
+import { Button, Divider, IconButton } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { useHistory, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { withCookies } from "react-cookie";
+import { lightGreen } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   orderListBox: {
@@ -72,6 +74,23 @@ const useStyles = makeStyles({
   },
   cardTitle: {
     padding: "5px 0 2px 10px",
+    marginTop: 0,
+    marginBottom: 0,
+    position: "relative",
+  },
+  cardPaid: {
+    border: "5px solid green",
+    backgroundColor: lightGreen,
+    borderRadius: 4,
+    minWidth: 275,
+    maxHeight: 150,
+    margin: 10,
+    padding: 0,
+  },
+  deleteButton: {
+    position: "absolute",
+    right: "10px",
+    maxHeight: "20px",
   },
 });
 
@@ -115,7 +134,7 @@ function Dashboard(props) {
         console.log(response.data);
         const orderID = response.data.orderID;
         const addressID = response.data.addressID;
-        toast(orderID);
+        // toast(orderID);
         history.push("/new-delivery/" + orderID + "/" + addressID);
       })
       .catch(err => {
@@ -125,7 +144,7 @@ function Dashboard(props) {
   };
 
   const fetchListOfOrder = async () => {
-    toast("fetch order func");
+    // toast("fetch order func");
     const result = await axios.get("http://localhost:4000/api/v1/allOrders/", {
       headers: {
         token: props.cookies.get("auth_token"),
@@ -142,7 +161,11 @@ function Dashboard(props) {
         <div className={classes.orderListBox}>
           <div>
             {allOrder.map(order => (
-              <OrderCard key={order._id} item={order} />
+              <OrderCard
+                key={order._id}
+                item={order}
+                fetchListOfOrder={() => fetchListOfOrder()}
+              />
             ))}
             <p align="center">
               <Button
@@ -163,6 +186,118 @@ function Dashboard(props) {
     </div>
   );
 }
+
+function OrderCard({ item, fetchListOfOrder }) {
+  const classes = useStyles();
+  let history = useHistory();
+  const [postDate, setPostDate] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [addressId, setAddressId] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [isPaid, setIsPaid] = useState(false);
+
+  useEffect(() => {
+    setInitialData();
+  }, []);
+
+  const setInitialData = async () => {
+    console.log(item);
+
+    const orderCode = item._id;
+    setOrderId(orderCode);
+
+    setIsPaid(item.isPaid);
+
+    const addressCode = item.address;
+    setAddressId(addressCode);
+
+    const dateRaw = item.createdAt.slice(0, 10);
+    const postDate = new Date(dateRaw).toString().slice(0, 15);
+    setPostDate(postDate);
+
+    const productAmount = item.products.length;
+    setQuantity(productAmount);
+
+    const hashedOrder = item._id;
+    console.log(typeof hashedOrder);
+  };
+
+  const handleDeleteOrder = async () => {
+    await axios.delete("http://localhost:4000/api/v1/orders/" + orderId);
+    fetchListOfOrder();
+    history.push("/dashboard");
+  };
+
+  let selectedCard;
+  if (isPaid) {
+    selectedCard = (
+      <Card className={classes.cardPaid}>
+        <p id={orderId} align="left" className={classes.cardTitle}>
+          <strong>::Paid:: Created Date: </strong>
+          {postDate}
+        </p>
+
+        <CardContent className={classes.eachCardBody}>
+          <Divider />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <BeachAccessIcon />
+              </Avatar>
+            </ListItemAvatar>
+            {/* <ListItemText primary={orderId} secondary={quantity} /> */}
+            <ListItemText>
+              <strong>Tracking ID :</strong> {orderId}
+            </ListItemText>
+            <ListItemText align="right">{quantity} item(s)</ListItemText>
+          </ListItem>
+        </CardContent>
+      </Card>
+    );
+  } else {
+    selectedCard = (
+      <Card className={classes.orderCard}>
+        <p id={orderId} align="left" className={classes.cardTitle}>
+          <strong>Created Date: </strong>
+          {postDate}
+          <span>
+            <IconButton
+              onClick={() => handleDeleteOrder()}
+              className={classes.deleteButton}
+            >
+              <DeleteIcon />
+            </IconButton>
+            {/* <button onClick={() => handleDeleteOrder()}>Delete</button> */}
+          </span>
+        </p>
+        <Link
+          to={"/new-delivery/" + orderId + "/" + addressId}
+          style={{ textDecoration: "none" }}
+        >
+          <CardContent className={classes.eachCardBody}>
+            <Divider />
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <BeachAccessIcon />
+                </Avatar>
+              </ListItemAvatar>
+              {/* <ListItemText primary={orderId} secondary={quantity} /> */}
+              <ListItemText>
+                <strong>Tracking ID :</strong> {orderId}
+              </ListItemText>
+              <ListItemText align="right">{quantity} item(s)</ListItemText>
+            </ListItem>
+          </CardContent>
+        </Link>
+      </Card>
+    );
+  }
+
+  return <div>{selectedCard}</div>;
+}
+
+export default withCookies(Dashboard);
 
 // function OrderIdWithDetail() {
 //   const classes = useStyles();
@@ -209,63 +344,3 @@ function Dashboard(props) {
 //     </div>
 //   );
 // }
-
-function OrderCard({ item }) {
-  const classes = useStyles();
-  const [postDate, setPostDate] = useState("");
-  const [orderId, setOrderId] = useState("");
-  const [addressId, setAddressId] = useState("");
-  const [quantity, setQuantity] = useState("");
-
-  useEffect(() => {
-    setInitialData();
-  }, []);
-
-  const setInitialData = () => {
-    console.log(item);
-
-    const orderCode = item._id;
-    setOrderId(orderCode);
-
-    const addressCode = item.address;
-    setAddressId(addressCode);
-
-    const dateRaw = item.createdAt.slice(0, 10);
-    const postDate = new Date(dateRaw).toString().slice(0, 15);
-    setPostDate(postDate);
-
-    const productAmount = item.products.length;
-    setQuantity(productAmount);
-  };
-
-  return (
-    <Link
-      to={"/new-delivery/" + orderId + "/" + addressId}
-      style={{ textDecoration: "none" }}
-    >
-      <Card className={classes.orderCard}>
-        <Typography as="p" align="left" className={classes.cardTitle}>
-          <strong>Created Date: </strong>
-          {postDate}
-        </Typography>
-        <CardContent className={classes.eachCardBody}>
-          <Divider />
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
-                <BeachAccessIcon />
-              </Avatar>
-            </ListItemAvatar>
-            {/* <ListItemText primary={orderId} secondary={quantity} /> */}
-            <ListItemText>
-              <strong>Tracking ID :</strong> {orderId}
-            </ListItemText>
-            <ListItemText align="right">{quantity} item(s)</ListItemText>
-          </ListItem>
-        </CardContent>
-      </Card>
-    </Link>
-  );
-}
-
-export default withCookies(Dashboard);

@@ -3,7 +3,8 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
-
+import PlacesAutocomplete from "react-places-autocomplete";
+// import scriptLoader from "react-async-script-loader";
 import {
   Button,
   Typography,
@@ -115,6 +116,7 @@ function NewDelivery(props) {
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
+  const [autoAddress, setAutoAddress] = useState("");
 
   const [allItem, setAllItem] = useState([]);
   useEffect(() => {
@@ -124,8 +126,6 @@ function NewDelivery(props) {
   }, []);
 
   const authenticateUser = async () => {
-    // validate and see if token exist
-    // console.log(props.cookies);
     console.log(params);
     const token = props.cookies.get("auth_token");
 
@@ -137,7 +137,6 @@ function NewDelivery(props) {
   };
 
   const fetchListOfItem = async () => {
-    toast("fetch item func");
     console.log(params.orderID);
     const result = await axios.get(
       "http://localhost:4000/api/v1/orders/" + params.orderID + "/products",
@@ -152,7 +151,6 @@ function NewDelivery(props) {
   };
 
   const fetchAddressData = async () => {
-    toast("fetch address data");
     if (!params.addressID) {
       toast("orderID is not available");
       return;
@@ -208,6 +206,14 @@ function NewDelivery(props) {
         toast(err.response.data.message);
         console.log(err.response);
       });
+  };
+
+  const handleAutoChange = value => {
+    setAutoAddress(value);
+  };
+
+  const handleSelectAddress = value => {
+    setAutoAddress(value);
   };
 
   return (
@@ -290,11 +296,64 @@ function NewDelivery(props) {
                 <option value="return">Returning item</option>
               </select>
             </div>
+            <div className="form-line-input flexbox-row">
+              <label className="formLabelSize">Find Address: </label>
+
+              <PlacesAutocomplete
+                value={autoAddress}
+                onChange={handleAutoChange}
+                onSelect={handleSelectAddress}
+              >
+                {({
+                  getInputProps,
+                  suggestions,
+                  getSuggestionItemProps,
+                  loading,
+                }) => (
+                  <div>
+                    {/* <input
+                      type="text"
+                      {...getInputProps({
+                        placeholder: "Enter address auto...",
+                        className: "location-search-input",
+                      })}
+                    /> */}
+                    <TextField
+                      size="small"
+                      variant="outlined"
+                      className="formInput"
+                      {...getInputProps({
+                        placeholder: "Enter address auto...",
+                        className: "location-search-input",
+                      })}
+                    />
+                    <div>
+                      {loading && <div>Loading...</div>}
+                      {suggestions.map(suggestion => {
+                        const style = suggestion.active
+                          ? { backgroundColor: "#eaea", cursor: "pointer" }
+                          : { backgroundColor: "#ffffff", cursor: "pointer" };
+
+                        return (
+                          <div
+                            {...getSuggestionItemProps(suggestion, { style })}
+                          >
+                            {suggestion.description}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </PlacesAutocomplete>
+            </div>
+
             <div className="form-line-input">
               <label className="formLabelSize">Address: </label>
               <div className="flexbox-column address-field">
                 <TextField
                   required
+                  id="address"
                   label="Address"
                   size="small"
                   variant="outlined"
@@ -304,6 +363,7 @@ function NewDelivery(props) {
                 />
                 <TextField
                   required
+                  id="postalCode"
                   label="Postal Code"
                   size="small"
                   variant="outlined"
@@ -313,6 +373,7 @@ function NewDelivery(props) {
                 />
                 <TextField
                   required
+                  id="city"
                   label="City"
                   size="small"
                   variant="outlined"
@@ -322,6 +383,7 @@ function NewDelivery(props) {
                 />
                 <TextField
                   required
+                  id="country"
                   label="Country"
                   size="small"
                   variant="outlined"
@@ -366,7 +428,6 @@ function NewDelivery(props) {
           {...props}
         />
       </div>
-      <Divider className={classes.divider} />
     </div>
   );
 }
@@ -374,6 +435,7 @@ function NewDelivery(props) {
 function ModalAndButtonList({ itemLimit, fetchListOfItem, ...props }) {
   const classes = useStyles();
   let params = useParams();
+  let history = useHistory();
   // this states will submit into mongodb database
   const [open, setOpen] = React.useState(false);
   const [name, setName] = useState("");
@@ -435,11 +497,19 @@ function ModalAndButtonList({ itemLimit, fetchListOfItem, ...props }) {
       });
   };
 
+  const handlePayment = () => {
+    history.push("/payment/" + params.orderID);
+  };
+
   return (
     <div className="buttonList">
       {/* Button: Add Item */}
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Add Item
+      </Button>
+
+      <Button variant="contained" color="secondary" onClick={handlePayment}>
+        Payment
       </Button>
 
       {/* Modal with add-item form, can open and close with setOpen */}
