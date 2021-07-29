@@ -3,7 +3,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
-import PlacesAutocomplete from "react-places-autocomplete";
+// import PlacesAutocomplete from "react-places-autocomplete";
 // import scriptLoader from "react-async-script-loader";
 import {
   Button,
@@ -296,6 +296,8 @@ function NewDelivery(props) {
                 <option value="return">Returning item</option>
               </select>
             </div>
+
+            {/* autocomplete
             <div className="form-line-input flexbox-row">
               <label className="formLabelSize">Find Address: </label>
 
@@ -317,7 +319,7 @@ function NewDelivery(props) {
                         placeholder: "Enter address auto...",
                         className: "location-search-input",
                       })}
-                    /> */}
+                    /> 
                     <TextField
                       size="small"
                       variant="outlined"
@@ -346,7 +348,7 @@ function NewDelivery(props) {
                   </div>
                 )}
               </PlacesAutocomplete>
-            </div>
+            </div> */}
 
             <div className="form-line-input">
               <label className="formLabelSize">Address: </label>
