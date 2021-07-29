@@ -33,6 +33,10 @@
     width: 150px;
     margin-right: 20px;
   }
+
+  .icon-button {
+    width: 40px;
+  }
 }
 
 .button-submit {
@@ -285,9 +289,4 @@
   color: black;
   margin: 0 5px 0 5px;
   font-size: 0.95rem;
-}
-
-.paid {
-  border: "2px border green";
-  background-color: lightgreen;
 }

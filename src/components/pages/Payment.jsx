@@ -11,12 +11,9 @@ import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import ImageIcon from "@material-ui/icons/Image";
 import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 
 const useStyles = makeStyles({
   orderSheet: {
@@ -54,7 +51,6 @@ function Payment(props) {
   }, []);
 
   const fetchListOfItem = async () => {
-    toast("fetch item func");
     console.log(params.orderID);
     const result = await axios.get(
       `${process.env.REACT_APP_BACKEND}/api/v1/orders/${params.orderID}/products`,
@@ -66,11 +62,10 @@ function Payment(props) {
     );
     setAllItem(result.data);
     const totalPrice = result.data.length;
-    setPrice(totalPrice * 35);
+    setPrice(totalPrice * 20);
   };
 
   const authenticateUser = async () => {
-    console.log(params);
     const token = props.cookies.get("auth_token");
 
     if (!token) {
@@ -89,7 +84,7 @@ function Payment(props) {
       `${process.env.REACT_APP_BACKEND}/api/v1/payment/${params.orderID}`
     );
 
-    history.push("/dashboard");
+    history.push("/successful-order");
   };
 
   return (

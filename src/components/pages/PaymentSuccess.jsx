@@ -1,10 +1,14 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
 import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export default function PaymentSuccess() {
+  let history = useHistory();
+
+  const handleSubmit = () => {
+    history.push("/dashboard");
+  };
   return (
     <div className="flexbox-column main-body">
       <h1 className="pageTitle-less-margin">Payment Successful</h1>
@@ -19,6 +23,7 @@ export default function PaymentSuccess() {
           variant="contained"
           color="secondary"
           style={{ margin: 20, width: 150 }}
+          onClick={() => handleSubmit()}
         >
           Your Order
         </Button>
