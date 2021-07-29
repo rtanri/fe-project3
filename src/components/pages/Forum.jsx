@@ -109,11 +109,11 @@ function Forum(props) {
       });
   };
 
-  const handlePostSubmit = () => {
+  const handlePostSubmit = async () => {
     toast("Post button is clicked");
     sendAPost();
     setContext("");
-    // await fetchListOfPosts();
+    await fetchListOfPosts();
   };
 
   return (
@@ -179,7 +179,7 @@ function Post({ item, myToken }) {
   useEffect(() => {
     setInitialData();
     if (postId) {
-      fetchListOfComment();
+      fetchListOfComment(postId);
     }
   }, []);
 
@@ -213,10 +213,10 @@ function Post({ item, myToken }) {
     }
   };
 
-  const fetchListOfComment = async postId => {
+  const fetchListOfComment = async anyPostId => {
     // toast("fetch comment by post id");
     const result = await axios.get(
-      "http://localhost:4000/api/v1/comments/" + postId
+      "http://localhost:4000/api/v1/comments/" + anyPostId
     );
     console.log(result.data);
     setComments(result.data);
@@ -234,7 +234,6 @@ function Post({ item, myToken }) {
         }
       )
       .then(response => {
-        toast(2);
         console.log("comment is successful");
       })
       .catch(err => {
@@ -246,11 +245,11 @@ function Post({ item, myToken }) {
       });
   };
 
-  const handleCommentSubmit = async () => {
+  const handleCommentSubmit = async anyPostId => {
     toast("Say button is clicked");
     sendAComment();
     setCommentContent("");
-    await fetchListOfComment();
+    await fetchListOfComment(anyPostId);
   };
 
   return (
@@ -260,6 +259,7 @@ function Post({ item, myToken }) {
         //title={props.userId}
         title={username}
         subheader={postDate}
+        titleTypographyProps={{ variant: "h6" }}
       />
 
       <CardContent>{context}</CardContent>
@@ -282,7 +282,7 @@ function Post({ item, myToken }) {
             variant="contained"
             color="secondary"
             style={{ display: "inline" }}
-            onClick={handleCommentSubmit}
+            onClick={() => handleCommentSubmit(postId)}
           >
             Say
           </Button>
@@ -309,6 +309,8 @@ function Comment({ item }) {
   }, []);
 
   const setInitialData = async () => {
+    console.log("comment item");
+    console.log(item);
     if (item.username) {
       const titleString = item.username;
       const username = `@${titleString}`;
