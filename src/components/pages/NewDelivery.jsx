@@ -181,25 +181,17 @@ function NewDelivery(props) {
       return;
     }
     axios
-      .patch(
-        "http://localhost:4000/api/v1/addAddress/" + params.addressID,
-        {
-          addressType: address,
-          postalCode: postalCode,
-          city: city,
-          country: country,
-          itemLimit: itemLimit,
-          deliveryType: deliveryType,
-        },
-        {
-          headers: {
-            token: props.cookies.get("auth_token"),
-          },
-        }
-      )
+      .patch("http://localhost:4000/api/v1/addAddress/" + params.addressID, {
+        addressType: address,
+        postalCode: postalCode,
+        city: city,
+        country: country,
+        itemLimit: itemLimit,
+        deliveryType: deliveryType,
+      })
       .then(response => {
-        toast(2);
-        toast("Order is successfully loaded");
+        console.log("Address is successfully loaded");
+        console.log(response);
       })
       .catch(err => {
         toast(3);
