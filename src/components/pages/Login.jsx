@@ -40,7 +40,6 @@ function Login({ auth, setAuth, ...props }) {
         password,
       })
       .then(response => {
-        toast("2");
         console.log(response);
         props.cookies.set("auth_token", response.data.token, { path: "/" });
 
@@ -48,8 +47,7 @@ function Login({ auth, setAuth, ...props }) {
         window.location.reload();
       })
       .catch(err => {
-        console.log("3");
-        console.log(err);
+        toast(err.response.data.message);
       })
       .finally(async () => {
         await history.push("/dashboard");

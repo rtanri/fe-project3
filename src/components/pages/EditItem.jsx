@@ -49,7 +49,6 @@ function EditItem(props) {
   };
 
   const editItemDetail = () => {
-    toast(params.itemID);
     axios
       .patch(
         `${process.env.REACT_APP_BACKEND}/api/v1/products/${params.itemID}`,
@@ -65,7 +64,6 @@ function EditItem(props) {
         }
       )
       .then(response => {
-        toast("Item is edited");
         history.goBack();
       })
       .catch(err => {
@@ -89,12 +87,10 @@ function EditItem(props) {
   };
 
   const handleEditFormSubmit = () => {
-    toast("Edit Button Clicked");
     editItemDetail();
   };
 
   const handleDelete = () => {
-    toast("Delete Button Clicked");
     deleteProduct();
   };
 

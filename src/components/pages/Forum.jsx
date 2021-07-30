@@ -100,11 +100,14 @@ function Forum(props) {
       .catch(err => {
         toast(err.response.data.message);
         console.log(err.response);
+      })
+      .finally(async () => {
+        await fetchListOfPosts();
       });
   };
 
   const handlePostSubmit = async () => {
-    toast("Post button is clicked");
+    // toast("Post button is clicked");
     sendAPost();
     setContext("");
     await fetchListOfPosts();
@@ -172,9 +175,9 @@ function Post({ item, myToken }) {
 
   useEffect(() => {
     setInitialData();
-    if (postId) {
-      fetchListOfComment(postId);
-    }
+    // if (postId) {
+    //   fetchListOfComment(postId);
+    // }
   }, []);
 
   const setInitialData = async () => {
@@ -208,6 +211,7 @@ function Post({ item, myToken }) {
   };
 
   const fetchListOfComment = async anyPostId => {
+    console.log("fetch list of comment");
     // toast("fetch comment by post id");
     const result = await axios.get(
       `${process.env.REACT_APP_BACKEND}/api/v1/comments/${anyPostId}`
@@ -217,6 +221,7 @@ function Post({ item, myToken }) {
   };
 
   const sendAComment = () => {
+    console.log("send Comment");
     axios
       .post(
         `${process.env.REACT_APP_BACKEND}/api/v1/comments/${postId}`,
@@ -235,14 +240,16 @@ function Post({ item, myToken }) {
         console.log(err.response);
       })
       .finally(async () => {
-        await fetchListOfComment();
+        await fetchListOfComment(postId);
       });
   };
 
   const handleCommentSubmit = async anyPostId => {
-    toast("Say button is clicked");
-    sendAComment();
+    // toast("Say button is clicked");
+    await sendAComment();
     setCommentContent("");
+    console.log("anyPostId");
+    console.log(anyPostId);
     await fetchListOfComment(anyPostId);
   };
 
@@ -303,7 +310,7 @@ function Comment({ item }) {
   }, []);
 
   const setInitialData = async () => {
-    console.log("comment item");
+    console.log("set initial comment data");
     console.log(item);
     if (item.username) {
       const titleString = item.username;

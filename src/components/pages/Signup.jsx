@@ -37,7 +37,6 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   function postUserData() {
-    toast(1);
     axios
       .post(`${process.env.REACT_APP_BACKEND}/api/v1/user/signup`, {
         firstName,
@@ -48,14 +47,11 @@ export default function Signup() {
         confirmPassword,
       })
       .then(response => {
-        toast(2);
         console.log("sign-up successful");
         history.push("/login-user");
       })
       .catch(err => {
-        toast(3);
-        toast(err);
-        console.log(err);
+        toast(err.response.data.message);
       });
   }
 

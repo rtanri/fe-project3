@@ -130,7 +130,6 @@ function Dashboard(props) {
         }
       )
       .then(response => {
-        toast("2");
         console.log(response.data);
         const orderID = response.data.orderID;
         const addressID = response.data.addressID;
@@ -138,7 +137,6 @@ function Dashboard(props) {
         history.push("/new-delivery/" + orderID + "/" + addressID);
       })
       .catch(err => {
-        toast(3);
         toast(err.response.data.message);
       });
   };
