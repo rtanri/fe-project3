@@ -21,10 +21,12 @@ function LandingTop() {
       <div className="flexbox-row">
         <div className="header-content">
           <h1>Welcome to FreshStart</h1>
-          <p>
-            Phasellus lacinia enim in congue iaculis. In hac habitasse platea
-            dictumst. Class aptent taciti sociosqu ad litora torquent per
-            conubia nostra, per inceptos himenaeos.
+          <p className="intro-title-content">
+            A bad breakup, unexpected farewell and toxic partner can always
+            interfere your everyday life.
+          </p>
+          <p className="intro-title-content">
+            FreshStart is here as your helping hands and listening ears.
           </p>
           <div className="buttonList">
             <Link to="/login-user" className="menu-nav-link">
@@ -121,15 +123,18 @@ function SmallCardDetail({ icon, content }) {
 function PriceSection() {
   return (
     <div className="price-section-bg flexbox-column" style={{ paddingTop: 50 }}>
-      <h2>A Price To Suit Everyone</h2>
+      <h1>A Price To Suit Everyone</h1>
       <p>
-        Phasellus lacinia enim in congue iaculis. In hac habitasse platea
-        dictumst. Class aptent taciti sociosqu ad litora torquent per conubia
-        nostra, per inceptos himenaeos.
+        We understand that you are in tough situation. To help moving-on easier,
+        all type of products will be charged in same price
       </p>
-      <h1>$40</h1>
+      <h2>$20/item</h2>
       <Link to="/login-user">
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ textDecoration: "none" }}
+        >
           Log-in Now
         </Button>
       </Link>
