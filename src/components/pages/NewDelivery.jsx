@@ -3,7 +3,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { imageUrlMapping } from "../../constants/imageUrlMapping";
-// import PlacesAutocomplete from "react-places-autocomplete";
+import PlacesAutocomplete from "react-places-autocomplete";
 // import scriptLoader from "react-async-script-loader";
 import {
   Button,
@@ -201,23 +201,40 @@ function NewDelivery(props) {
         }
       )
       .then(response => {
-        toast(2);
         toast("Order is successfully loaded");
       })
       .catch(err => {
-        toast(3);
         toast(err.response.data.message);
         console.log(err.response);
       });
   };
 
-  // const handleAutoChange = value => {
-  //   setAutoAddress(value);
-  // };
+  const handleAutoChange = value => {
+    setAutoAddress(value);
+    console.log("change");
+  };
 
-  // const handleSelectAddress = value => {
-  //   setAutoAddress(value);
-  // };
+  const handleSelectAddress = value => {
+    const inputArray = value.split(",");
+    const [lastChild] = inputArray.slice(-1);
+    let noCountryAddress;
+    if (inputArray[1]) {
+      noCountryAddress = inputArray[0] + "," + inputArray[1];
+    } else {
+      noCountryAddress = inputArray[0];
+    }
+    setAutoAddress(value);
+    setAddress(noCountryAddress);
+    setCity(lastChild);
+    setCountry(lastChild);
+  };
+
+  const searchOptions = {
+    componentRestrictions: { country: ["sg"] },
+    fields: ["address_components"],
+    types: ["establishment"],
+    // address, cities, establishment, geocode, region
+  };
 
   return (
     <div className="main-body">
@@ -300,14 +317,18 @@ function NewDelivery(props) {
               </select>
             </div>
 
-            {/* autocomplete
-            <div className="form-line-input flexbox-row">
+            {/* <div className="form-line-input flexbox-row"> */}
+            <div className="flexbox-row-start">
               <label className="formLabelSize">Find Address: </label>
 
               <PlacesAutocomplete
                 value={autoAddress}
                 onChange={handleAutoChange}
                 onSelect={handleSelectAddress}
+                searchOptions={searchOptions}
+                fetchDetails={true}
+                // onChange={e => setAutoAddress(e.target.value)}
+                // onSelect={e => setAutoAddress(e.target.value)}
               >
                 {({
                   getInputProps,
@@ -316,19 +337,12 @@ function NewDelivery(props) {
                   loading,
                 }) => (
                   <div>
-                    {/* <input
-                      type="text"
-                      {...getInputProps({
-                        placeholder: "Enter address auto...",
-                        className: "location-search-input",
-                      })}
-                    /> 
                     <TextField
                       size="small"
                       variant="outlined"
                       className="formInput"
                       {...getInputProps({
-                        placeholder: "Enter address auto...",
+                        placeholder: "Try to put location name...",
                         className: "location-search-input",
                       })}
                     />
@@ -336,7 +350,7 @@ function NewDelivery(props) {
                       {loading && <div>Loading...</div>}
                       {suggestions.map(suggestion => {
                         const style = suggestion.active
-                          ? { backgroundColor: "#eaea", cursor: "pointer" }
+                          ? { backgroundColor: "#E7ECFF", cursor: "pointer" }
                           : { backgroundColor: "#ffffff", cursor: "pointer" };
 
                         return (
@@ -351,7 +365,7 @@ function NewDelivery(props) {
                   </div>
                 )}
               </PlacesAutocomplete>
-            </div> */}
+            </div>
 
             <div className="form-line-input">
               <label className="formLabelSize">Address: </label>
