@@ -5,8 +5,9 @@ Git repo for Project 3 General Assembly. Mainly build with react app.
 ## Planning and Preparation
 
 - UI/UX with Figma
-- Task delegation with Notion, each card contain UX based task
+- Task delegation with Notion, each card contain UX based tasks
 - Plan number of collections, schema content
+- plan routes
 
 #### Figma (Drafting UI/UX)
 
@@ -28,12 +29,19 @@ Git repo for Project 3 General Assembly. Mainly build with react app.
 - Consist of 6 collections in MongoDB
 - Build with 21 routes controllers to fully manage webapp.
 
+## Libraries used
+
+-Multer
+-Checkvalidator
+-Bcrypt
+-Cloudinary
+
 ## Challenges that we encounter
 
 - Not used to code BE/FE only, for example, while coding BE there are some logic that hard to imagine without frontend flow. For FE, keep editing and adding schemas on building web-app flow,
 - Wrap the repetitive code with in functions to prevent lengthy code,
 - Need some time to learn using React-hook (useParams, useHistory, useEffect),
-- JWT errors took some time, but it only require us to clear cache in browser
+- JWT errors took some time but it only require us to clear cache in browser and it took us abit of time to connect the JWt to the front end
 
 ## Webpage Screenshots
 
