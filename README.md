@@ -19,7 +19,7 @@ Git repo for Project 3 General Assembly. Mainly build with react app.
 
 ## Our FrontEnd
 
-- Build with 100% React Functional-Hook based
+- Build with 100% React-Hooks based
 - Consist of 9 pages and 2 additional components (Navbar and Footer)
 - Using Material UI, React-cookie, React Toastify, and React Credit Cards
 
@@ -31,17 +31,18 @@ Git repo for Project 3 General Assembly. Mainly build with react app.
 
 ## Libraries used
 
--Multer
--Checkvalidator
--Bcrypt
--Cloudinary
+- Multer
+- Checkvalidator
+- Bcrypt
+- Cloudinary
+- GoogleAPI
 
 ## Challenges that we encounter
 
 - Not used to code BE/FE only, for example, while coding BE there are some logic that hard to imagine without frontend flow. For FE, keep editing and adding schemas on building web-app flow,
 - Wrap the repetitive code with in functions to prevent lengthy code,
 - Need some time to learn using React-hook (useParams, useHistory, useEffect),
-- JWT errors took some time but it only require us to clear cache in browser and it took us abit of time to connect the JWt to the front end
+- JWT errors took some time but it only require us to clear cache in browser and it took us abit of time to connect the JWT to the front end
 
 ## Webpage Screenshots
 
@@ -63,7 +64,7 @@ Git repo for Project 3 General Assembly. Mainly build with react app.
 
 ### Page: Add New Delivery
 
-![set-address](https://i.imgur.com/SYj7h0x.png) ![Add-item](https://i.imgur.com/U98zMGR.png)
+![set-address](https://i.imgur.com/jiF6HDC.png) ![Add-item](https://i.imgur.com/U98zMGR.png)
 
 ### Page: Edit Item
 
@@ -71,10 +72,10 @@ Git repo for Project 3 General Assembly. Mainly build with react app.
 
 ### Page: Payment
 
-![Landing-top](https://i.imgur.com/h2VQggJ.png)
+![Payment](https://i.imgur.com/h2VQggJ.png)
 
 ### Page: Payment Successful
 
-![Landing-top](https://i.imgur.com/bvzqUS8.png)
+![Payment-Success](https://i.imgur.com/bvzqUS8.png)
 
 #### Thank you for reading Readme, this web-app is a humble creation by Revin and Junchi. Cheers!

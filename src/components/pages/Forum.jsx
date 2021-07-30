@@ -64,7 +64,6 @@ function Forum(props) {
   }, []);
 
   const authenticateUser = () => {
-    // validate and see if token exist
     console.log(props.cookies);
     const token = props.cookies.get("auth_token");
 
